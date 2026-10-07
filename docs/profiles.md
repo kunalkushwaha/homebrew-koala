@@ -13,6 +13,8 @@ Every VM has a profile, fixed when it is created.
 | Default resources | 1 vCPU, 256 MiB RAM, 1 GiB disk | 2 vCPUs, 1024 MiB RAM, 8 GiB disk |
 | Good for | Jobs, single services, quick tools | Development boxes, Docker, multi-service setups |
 
+![Inside a lean VM and a full VM: what runs as PID 1 and what the root filesystem is](images/profiles.svg)
+
 OCI images run in the lean profile, and catalog entries in the full profile.
 Any other pairing, such as `--profile full` with an OCI image, fails with
 `IMAGE_INCOMPATIBLE`. The profile of an existing VM cannot be changed.

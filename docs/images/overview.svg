@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+<title id="title">How Koala fits together</title>
+<desc id="desc">You type koala commands. The CLI talks to a per-user Koala manager, a launchd agent that needs no sudo, over a private socket. The manager keeps images, VM disks and volumes, and runs one VM per workload: a job, a service or an environment. Each VM has its own network helper on the Mac, which lets through only the connections its network rules allow: the internet by default, anything else only when you grant it.</desc>
+<rect width="1120" height="560" fill="#f7f9fc"/>
+<style>
+ text { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+ .heading { font-size:18px; font-weight:650; fill:#17304b; }
+ .body { font-size:14px; fill:#465d72; }
+ .eyebrow { font-size:12px; font-weight:700; letter-spacing:1.4px; fill:#476889; }
+ .label { font-size:13px; fill:#334f6b; }
+</style>
+<rect x="30" y="30" width="730" height="410" rx="18" fill="#edf3fb" stroke="#bacde2" stroke-width="1.6"/>
+<text x="48" y="56" class="eyebrow" text-anchor="start">YOUR MAC  /  YOUR USER ACCOUNT</text>
+<rect x="55" y="90" width="190" height="76" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="71" y="124.0" class="heading" text-anchor="start">koala CLI</text>
+<text x="71" y="146.0" class="body" text-anchor="start">what you type</text>
+<rect x="300" y="80" width="240" height="96" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="316" y="114.0" class="heading" text-anchor="start">Koala manager</text>
+<text x="316" y="136.0" class="body" text-anchor="start">a launchd agent</text>
+<text x="316" y="155.0" class="body" text-anchor="start">no sudo needed</text>
+<rect x="300" y="250" width="240" height="76" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="316" y="284.0" class="heading" text-anchor="start">Koala&#x27;s data</text>
+<text x="316" y="306.0" class="body" text-anchor="start">images, VM disks, volumes</text>
+<polyline points="245,128 300,128" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="300.0,128.0 289.0,132.5 289.0,123.5" fill="#49647f"/>
+<text x="272" y="196" class="label" text-anchor="middle">requests over a</text>
+<text x="272" y="214" class="label" text-anchor="middle">private socket</text>
+<line x1="272" y1="134" x2="272" y2="180" stroke="#9fb3c8" stroke-width="1" stroke-dasharray="3 3"/>
+<polyline points="420,176 420,250" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="420.0,250.0 415.5,239.0 424.5,239.0" fill="#49647f"/>
+<polygon points="420.0,176.0 424.5,187.0 415.5,187.0" fill="#49647f"/>
+<rect x="580" y="80" width="160" height="70" rx="12" fill="#e8f6f1" stroke="#49a792" stroke-width="1.5"/>
+<text x="596" y="111.0" class="heading" text-anchor="start">network helper</text>
+<text x="596" y="133.0" class="body" text-anchor="start">one per VM</text>
+<polyline points="540,128 560,128 560,115 580,115" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="580.0,115.0 569.0,119.5 569.0,110.5" fill="#49647f"/>
+<rect x="580" y="200" width="160" height="70" rx="12" fill="#e8f6f1" stroke="#49a792" stroke-width="1.5"/>
+<text x="596" y="231.0" class="heading" text-anchor="start">network helper</text>
+<text x="596" y="253.0" class="body" text-anchor="start">one per VM</text>
+<polyline points="540,128 560,128 560,235 580,235" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="580.0,235.0 569.0,239.5 569.0,230.5" fill="#49647f"/>
+<rect x="580" y="320" width="160" height="70" rx="12" fill="#e8f6f1" stroke="#49a792" stroke-width="1.5"/>
+<text x="596" y="351.0" class="heading" text-anchor="start">network helper</text>
+<text x="596" y="373.0" class="body" text-anchor="start">one per VM</text>
+<polyline points="540,128 560,128 560,355 580,355" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="580.0,355.0 569.0,359.5 569.0,350.5" fill="#49647f"/>
+<rect x="800" y="30" width="290" height="410" rx="18" fill="#e8f6f1" stroke="#49a792" stroke-width="1.6"/>
+<text x="818" y="56" class="eyebrow" text-anchor="start">ONE VM PER WORKLOAD</text>
+<rect x="820" y="70" width="250" height="90" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="836" y="101.0" class="heading" text-anchor="start">Job VM</text>
+<text x="836" y="123.0" class="body" text-anchor="start">runs one command,</text>
+<text x="836" y="142.0" class="body" text-anchor="start">then is removed</text>
+<polyline points="740,115 820,115" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="820.0,115.0 809.0,119.5 809.0,110.5" fill="#49647f"/>
+<polygon points="740.0,115.0 751.0,110.5 751.0,119.5" fill="#49647f"/>
+<rect x="820" y="190" width="250" height="90" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="836" y="221.0" class="heading" text-anchor="start">Service VM</text>
+<text x="836" y="243.0" class="body" text-anchor="start">runs a long-lived</text>
+<text x="836" y="262.0" class="body" text-anchor="start">program</text>
+<polyline points="740,235 820,235" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="820.0,235.0 809.0,239.5 809.0,230.5" fill="#49647f"/>
+<polygon points="740.0,235.0 751.0,230.5 751.0,239.5" fill="#49647f"/>
+<rect x="820" y="310" width="250" height="90" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="836" y="341.0" class="heading" text-anchor="start">Environment VM</text>
+<text x="836" y="363.0" class="body" text-anchor="start">a Linux box you</text>
+<text x="836" y="382.0" class="body" text-anchor="start">koala exec into</text>
+<polyline points="740,355 820,355" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="820.0,355.0 809.0,359.5 809.0,350.5" fill="#49647f"/>
+<polygon points="740.0,355.0 751.0,350.5 751.0,359.5" fill="#49647f"/>
+<rect x="430" y="470" width="330" height="64" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="595.0" y="508.0" class="heading" text-anchor="middle">internet, your Mac&#x27;s services, your LAN</text>
+<polyline points="660,390 660,470" fill="none" stroke="#00897b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="660.0,470.0 655.5,459.0 664.5,459.0" fill="#00897b"/>
+<text x="648" y="458" class="label" text-anchor="end">only what the VM&#x27;s network rules allow</text>
+</svg>

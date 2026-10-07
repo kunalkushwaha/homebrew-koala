@@ -10,6 +10,8 @@ A VM can store data in three places:
 | A named volume | A separate disk you create and attach | Until you run `koala volume rm` | No (it has its own size) |
 | A host share | A directory on your Mac, shared into the VM | It is your directory; Koala never deletes it | No |
 
+![Where a VM keeps data: its own disk, a named volume, or a directory shared from your Mac](images/storage.svg)
+
 ## Share a host directory
 
 ```sh

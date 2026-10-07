@@ -14,6 +14,8 @@ Without a `network` section, a VM:
   private network ranges such as a VPN's, or other Koala VMs;
 - publishes no ports.
 
+![What a VM can reach: the internet by default, your Mac and LAN only with grants, other VMs never](images/networking.svg)
+
 Internet means public addresses only. Addresses on your local networks and
 VPNs are treated as local, even if they look public, and stay blocked.
 

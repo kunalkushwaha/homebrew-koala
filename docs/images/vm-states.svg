@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="510" viewBox="0 0 1240 510" role="img" aria-labelledby="title desc">
+<title id="title">VM states</title>
+<desc id="desc">koala create or koala run starts in Creating, then Stopped once the disk is ready. koala start moves a VM through Starting to Running; Running becomes Degraded if its network is lost and returns when it recovers. koala stop, or the end of the main command, leads to Stopping. A service or environment VM returns to Stopped; a job always goes on to Deleting and Deleted. koala rm removes a Stopped or Failed VM. A failed start, or a lost VM, gives Failed, and koala start tries again.</desc>
+<rect width="1240" height="510" fill="#f7f9fc"/>
+<style>
+ text { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+ .heading { font-size:18px; font-weight:650; fill:#17304b; }
+ .body { font-size:14px; fill:#465d72; }
+ .eyebrow { font-size:12px; font-weight:700; letter-spacing:1.4px; fill:#476889; }
+ .label { font-size:13px; fill:#334f6b; }
+</style>
+<rect x="80" y="100" width="170" height="56" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="165.0" y="134.0" class="heading" text-anchor="middle">Creating</text>
+<rect x="320" y="100" width="170" height="56" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="405.0" y="134.0" class="heading" text-anchor="middle">Stopped</text>
+<rect x="560" y="100" width="170" height="56" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="645.0" y="134.0" class="heading" text-anchor="middle">Starting</text>
+<rect x="800" y="100" width="170" height="56" rx="12" fill="#ffffff" stroke="#49a792" stroke-width="1.5"/>
+<text x="885.0" y="134.0" class="heading" text-anchor="middle">Running</text>
+<rect x="1030" y="100" width="170" height="56" rx="12" fill="#ffffff" stroke="#b7791f" stroke-width="1.5"/>
+<text x="1115.0" y="134.0" class="heading" text-anchor="middle">Degraded</text>
+<rect x="800" y="260" width="170" height="56" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="885.0" y="294.0" class="heading" text-anchor="middle">Stopping</text>
+<rect x="80" y="420" width="170" height="56" rx="12" fill="#eef1f4" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="165.0" y="454.0" class="heading" text-anchor="middle">Deleted</text>
+<rect x="320" y="420" width="170" height="56" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="405.0" y="454.0" class="heading" text-anchor="middle">Deleting</text>
+<rect x="560" y="420" width="170" height="56" rx="12" fill="#fbecea" stroke="#c0392b" stroke-width="1.5"/>
+<text x="645.0" y="454.0" class="heading" text-anchor="middle">Failed</text>
+<circle cx="42" cy="128" r="9" fill="#17304b"/>
+<polyline points="51,128 80,128" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="80.0,128.0 69.0,132.5 69.0,123.5" fill="#49647f"/>
+<text x="30" y="82" class="label" text-anchor="start">koala create, or koala run</text>
+<polyline points="250,128 320,128" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="320.0,128.0 309.0,132.5 309.0,123.5" fill="#49647f"/>
+<text x="256" y="118" class="label" text-anchor="start">disk ready</text>
+<polyline points="490,128 560,128" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="560.0,128.0 549.0,132.5 549.0,123.5" fill="#49647f"/>
+<text x="494" y="118" class="label" text-anchor="start">koala start</text>
+<polyline points="730,128 800,128" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="800.0,128.0 789.0,132.5 789.0,123.5" fill="#49647f"/>
+<polyline points="970,118 1030,118" fill="none" stroke="#b7791f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="1030.0,118.0 1019.0,122.5 1019.0,113.5" fill="#b7791f"/>
+<text x="952" y="92" class="label" text-anchor="start">network lost</text>
+<polyline points="1030,140 970,140" fill="none" stroke="#00897b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="970.0,140.0 981.0,135.5 981.0,144.5" fill="#00897b"/>
+<text x="968" y="172" class="label" text-anchor="start">recovered</text>
+<polyline points="885,156 885,260" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="885.0,260.0 880.5,249.0 889.5,249.0" fill="#49647f"/>
+<text x="895" y="202" class="label" text-anchor="start">koala stop, or the</text>
+<text x="895" y="220" class="label" text-anchor="start">main command ends</text>
+<polyline points="1115,156 1115,288 970,288" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="970.0,288.0 981.0,283.5 981.0,292.5" fill="#49647f"/>
+<text x="1000" y="280" class="label" text-anchor="start">koala stop</text>
+<polyline points="800,288 405,288 405,156" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="405.0,156.0 409.5,167.0 400.5,167.0" fill="#49647f"/>
+<text x="430" y="280" class="label" text-anchor="start">service or environment</text>
+<polyline points="845,316 845,375 450,375 450,420" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="450.0,420.0 445.5,409.0 454.5,409.0" fill="#49647f"/>
+<text x="460" y="367" class="label" text-anchor="start">a job, always</text>
+<polyline points="345,156 345,420" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="345.0,420.0 340.5,409.0 349.5,409.0" fill="#49647f"/>
+<text x="335" y="240" class="label" text-anchor="end">koala rm</text>
+<polyline points="600,156 600,420" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="600.0,420.0 595.5,409.0 604.5,409.0" fill="#c0392b"/>
+<text x="592" y="230" class="label" text-anchor="end" fill="#c0392b">the start</text>
+<text x="592" y="248" class="label" text-anchor="end" fill="#c0392b">failed</text>
+<polyline points="660,420 660,156" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<polygon points="660.0,156.0 664.5,167.0 655.5,167.0" fill="#49647f"/>
+<text x="668" y="230" class="label" text-anchor="start">koala</text>
+<text x="668" y="248" class="label" text-anchor="start">start</text>
+<polyline points="820,156 820,232 715,232 715,420" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="715.0,420.0 710.5,409.0 719.5,409.0" fill="#c0392b"/>
+<text x="726" y="224" class="label" text-anchor="start" fill="#c0392b">VM lost</text>
+<polyline points="560,448 490,448" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="490.0,448.0 501.0,443.5 501.0,452.5" fill="#c0392b"/>
+<text x="525" y="470" class="label" text-anchor="middle" fill="#c0392b">koala rm</text>
+<polyline points="320,448 250,448" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="250.0,448.0 261.0,443.5 261.0,452.5" fill="#49647f"/>
+</svg>

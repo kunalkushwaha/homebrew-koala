@@ -153,6 +153,12 @@ koala rm VM --wait            # removes a stopped VM; named volumes are kept
 koala stats VM                # the memory and disk the manager reserved for it
 ```
 
+![VM states, from Creating to Deleted, and the commands that move a VM between them](images/vm-states.svg)
+
+`koala run` goes through the same states without stopping at `Stopped`.
+A job is removed whether its command succeeds or fails; a service or
+environment VM keeps its disk until `koala rm`.
+
 VM states you will see: `Creating`, `Stopped`, `Starting`, `Running`,
 `Degraded` (running, but its network was lost; see
 [networking](networking.md#after-a-manager-restart)), `Stopping`,

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="400" viewBox="0 0 1040 400" role="img" aria-labelledby="title desc">
+<title id="title">Where a VM keeps data</title>
+<desc id="desc">Inside the VM, the root filesystem and everything outside mounts is on the VM&#x27;s own disk, which is deleted with a job or by koala rm. A named volume, mounted for example at /data, is kept until koala volume rm. A host share, mounted for example at /src, is a directory on your Mac; it is read-only unless you ask, and Koala never deletes it.</desc>
+<rect width="1040" height="400" fill="#f7f9fc"/>
+<style>
+ text { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+ .heading { font-size:18px; font-weight:650; fill:#17304b; }
+ .body { font-size:14px; fill:#465d72; }
+ .eyebrow { font-size:12px; font-weight:700; letter-spacing:1.4px; fill:#476889; }
+ .label { font-size:13px; fill:#334f6b; }
+</style>
+<rect x="30" y="30" width="380" height="340" rx="18" fill="#e8f6f1" stroke="#49a792" stroke-width="1.6"/>
+<text x="48" y="56" class="eyebrow" text-anchor="start">INSIDE THE VM</text>
+<rect x="560" y="30" width="450" height="340" rx="18" fill="#edf3fb" stroke="#bacde2" stroke-width="1.6"/>
+<text x="578" y="56" class="eyebrow" text-anchor="start">WHERE THE DATA LIVES</text>
+<rect x="60" y="70" width="320" height="80" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="106.0" class="heading" text-anchor="start">/</text>
+<text x="76" y="128.0" class="body" text-anchor="start">and everything outside mounts</text>
+<rect x="590" y="70" width="390" height="80" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="606" y="96.0" class="heading" text-anchor="start">the VM&#x27;s own disk</text>
+<text x="606" y="118.0" class="body" text-anchor="start">a job&#x27;s is deleted with it;</text>
+<text x="606" y="137.0" class="body" text-anchor="start">otherwise kept until koala rm</text>
+<polyline points="380,110 590,110" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="590.0,110.0 579.0,114.5 579.0,105.5" fill="#49647f"/>
+<rect x="60" y="170" width="320" height="80" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="206.0" class="heading" text-anchor="start">/data</text>
+<text x="76" y="228.0" class="body" text-anchor="start">for example: a volume</text>
+<rect x="590" y="170" width="390" height="80" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="606" y="196.0" class="heading" text-anchor="start">a named volume</text>
+<text x="606" y="218.0" class="body" text-anchor="start">has its own size; kept until</text>
+<text x="606" y="237.0" class="body" text-anchor="start">koala volume rm</text>
+<polyline points="380,210 590,210" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="590.0,210.0 579.0,214.5 579.0,205.5" fill="#49647f"/>
+<rect x="60" y="270" width="320" height="80" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="306.0" class="heading" text-anchor="start">/src</text>
+<text x="76" y="328.0" class="body" text-anchor="start">for example: a share</text>
+<rect x="590" y="270" width="390" height="80" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="606" y="296.0" class="heading" text-anchor="start">a directory on your Mac</text>
+<text x="606" y="318.0" class="body" text-anchor="start">read-only unless you ask;</text>
+<text x="606" y="337.0" class="body" text-anchor="start">Koala never deletes it</text>
+<polyline points="380,310 590,310" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="590.0,310.0 579.0,314.5 579.0,305.5" fill="#49647f"/>
+</svg>

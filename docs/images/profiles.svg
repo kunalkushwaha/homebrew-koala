@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="460" viewBox="0 0 1040 460" role="img" aria-labelledby="title desc">
+<title id="title">Inside a lean VM and a full VM</title>
+<desc id="desc">A lean VM runs Koala&#x27;s init as PID 1, which starts your image&#x27;s command or koala exec. Its root filesystem is your image, read-only, with changes kept on the VM&#x27;s disk, and Koala&#x27;s tools are at /run/koala-control, read-only. A full VM runs systemd as PID 1, with Koala&#x27;s agent as a service and Docker Engine running your containers; its root is the catalog&#x27;s Ubuntu image with changes kept on the VM&#x27;s disk.</desc>
+<rect width="1040" height="460" fill="#f7f9fc"/>
+<style>
+ text { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+ .heading { font-size:18px; font-weight:650; fill:#17304b; }
+ .body { font-size:14px; fill:#465d72; }
+ .eyebrow { font-size:12px; font-weight:700; letter-spacing:1.4px; fill:#476889; }
+ .label { font-size:13px; fill:#334f6b; }
+</style>
+<rect x="30" y="30" width="470" height="400" rx="18" fill="#edf3fb" stroke="#bacde2" stroke-width="1.6"/>
+<text x="48" y="56" class="eyebrow" text-anchor="start">LEAN VM  /  ANY OCI IMAGE</text>
+<rect x="540" y="30" width="470" height="400" rx="18" fill="#edf3fb" stroke="#bacde2" stroke-width="1.6"/>
+<text x="558" y="56" class="eyebrow" text-anchor="start">FULL VM  /  A KOALA CATALOG ENTRY</text>
+<rect x="60" y="70" width="410" height="60" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="106.0" class="heading" text-anchor="start">Koala&#x27;s init (PID 1)</text>
+<rect x="60" y="170" width="410" height="60" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="206.0" class="heading" text-anchor="start">your image&#x27;s command, or koala exec</text>
+<polyline points="265,130 265,170" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="265.0,170.0 260.5,159.0 269.5,159.0" fill="#49647f"/>
+<text x="60" y="262" class="eyebrow" text-anchor="start">FILESYSTEM</text>
+<rect x="60" y="275" width="410" height="66" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="304.0" class="heading" text-anchor="start">/  your image, read-only</text>
+<text x="76" y="326.0" class="body" text-anchor="start">your changes are kept on the VM&#x27;s disk</text>
+<rect x="60" y="351" width="410" height="60" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="76" y="377.0" class="heading" text-anchor="start">/run/koala-control</text>
+<text x="76" y="399.0" class="body" text-anchor="start">Koala&#x27;s tools, read-only, not on PATH</text>
+<rect x="570" y="70" width="410" height="60" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="586" y="106.0" class="heading" text-anchor="start">systemd (PID 1)</text>
+<rect x="570" y="170" width="195" height="60" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="586" y="196.0" class="heading" text-anchor="start">Koala&#x27;s agent</text>
+<text x="586" y="218.0" class="body" text-anchor="start">a systemd service</text>
+<rect x="785" y="170" width="195" height="60" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="801" y="196.0" class="heading" text-anchor="start">Docker Engine</text>
+<text x="801" y="218.0" class="body" text-anchor="start">runs your containers</text>
+<polyline points="667,130 667,170" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="667.0,170.0 662.5,159.0 671.5,159.0" fill="#49647f"/>
+<polyline points="882,130 882,170" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="882.0,170.0 877.5,159.0 886.5,159.0" fill="#49647f"/>
+<text x="570" y="262" class="eyebrow" text-anchor="start">FILESYSTEM</text>
+<rect x="570" y="275" width="410" height="66" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="586" y="304.0" class="heading" text-anchor="start">/  the catalog&#x27;s Ubuntu image</text>
+<text x="586" y="326.0" class="body" text-anchor="start">your changes are kept on the VM&#x27;s disk</text>
+<rect x="570" y="351" width="410" height="60" rx="12" fill="#f3f7fb" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="586" y="377.0" class="heading" text-anchor="start">systemctl and journalctl work</text>
+<text x="586" y="399.0" class="body" text-anchor="start">Docker data counts toward the VM&#x27;s disk</text>
+</svg>

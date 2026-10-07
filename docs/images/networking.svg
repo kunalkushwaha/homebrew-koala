@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="470" viewBox="0 0 1120 470" role="img" aria-labelledby="title desc">
+<title id="title">What a VM can reach</title>
+<desc id="desc">Every connection a VM makes goes through its network helper on the Mac. The internet (public addresses) is allowed by default. Services on your Mac and machines on your LAN are reachable only with a grant. Other Koala VMs are never reachable. You reach a VM through a published port, which listens on 127.0.0.1 unless you ask for the LAN.</desc>
+<rect width="1120" height="470" fill="#f7f9fc"/>
+<style>
+ text { font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+ .heading { font-size:18px; font-weight:650; fill:#17304b; }
+ .body { font-size:14px; fill:#465d72; }
+ .eyebrow { font-size:12px; font-weight:700; letter-spacing:1.4px; fill:#476889; }
+ .label { font-size:13px; fill:#334f6b; }
+</style>
+<rect x="40" y="40" width="230" height="64" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="155.0" y="78.0" class="heading" text-anchor="middle">you, on your Mac</text>
+<rect x="40" y="200" width="230" height="84" rx="12" fill="#e8f6f1" stroke="#49a792" stroke-width="1.5"/>
+<text x="56" y="238.0" class="heading" text-anchor="start">a Koala VM</text>
+<text x="56" y="260.0" class="body" text-anchor="start">untrusted, its own network</text>
+<polyline points="155,104 155,200" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="155.0,200.0 150.5,189.0 159.5,189.0" fill="#49647f"/>
+<text x="168" y="140" class="label" text-anchor="start">a published port:</text>
+<text x="168" y="158" class="label" text-anchor="start">127.0.0.1 unless</text>
+<text x="168" y="176" class="label" text-anchor="start">you ask for the LAN</text>
+<rect x="350" y="190" width="250" height="104" rx="12" fill="#e8f6f1" stroke="#49a792" stroke-width="1.5"/>
+<text x="366" y="228.0" class="heading" text-anchor="start">network helper</text>
+<text x="366" y="250.0" class="body" text-anchor="start">on the Mac, outside the VM:</text>
+<text x="366" y="269.0" class="body" text-anchor="start">checks every connection</text>
+<polyline points="270,242 350,242" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="350.0,242.0 339.0,246.5 339.0,237.5" fill="#49647f"/>
+<rect x="870" y="40" width="220" height="70" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="980.0" y="71.0" class="heading" text-anchor="middle">the internet</text>
+<text x="980.0" y="93.0" class="body" text-anchor="middle">public addresses</text>
+<polyline points="600,212 620,212 620,75 870,75" fill="none" stroke="#00897b" stroke-width="2.2" stroke-linejoin="round"/>
+<polygon points="870.0,75.0 859.0,79.5 859.0,70.5" fill="#00897b"/>
+<text x="680" y="67" class="label" text-anchor="start" fill="#00897b">allowed by default</text>
+<rect x="870" y="145" width="220" height="70" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="980.0" y="186.0" class="heading" text-anchor="middle">services on your Mac</text>
+<polyline points="600,232 634,232 634,180 870,180" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<polygon points="870.0,180.0 859.0,184.5 859.0,175.5" fill="#49647f"/>
+<text x="680" y="172" class="label" text-anchor="start">only with a host-service grant</text>
+<rect x="870" y="250" width="220" height="70" rx="12" fill="#ffffff" stroke="#cfdae5" stroke-width="1.5"/>
+<text x="980.0" y="291.0" class="heading" text-anchor="middle">machines on your LAN</text>
+<polyline points="600,252 648,252 648,285 870,285" fill="none" stroke="#49647f" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="7 6"/>
+<polygon points="870.0,285.0 859.0,289.5 859.0,280.5" fill="#49647f"/>
+<text x="680" y="277" class="label" text-anchor="start">only with a LAN grant</text>
+<rect x="870" y="355" width="220" height="70" rx="12" fill="#fbecea" stroke="#c0392b" stroke-width="1.5"/>
+<text x="980.0" y="396.0" class="heading" text-anchor="middle">other Koala VMs</text>
+<polyline points="600,272 662,272 662,390 870,390" fill="none" stroke="#c0392b" stroke-width="2.2" stroke-linejoin="round"/>
+<path d="M758.0,382.0 L774.0,398.0 M774.0,382.0 L758.0,398.0" stroke="#c0392b" stroke-width="3"/>
+<text x="680" y="382" class="label" text-anchor="start" fill="#c0392b">never</text>
+</svg>

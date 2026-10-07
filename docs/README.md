@@ -24,6 +24,11 @@ machine on your Mac:
   image) with a minimal init. *Full* VMs run a Linux distribution with
   systemd and Docker Engine.
 
+![How Koala fits together: the koala CLI talks to a per-user manager, which runs one VM per workload, each behind its own network helper](images/overview.svg)
+
+Each VM has its own kernel and disk, and a network helper on the Mac that
+checks every connection it makes.
+
 ## What Koala promises, and what it does not
 
 Koala gives a workload **only the access you grant**:
