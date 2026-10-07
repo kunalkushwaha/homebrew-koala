@@ -12,5 +12,8 @@ brew install kunalkushwaha/koala/koala
 koala system install
 ```
 
+Then read the [user guide](docs/README.md), starting with
+[getting started](docs/getting-started.md).
+
 Each release's notes give the archive checksum and the runtime signing key.
 Koala is licensed under the Apache License, Version 2.0.
