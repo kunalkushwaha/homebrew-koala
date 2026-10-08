@@ -149,5 +149,11 @@ koala system stop --stop-vms
 
 ## Next steps
 
+`koala --help` lists every command. `koala COMMAND --help` shows one
+command's usage, options and examples: for example `koala create --help` or
+`koala volume create --help`. Docker's names work too: `koala ps` and
+`koala ls` list VMs, `koala images` lists images, and `koala image ls` and
+`koala volume ls` are the same as their `list` commands.
+
 - [Jobs and VMs](vms.md): services, VM spec files and resources.
 - [Working inside a VM](working-in-vms.md): `exec`, `cp`, logs.
