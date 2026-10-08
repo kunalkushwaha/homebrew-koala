@@ -5,7 +5,7 @@
 ## Installation
 
 Koala is published as a preview, on the
-[releases page](https://github.com/kunalkushwaha/koala-releases/releases)
+[releases page](https://github.com/kunalkushwaha/homebrew-koala/releases)
 and through a Homebrew tap. Homebrew is the recommended path:
 
 ```sh
