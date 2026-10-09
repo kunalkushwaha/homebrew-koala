@@ -83,6 +83,11 @@ Crash and endurance qualification, planned for release, is not finished yet.
    disk, and what is not available yet.
 10. [Troubleshooting](troubleshooting.md): error codes and what to do.
 
+### Examples
+
+- [Run the Hermes agent](example-hermes.md): an AI agent's gateway from its
+  official image, as a service VM with its data on a volume.
+
 ## Conventions in this guide
 
 - `VM` is a VM's name or ID. A name must match exactly; if two VMs share a
