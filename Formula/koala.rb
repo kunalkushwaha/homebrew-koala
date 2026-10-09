@@ -1,9 +1,9 @@
 class Koala < Formula
   desc "Linux VMs for development and CI on Apple silicon (preview)"
   homepage "https://github.com/kunalkushwaha/homebrew-koala"
-  url "https://github.com/kunalkushwaha/homebrew-koala/releases/download/v0.1.0-preview.3/koala-0.1.0-preview.3-darwin-arm64.tar.gz"
-  version "0.1.0-preview.3"
-  sha256 "5070e08a20a84896f4c141fddc9f00c8951e7f9c46d895eeaa15eabbfa088fe0"
+  url "https://github.com/kunalkushwaha/homebrew-koala/releases/download/v0.1.0-preview.4/koala-0.1.0-preview.4-darwin-arm64.tar.gz"
+  version "0.1.0-preview.4"
+  sha256 "a8408140e447cb796b2c6245cb680874b37e1dd08ab86c85c5466391c8b655f2"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -19,7 +19,7 @@ class Koala < Formula
 
   def caveats
     <<~EOS
-      Koala 0.1.0-preview.3 is a preview: its security proofs are not complete.
+      Koala 0.1.0-preview.4 is a preview: its security proofs are not complete.
       Finish the installation for your user (no sudo):
         koala system install
       Before `brew uninstall koala`, run:
@@ -29,6 +29,6 @@ class Koala < Formula
   end
 
   test do
-    assert_match "koala 0.1.0-preview.3", shell_output("#{bin}/koala --version")
+    assert_match "koala 0.1.0-preview.4", shell_output("#{bin}/koala --version")
   end
 end

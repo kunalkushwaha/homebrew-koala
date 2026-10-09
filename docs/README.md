@@ -1,11 +1,11 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.3. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.4. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services and development environments in Koala
 VMs.
-Koala is in preview: `0.1.0-preview.3` is published, and v0.1 is in
+Koala is in preview: `0.1.0-preview.4` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
 
@@ -52,8 +52,8 @@ untrusted. Koala does **not** promise:
 - Dedicated CPU cores or a cap on total Mac memory use. See
   [limits](limits.md#memory-cpu-and-disk).
 
-The security testing planned for release (adversarial guests, crash and
-endurance qualification) is not finished yet.
+The adversarial-guest security testing is complete.
+Crash and endurance qualification, planned for release, is not finished yet.
 
 ## Requirements
 
