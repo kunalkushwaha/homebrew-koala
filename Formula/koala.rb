@@ -1,6 +1,6 @@
 class Koala < Formula
   desc "Linux VMs for development and CI on Apple silicon (preview)"
-  homepage "https://github.com/kunalkushwaha/homebrew-koala"
+  homepage "https://kunalkushwaha.github.io/homebrew-koala/"
   url "https://github.com/kunalkushwaha/homebrew-koala/releases/download/v0.1.0-preview.4/koala-0.1.0-preview.4-darwin-arm64.tar.gz"
   version "0.1.0-preview.4"
   sha256 "a8408140e447cb796b2c6245cb680874b37e1dd08ab86c85c5466391c8b655f2"
