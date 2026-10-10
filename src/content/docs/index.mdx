@@ -1,0 +1,148 @@
+---
+title: Koala — Linux VMs for your Mac
+description: Run Linux workloads on your Mac, each in its own lightweight virtual machine.
+template: splash
+hero:
+  title: Linux workloads on your Mac, <span class="accent">one VM each.</span>
+  tagline: Koala runs jobs, services, development environments and AI agents in ARM64 Linux VMs on Apple silicon. Each VM has its own kernel, disk and network, and gets only the access you grant it.
+  actions:
+    - text: Get started
+      link: /guide/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: How it works
+      link: /how-it-works/
+      variant: secondary
+---
+
+import { Card, CardGrid, Tabs, TabItem, Aside, LinkCard } from '@astrojs/starlight/components';
+
+<p class="koala-eyebrow">01 · Install</p>
+
+## Two commands, no `sudo`
+
+```sh
+brew install kunalkushwaha/koala/koala
+koala system install          # set up and start the manager for your user
+```
+
+You need a Mac with Apple silicon and macOS 26 or newer, and images built for
+`linux/arm64`. To install from a release archive, see
+[getting started](guide/getting-started/#installation).
+
+<p class="koala-eyebrow">02 · Try it</p>
+
+## From throwaway job to sandboxed agent
+
+<Tabs syncKey="try">
+<TabItem label="Throwaway job" icon="rocket">
+
+A command in a fresh VM that is removed when the command ends:
+
+```sh
+koala run --image docker.io/library/alpine:3 -- /bin/sh -c 'echo hello from the guest; uname -m'
+```
+
+</TabItem>
+<TabItem label="VM that stays up" icon="laptop">
+
+Create a persistent VM and work in it:
+
+```sh
+koala create dev --image docker.io/library/alpine:3 --wait
+koala start dev --wait
+koala exec -it dev -- /bin/sh        # an interactive shell; type exit to leave
+koala stop dev --wait
+```
+
+</TabItem>
+<TabItem label="Sandboxed agent" icon="seti:lock">
+
+An environment VM with the internet off, access to one service on your Mac,
+and one named secret delivered as a file:
+
+```json title="agent.json"
+{"apiVersion": "koala.dev/v1alpha1", "kind": "VirtualMachine", "spec": {
+  "name": "agent", "mode": "environment", "profile": "lean",
+  "image": {"kind": "oci", "reference": "docker.io/library/alpine:3", "platform": "linux/arm64"},
+  "network": {"internet": false, "allow": [
+    {"kind": "host-service", "address": "127.0.0.1", "protocol": "tcp", "ports": [8080]}],
+    "publish": []},
+  "shares": [], "volumes": [],
+  "secrets": [{"name": "agent-token", "mode": "file", "destination": "/run/secrets/agent-token"}]}}
+```
+
+```sh
+koala secret set agent-token        # prompts for the value; kept in your login keychain
+koala config validate -f agent.json
+koala create -f agent.json --wait
+koala start agent --wait
+koala exec agent -- cat /run/secrets/agent-token
+```
+
+Inside the VM, the service on your Mac is `host-1.koala.internal:8080`. See
+[networking](guide/networking/), [secrets](guide/secrets/) and the
+[Hermes example](guide/example-hermes/).
+
+</TabItem>
+</Tabs>
+
+<p class="koala-eyebrow">03 · What you get</p>
+
+## Built for untrusted workloads
+
+<CardGrid>
+	<Card title="Throwaway jobs" icon="rocket">
+		A command in a fresh VM, removed when it ends. For builds, tests and
+		scripts you would rather not run on your Mac. [Jobs and VMs →](guide/vms/)
+	</Card>
+	<Card title="Services and environments" icon="laptop">
+		VMs that keep running after your terminal closes. `exec`, attach a
+		shell, `cp` files in and out. [Working inside a VM →](guide/working-in-vms/)
+	</Card>
+	<Card title="The images you have" icon="seti:docker">
+		OCI images from Docker Hub or a private registry, pinned by digest when
+		a VM is created. [Images →](guide/images/)
+	</Card>
+	<Card title="Lean or full" icon="puzzle">
+		*Lean* runs one image with a minimal init. *Full* runs a Linux
+		distribution with systemd and Docker Engine. [Profiles →](guide/profiles/)
+	</Card>
+	<Card title="Deny by default" icon="seti:lock">
+		No host files, no secrets, no LAN, no other VMs, until you grant them.
+		Checked on the Mac side. [Networking →](guide/networking/)
+	</Card>
+	<Card title="Runs as you" icon="approve-check-circle">
+		A per-user launchd manager keeps track of your VMs. Nothing system-wide,
+		no root daemon. [Getting started →](guide/getting-started/)
+	</Card>
+</CardGrid>
+
+<p class="koala-eyebrow">04 · Defaults</p>
+
+## What a VM can reach
+
+| Resource | Default | When you grant it |
+| --- | --- | --- |
+| Internet | Public addresses only | Can be switched off |
+| Files on your Mac | None | Folders you share; read-only unless you ask for read-write |
+| Secrets | None | Named secrets, to one VM, as a file or an environment variable |
+| Services on your Mac | None | One address and specific ports |
+| Your LAN | None | A specific prefix and ports |
+| Other VMs | Never | Not available in v0.1 |
+| Published ports | None | On `127.0.0.1`, or on the LAN when you ask |
+
+Koala treats everything inside a VM as untrusted, and trusts you, the
+logged-in macOS user. VMs do not keep running after you log out or restart
+your Mac.
+
+<Aside type="caution" title="Koala is in preview">
+Koala's security work is not complete, so use it with workloads and on
+machines you trust. Each [release's notes](https://github.com/kunalkushwaha/homebrew-koala/releases)
+say what is done and what is not. This site describes only what works today.
+</Aside>
+
+<CardGrid>
+	<LinkCard title="Read the user guide" description="Every command, flag and spec field, with what is tested." href="guide/" />
+	<LinkCard title="How Koala works" description="The processes, the boundaries, and the trust model." href="how-it-works/" />
+</CardGrid>

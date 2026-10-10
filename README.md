@@ -139,12 +139,14 @@ software in the binaries.
 
 ## Documentation website
 
-The website is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
-from `mkdocs.yml`: its own pages are in `website/`, and `website/guide` is a
-link to the user guide in `docs/`, so each release's guide is published as is.
+The website is built with [Astro Starlight](https://starlight.astro.build/).
+Its own pages (home, how it works) are in `src/content/docs/`, and its theme is
+`src/styles/koala.css`. The user guide in `docs/` is published as is:
+`scripts/sync-guide.mjs` copies it into the site at build time, so each
+release's guide reaches the site with no extra step.
 `.github/workflows/pages.yml` publishes it to GitHub Pages. To preview it:
 
 ```sh
-python3 -m venv .venv && .venv/bin/pip install -r requirements-docs.txt
-.venv/bin/mkdocs serve
+npm ci
+npm run dev
 ```

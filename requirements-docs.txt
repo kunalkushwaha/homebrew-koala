@@ -1,4 +1,0 @@
-# Builds the documentation website (mkdocs.yml). Pinned so CI is reproducible.
-mkdocs==1.6.1
-mkdocs-material==9.7.7
-pymdown-extensions==12.1

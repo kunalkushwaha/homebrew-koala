@@ -1,0 +1,16 @@
+{
+  "name": "koala-docs",
+  "private": true,
+  "type": "module",
+  "description": "Koala's documentation website, built with Astro Starlight and published to GitHub Pages.",
+  "scripts": {
+    "sync": "node scripts/sync-guide.mjs",
+    "dev": "npm run sync && astro dev",
+    "build": "npm run sync && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.4",
+    "astro": "7.3.5"
+  }
+}

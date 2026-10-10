@@ -1,24 +1,28 @@
 name: docs-website
 
-# Builds the website from mkdocs.yml (landing pages in website/, the user guide
-# in docs/) and publishes it to GitHub Pages.
+# Builds the Astro Starlight website (site pages in src/, the user guide from
+# docs/ via scripts/sync-guide.mjs) and publishes it to GitHub Pages.
 on:
   push:
     branches: [main]
     paths:
       - "docs/**"
-      - "website/**"
-      - "hooks/**"
-      - "mkdocs.yml"
-      - "requirements-docs.txt"
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
+      - "astro.config.mjs"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "docs/**"
-      - "website/**"
-      - "hooks/**"
-      - "mkdocs.yml"
-      - "requirements-docs.txt"
+      - "src/**"
+      - "public/**"
+      - "scripts/**"
+      - "astro.config.mjs"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -34,19 +38,20 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.13"
-          cache: pip
-          cache-dependency-path: requirements-docs.txt
-      - run: pip install -r requirements-docs.txt
-      # strict: true in mkdocs.yml fails the build on a broken link or a page
-      # missing from the nav.
-      - run: mkdocs build
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      # sync-guide fails on a guide page without a title or a link to a
+      # missing page; astro build fails on a broken import.
+      - run: npm run build
+        env:
+          ASTRO_TELEMETRY_DISABLED: "1"
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'
         with:
-          path: _site
+          path: dist
 
   deploy:
     if: github.event_name != 'pull_request'

@@ -1,0 +1,209 @@
+/*
+ * Koala docs theme: "eucalyptus terminal".
+ * Dark-first, green-tinted slate greys, a mint accent, Inter for prose and
+ * JetBrains Mono for anything a developer types or reads from a terminal
+ * (code, labels, sidebar groups, badges).
+ */
+
+/* ---------- Tokens: dark (Starlight's default scheme) ---------- */
+:root {
+	--sl-font: 'Inter', system-ui, sans-serif;
+	--sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	--sl-color-white: hsl(150, 20%, 97%);
+	--sl-color-gray-1: hsl(155, 14%, 88%);
+	--sl-color-gray-2: hsl(155, 8%, 74%);
+	--sl-color-gray-3: hsl(158, 6%, 55%);
+	--sl-color-gray-4: hsl(160, 7%, 34%);
+	--sl-color-gray-5: hsl(162, 10%, 20%);
+	--sl-color-gray-6: hsl(165, 14%, 11%);
+	--sl-color-black: hsl(165, 18%, 7%);
+
+	--sl-color-accent-low: hsl(160, 45%, 14%);
+	--sl-color-accent: hsl(158, 62%, 48%);
+	--sl-color-accent-high: hsl(152, 70%, 78%);
+
+	--koala-grid: hsla(158, 40%, 60%, 0.07);
+	--koala-glow: hsla(158, 70%, 45%, 0.18);
+	--koala-term-bg: hsl(165, 20%, 5%);
+	--koala-term-bar: hsl(165, 14%, 10%);
+	--koala-term-text: hsl(150, 15%, 86%);
+	--koala-term-dim: hsl(158, 8%, 52%);
+	--koala-term-prompt: hsl(158, 62%, 55%);
+
+	--sl-content-width: 48rem;
+	--sl-line-height: 1.7;
+}
+
+/* ---------- Tokens: light ---------- */
+:root[data-theme='light'] {
+	--sl-color-white: hsl(165, 25%, 8%);
+	--sl-color-gray-1: hsl(165, 16%, 16%);
+	--sl-color-gray-2: hsl(165, 10%, 26%);
+	--sl-color-gray-3: hsl(162, 6%, 42%);
+	--sl-color-gray-4: hsl(160, 6%, 62%);
+	--sl-color-gray-5: hsl(155, 12%, 84%);
+	--sl-color-gray-6: hsl(150, 18%, 94%);
+	--sl-color-gray-7: hsl(150, 20%, 97%);
+	--sl-color-black: hsl(0, 0%, 100%);
+
+	--sl-color-accent-low: hsl(152, 55%, 90%);
+	--sl-color-accent: hsl(160, 75%, 28%);
+	--sl-color-accent-high: hsl(162, 80%, 18%);
+
+	--koala-grid: hsla(160, 30%, 30%, 0.07);
+	--koala-glow: hsla(158, 70%, 45%, 0.14);
+	/* The hero terminal stays dark in both schemes, like a real one. */
+}
+
+/* ---------- Chrome ---------- */
+.site-title {
+	font-family: var(--__sl-font-mono);
+	font-weight: 600;
+	letter-spacing: -0.02em;
+}
+.site-title img { height: 1.8rem; width: auto; }
+
+header.header {
+	backdrop-filter: saturate(140%) blur(8px);
+	background-color: color-mix(in srgb, var(--sl-color-bg-nav) 88%, transparent);
+}
+
+/* Sidebar group labels read like terminal section headers. */
+.sidebar-content .top-level > li > details > summary .group-label > .large {
+	font-family: var(--__sl-font-mono);
+	font-size: var(--sl-text-2xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--sl-color-gray-3);
+}
+.sidebar-content a[aria-current='page'] {
+	font-weight: 600;
+	box-shadow: inset 2px 0 0 var(--sl-color-accent);
+	border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* ---------- Content ---------- */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+h1#_top {
+	letter-spacing: -0.025em;
+	font-weight: 650;
+}
+.sl-markdown-content h2 {
+	padding-top: 1.25rem;
+	border-top: 1px solid var(--sl-color-hairline);
+}
+.sl-markdown-content :not(pre) > code {
+	font-size: 0.86em;
+	padding: 0.1em 0.35em;
+	border-radius: 0.3rem;
+	border: 1px solid var(--sl-color-hairline-light);
+	background: var(--sl-color-bg-inline-code);
+}
+.sl-markdown-content table {
+	display: table;
+	width: 100%;
+	font-size: var(--sl-text-sm);
+	border-collapse: separate;
+	border-spacing: 0;
+	border: 1px solid var(--sl-color-hairline-light);
+	border-radius: 0.6rem;
+	overflow: hidden;
+}
+.sl-markdown-content th {
+	font-family: var(--__sl-font-mono);
+	font-size: var(--sl-text-2xs);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--sl-color-gray-3);
+	background: var(--sl-color-gray-6);
+}
+.sl-markdown-content th,
+.sl-markdown-content td {
+	border-bottom: 1px solid var(--sl-color-hairline-light);
+	padding: 0.6rem 0.85rem;
+}
+.sl-markdown-content tr:last-child td { border-bottom: 0; }
+.sl-markdown-content img[src$='.svg'] {
+	border-radius: 0.75rem;
+	border: 1px solid var(--sl-color-hairline-light);
+}
+
+/* Cards: quiet until hovered. */
+.card {
+	border-radius: 0.75rem;
+	transition: border-color 120ms ease, transform 120ms ease;
+}
+.card:hover {
+	border-color: var(--sl-color-accent);
+	transform: translateY(-1px);
+}
+.card .icon {
+	color: var(--sl-color-accent-high);
+	background: var(--sl-color-accent-low);
+	border-radius: 0.5rem;
+	padding: 0.2rem;
+}
+
+/* ---------- Diagrams drawn inline (how-it-works) ---------- */
+.koala-diagram {
+	margin: 1.5rem 0;
+	padding: 1rem;
+	border: 1px solid var(--sl-color-hairline-light);
+	border-radius: 0.75rem;
+	background:
+		radial-gradient(var(--koala-grid) 1px, transparent 1px) 0 0 / 16px 16px,
+		var(--sl-color-gray-6);
+	overflow-x: auto;
+}
+.koala-diagram svg { display: block; width: 100%; min-width: 34rem; height: auto; }
+.koala-diagram figcaption {
+	margin-top: 0.75rem;
+	font-size: var(--sl-text-xs);
+	color: var(--sl-color-gray-3);
+}
+.koala-diagram .node rect { fill: var(--sl-color-black); stroke: var(--sl-color-gray-4); }
+.koala-diagram .node.accent rect { stroke: var(--sl-color-accent); }
+.koala-diagram .node.deny rect { stroke: var(--sl-color-red); }
+.koala-diagram .node text { fill: var(--sl-color-white); font: 600 13px var(--__sl-font); }
+.koala-diagram .node text.sub { fill: var(--sl-color-gray-3); font: 400 11px var(--__sl-font-mono); }
+.koala-diagram .edge { stroke: var(--sl-color-gray-3); fill: none; stroke-width: 1.5; }
+.koala-diagram .edge.ok { stroke: var(--sl-color-accent); }
+.koala-diagram .edge.deny { stroke: var(--sl-color-red); stroke-dasharray: 4 4; }
+.koala-diagram .label { fill: var(--sl-color-gray-2); font: 400 11px var(--__sl-font-mono); }
+.koala-diagram .arrow { fill: var(--sl-color-gray-3); }
+.koala-diagram .arrow.ok { fill: var(--sl-color-accent); }
+.koala-diagram .arrow.deny { fill: var(--sl-color-red); }
+
+/* ---------- Splash page ---------- */
+[data-has-hero] .main-frame {
+	background:
+		radial-gradient(60rem 30rem at 85% -10%, var(--koala-glow), transparent 70%),
+		radial-gradient(var(--koala-grid) 1px, transparent 1px) 0 0 / 22px 22px;
+}
+[data-has-hero] .sl-markdown-content h2 {
+	border-top: 0;
+	font-size: var(--sl-text-2xl);
+}
+.koala-eyebrow {
+	font-family: var(--__sl-font-mono);
+	font-size: var(--sl-text-2xs);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--sl-color-accent-high);
+}
+
+.koala-hero h1 .accent {
+	background: linear-gradient(100deg, var(--sl-color-accent-high), var(--sl-color-accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+/* Numbered eyebrow sits right on top of its section heading. */
+.sl-markdown-content .koala-eyebrow { margin-top: 3.5rem; margin-bottom: 0; }
+.sl-markdown-content .koala-eyebrow + * { margin-top: 0.35rem !important; }
+.sl-markdown-content .koala-eyebrow + * h2 { padding-top: 0; }

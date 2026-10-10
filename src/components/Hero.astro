@@ -1,0 +1,162 @@
+---
+// Koala's splash hero: the pitch on the left, a terminal session on the right.
+// Replaces Starlight's Hero; reads title, tagline and actions from the page's
+// `hero` front matter.
+import { LinkButton } from '@astrojs/starlight/components';
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = (link: string) => (link.startsWith('/') ? base + link : link);
+---
+
+<div class="koala-hero">
+	<div class="pitch">
+		<p class="badge"><span class="dot"></span>Preview · 0.1.0-preview.4 · Apple silicon · macOS 26+</p>
+		<h1 id="_top" set:html={title} />
+		{tagline && <p class="tagline" set:html={tagline} />}
+		<div class="actions">
+			{actions.map(({ text, link, variant, icon }) => (
+				<LinkButton href={href(link)} variant={variant} icon={icon?.name}>{text}</LinkButton>
+			))}
+		</div>
+		<div class="install" aria-label="Install with Homebrew">
+			<span class="prompt">$</span>
+			<code>brew install kunalkushwaha/koala/koala</code>
+		</div>
+	</div>
+
+	<figure class="terminal" aria-label="A koala session in a terminal">
+		<div class="bar"><span></span><span></span><span></span><em>~/project — zsh</em></div>
+		<pre><code><span class="p">$</span> koala run --image docker.io/library/alpine:3 -- \
+    /bin/sh -c 'echo hello from the guest; uname -m'
+<span class="o">hello from the guest
+aarch64</span>
+<span class="c"># a VM that stays up after the terminal closes</span>
+<span class="p">$</span> koala create dev --image docker.io/library/alpine:3 --wait
+<span class="p">$</span> koala start dev --wait
+<span class="p">$</span> koala exec -it dev -- /bin/sh
+<span class="g">/ #</span> <span class="cursor"></span></code></pre>
+	</figure>
+</div>
+
+<style>
+	.koala-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+		align-items: center;
+		padding-block: clamp(1.5rem, 5vw, 4rem) 1rem;
+	}
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0 0 1.25rem;
+		padding: 0.3rem 0.75rem;
+		font: 500 var(--sl-text-2xs) var(--__sl-font-mono);
+		color: var(--sl-color-accent-high);
+		background: var(--sl-color-accent-low);
+		border: 1px solid color-mix(in srgb, var(--sl-color-accent) 40%, transparent);
+		border-radius: 999px;
+	}
+	.dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background: var(--sl-color-accent);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--sl-color-accent) 25%, transparent);
+	}
+	h1 {
+		margin: 0;
+		font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+		line-height: 1.06;
+		letter-spacing: -0.04em;
+		font-weight: 700;
+		color: var(--sl-color-white);
+	}
+	.tagline {
+		margin: 1.1rem 0 1.6rem;
+		font-size: var(--sl-text-lg);
+		line-height: 1.6;
+		color: var(--sl-color-gray-2);
+		max-width: 34rem;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+	.install {
+		display: inline-flex;
+		gap: 0.6rem;
+		margin-top: 1.4rem;
+		padding: 0.55rem 0.9rem;
+		font: 400 var(--sl-text-xs) var(--__sl-font-mono);
+		color: var(--sl-color-gray-2);
+		border: 1px dashed var(--sl-color-gray-4);
+		border-radius: 0.5rem;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+	.install code { background: none; border: 0; padding: 0; white-space: nowrap; }
+	.prompt { color: var(--sl-color-accent); user-select: none; }
+
+	.terminal {
+		margin: 0;
+		border-radius: 0.85rem;
+		overflow: hidden;
+		background: var(--koala-term-bg);
+		border: 1px solid hsl(160, 10%, 20%);
+		box-shadow:
+			0 30px 60px -20px hsla(165, 40%, 3%, 0.55),
+			0 0 0 1px hsla(158, 60%, 50%, 0.06),
+			0 0 80px -20px var(--koala-glow);
+	}
+	.bar {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.6rem 0.8rem;
+		background: var(--koala-term-bar);
+		border-bottom: 1px solid hsl(160, 10%, 16%);
+	}
+	.bar span { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: hsl(160, 6%, 28%); }
+	.bar span:nth-child(1) { background: #ff5f57; }
+	.bar span:nth-child(2) { background: #febc2e; }
+	.bar span:nth-child(3) { background: #28c840; }
+	.bar em {
+		margin-left: auto;
+		margin-right: auto;
+		font: normal 500 0.72rem var(--__sl-font-mono);
+		color: var(--koala-term-dim);
+		transform: translateX(-1.2rem);
+	}
+	.terminal pre {
+		margin: 0;
+		padding: 1rem 1.1rem 1.2rem;
+		background: transparent;
+		border: 0;
+		overflow-x: auto;
+		font: 400 0.8rem/1.75 var(--__sl-font-mono);
+		color: var(--koala-term-text);
+	}
+	.terminal code { background: none; border: 0; padding: 0; font: inherit; }
+	.p, .g { color: var(--koala-term-prompt); user-select: none; }
+	.o { color: hsl(45, 85%, 72%); }
+	.c { color: var(--koala-term-dim); }
+	.cursor {
+		display: inline-block;
+		width: 0.55em;
+		height: 1.1em;
+		vertical-align: text-bottom;
+		background: var(--koala-term-prompt);
+		animation: blink 1.1s steps(1) infinite;
+	}
+	@keyframes blink { 50% { opacity: 0; } }
+	@media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+
+	@media (max-width: 50rem) {
+		.koala-hero { grid-template-columns: 1fr; }
+	}
+</style>
