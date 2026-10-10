@@ -26,6 +26,8 @@ gets only the access you grant it.
 > work is not complete, so use it with workloads and on machines you trust.
 > Each release's notes say what is done and what is not.
 
+**Documentation:** <https://kunalkushwaha.github.io/homebrew-koala/>
+
 This repository holds Koala's
 [releases](https://github.com/kunalkushwaha/homebrew-koala/releases), its
 Homebrew formula and its [user guide](docs/README.md). Koala's source code is
@@ -134,3 +136,17 @@ brew uninstall koala
 Koala is licensed under the Apache License, Version 2.0. Each release archive
 includes the `LICENSE` file, and a `NOTICE` file that lists the third-party
 software in the binaries.
+
+## Documentation website
+
+The website is built with [Astro Starlight](https://starlight.astro.build/).
+Its own pages (home, how it works) are in `src/content/docs/`, and its theme is
+`src/styles/koala.css`. The user guide in `docs/` is published as is:
+`scripts/sync-guide.mjs` copies it into the site at build time, so each
+release's guide reaches the site with no extra step.
+`.github/workflows/pages.yml` publishes it to GitHub Pages. To preview it:
+
+```sh
+npm ci
+npm run dev
+```
