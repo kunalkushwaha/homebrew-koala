@@ -26,6 +26,8 @@ gets only the access you grant it.
 > work is not complete, so use it with workloads and on machines you trust.
 > Each release's notes say what is done and what is not.
 
+**Documentation:** <https://kunalkushwaha.github.io/homebrew-koala/>
+
 This repository holds Koala's
 [releases](https://github.com/kunalkushwaha/homebrew-koala/releases), its
 Homebrew formula and its [user guide](docs/README.md). Koala's source code is
@@ -134,3 +136,15 @@ brew uninstall koala
 Koala is licensed under the Apache License, Version 2.0. Each release archive
 includes the `LICENSE` file, and a `NOTICE` file that lists the third-party
 software in the binaries.
+
+## Documentation website
+
+The website is built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/)
+from `mkdocs.yml`: its own pages are in `website/`, and `website/guide` is a
+link to the user guide in `docs/`, so each release's guide is published as is.
+`.github/workflows/pages.yml` publishes it to GitHub Pages. To preview it:
+
+```sh
+python3 -m venv .venv && .venv/bin/pip install -r requirements-docs.txt
+.venv/bin/mkdocs serve
+```

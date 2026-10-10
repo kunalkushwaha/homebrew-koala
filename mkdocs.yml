@@ -1,0 +1,110 @@
+# Koala documentation website, published to GitHub Pages by
+# .github/workflows/pages.yml. Build locally:
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements-docs.txt
+#   .venv/bin/mkdocs serve
+#
+# website/guide is a symlink to docs/, the user guide exported from Koala's
+# source on each release. Edit the guide there (in the source repository),
+# not here; the site picks it up unchanged.
+site_name: Koala
+site_description: Run Linux workloads on your Mac, each in its own lightweight virtual machine.
+site_url: https://kunalkushwaha.github.io/homebrew-koala/
+repo_url: https://github.com/kunalkushwaha/homebrew-koala
+repo_name: kunalkushwaha/homebrew-koala
+edit_uri: ""
+copyright: Koala is licensed under the Apache License 2.0.
+
+docs_dir: website
+site_dir: _site
+strict: true
+
+hooks:
+  - hooks/guide.py
+
+theme:
+  name: material
+  logo: assets/koala.svg
+  favicon: assets/koala.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kunalkushwaha/homebrew-koala
+      name: Koala on GitHub
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - How it works: how-it-works.md
+  - User guide:
+      - guide/README.md
+      - Getting started: guide/getting-started.md
+      - Jobs and VMs: guide/vms.md
+      - Working inside a VM: guide/working-in-vms.md
+      - Images and registries: guide/images.md
+      - Secrets: guide/secrets.md
+      - Networking: guide/networking.md
+      - Shares, volumes and disks: guide/storage.md
+      - "Profiles: lean and full": guide/profiles.md
+      - Limits and behaviour: guide/limits.md
+      - Troubleshooting: guide/troubleshooting.md
+  - Examples:
+      - Run the Hermes agent: guide/example-hermes.md
+  - Releases: https://github.com/kunalkushwaha/homebrew-koala/releases
