@@ -58,31 +58,21 @@ koala stop dev --wait
 </TabItem>
 <TabItem label="Sandboxed agent" icon="seti:lock">
 
-An environment VM with the internet off, access to one service on your Mac,
-and one named secret delivered as a file:
-
-```json title="agent.json"
-{"apiVersion": "koala.dev/v1alpha1", "kind": "VirtualMachine", "spec": {
-  "name": "agent", "mode": "environment", "profile": "lean",
-  "image": {"kind": "oci", "reference": "docker.io/library/alpine:3", "platform": "linux/arm64"},
-  "network": {"internet": false, "allow": [
-    {"kind": "host-service", "address": "127.0.0.1", "protocol": "tcp", "ports": [8080]}],
-    "publish": []},
-  "shares": [], "volumes": [],
-  "secrets": [{"name": "agent-token", "mode": "file", "destination": "/run/secrets/agent-token"}]}}
-```
+An environment VM with the internet off and an API key that never enters
+it. The key stays in your login keychain, and the broker adds it to the
+requests the policy allows:
 
 ```sh
-koala secret set agent-token        # prompts for the value; kept in your login keychain
-koala config validate -f agent.json
-koala create -f agent.json --wait
+koala policy create openai-main --template openai --model gpt-4.1-mini   # asks for the key
+koala create agent --image docker.io/library/alpine:3 --no-internet \
+  --broker openai=openai-main --wait
 koala start agent --wait
-koala exec agent -- cat /run/secrets/agent-token
+koala exec agent -- sh -c 'echo $OPENAI_BASE_URL $OPENAI_API_KEY'
 ```
 
-Inside the VM, the service on your Mac is `host-1.koala.internal:8080`. See
-[networking](guide/networking/), [secrets](guide/secrets/) and the
-[Hermes example](guide/example-hermes/).
+Inside the VM, the service is `http://openai.broker.koala.internal/v1`, and
+`OPENAI_API_KEY` is only a placeholder. See [keys on your Mac](guide/broker/),
+[networking](guide/networking/) and the [Hermes example](guide/example-hermes/).
 
 </TabItem>
 </Tabs>
@@ -127,6 +117,7 @@ Inside the VM, the service on your Mac is `host-1.koala.internal:8080`. See
 | Internet | Public addresses only | Can be switched off |
 | Files on your Mac | None | Folders you share; read-only unless you ask for read-write |
 | Secrets | None | Named secrets, to one VM, as a file or an environment variable |
+| API keys | None | A broker grant: the key stays on your Mac, added only to the requests a policy allows |
 | Services on your Mac | None | One address and specific ports |
 | Your LAN | None | A specific prefix and ports |
 | Other VMs | Never | Not available in v0.1 |

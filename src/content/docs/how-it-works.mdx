@@ -23,6 +23,7 @@ macOS user. None of them runs as root.
 | **VM worker** (one per running VM) | Runs one virtual machine with Apple's Virtualization framework, streams commands and logs | That VM's disks, its granted folders and its own sockets; no network, no registry credentials |
 | **Network helper** `koala-net` (one per running VM) | The VM's entire network: DHCP, DNS, every TCP and UDP flow, published ports | Network sockets only; no disks, no secrets. Runs in the App Sandbox |
 | **Image extractor** | Turns verified image layers into a Linux disk image | Only the files the manager hands it; no network, no keychain. Runs in the App Sandbox |
+| **Credential broker** `koala-broker` (started when a VM first needs it) | Adds an API key from your login keychain to the requests a policy allows, for one service per policy | Its own keychain items, and outbound HTTPS to the services your policies name; no listening port, no disks. Runs in the App Sandbox |
 | **Guest agent** (inside the VM) | Starts processes, terminals and file transfers in the guest | The guest only. Everything it says is treated as untrusted |
 
 The CLI talks to the manager over HTTP and WebSocket on a Unix socket that only
@@ -147,31 +148,40 @@ See [networking](../guide/networking/).
 
 ### Agents without credentials
 
-For an AI agent or another tool you do not fully trust, you can keep
-credentials out of the VM entirely. Run a small service on your Mac (a
-*broker*) that holds the credentials and performs only the actions you allow,
-grant the VM that one service, and give it no secrets:
+For an AI agent or another tool you do not fully trust, keep its API key out
+of the VM entirely. The key stays in your login keychain. The VM gets a
+*broker grant* instead, and `koala-broker` on your Mac adds the key to the
+requests a policy allows, for the one service it names. This works with the
+VM's internet off:
+
+```sh
+koala policy create openai-main --template openai --model gpt-4.1-mini   # asks for the key
+koala create agent --image docker.io/library/alpine:3 --no-internet \
+  --broker openai=openai-main --wait
+```
 
 <figure class="koala-diagram">
-<svg viewBox="0 0 770 225" role="img" aria-label="An agent in the VM reaches only your broker on the Mac through a host-service grant; the broker holds the credentials, calls the external API and returns results without credentials">
+<svg viewBox="0 0 770 225" role="img" aria-label="An agent in the VM reaches only koala-broker on the Mac through a broker grant; the broker takes the key from your keychain, calls the external API and returns results without the key">
 <g class="node deny"><rect x="10" y="60" width="150" height="52" rx="8" stroke-width="1.5"/><text x="85.0" y="83.0" text-anchor="middle">Agent in the VM</text><text class="sub" x="85.0" y="99.0" text-anchor="middle">no secrets</text></g>
 <path class="edge ok" d="M160 78 H298"/><polygon class="arrow ok" points="308,78 300,73.5 300,82.5"/>
-<text class="label" x="234" y="68" text-anchor="middle">host-service grant</text>
-<g class="node accent"><rect x="310" y="50" width="170" height="72" rx="8" stroke-width="1.5"/><text x="395.0" y="83.0" text-anchor="middle">Your broker</text><text class="sub" x="395.0" y="99.0" text-anchor="middle">on the Mac</text></g>
+<text class="label" x="234" y="68" text-anchor="middle">broker grant</text>
+<g class="node accent"><rect x="310" y="50" width="170" height="72" rx="8" stroke-width="1.5"/><text x="395.0" y="83.0" text-anchor="middle">koala-broker</text><text class="sub" x="395.0" y="99.0" text-anchor="middle">on the Mac</text></g>
 <path class="edge " d="M310 104 H170"/><polygon class="arrow " points="160,104 168,99.5 168,108.5"/>
-<text class="label" x="234" y="124" text-anchor="middle">result, no credentials</text>
-<g class="node "><rect x="310" y="170" width="170" height="40" rx="8" stroke-width="1.5"/><text x="395.0" y="194.5" text-anchor="middle">Credentials on the Mac</text></g>
+<text class="label" x="234" y="124" text-anchor="middle">result, no key</text>
+<g class="node "><rect x="310" y="170" width="170" height="40" rx="8" stroke-width="1.5"/><text x="395.0" y="194.5" text-anchor="middle">Key in your keychain</text></g>
 <path class="edge " d="M395 170 V132"/><polygon class="arrow " points="395,124 390.5,132 399.5,132"/>
 <path class="edge " d="M480 86 H608"/><polygon class="arrow " points="618,86 610,81.5 610,90.5"/>
-<text class="label" x="549" y="76" text-anchor="middle">adds credentials</text>
+<text class="label" x="549" y="76" text-anchor="middle">adds the key</text>
 <g class="node "><rect x="620" y="60" width="140" height="52" rx="8" stroke-width="1.5"/><text x="690.0" y="90.5" text-anchor="middle">External API</text></g>
 </svg>
 <figcaption>The agent never holds a credential, so a compromised agent has nothing to leak.</figcaption>
 </figure>
 
-Koala does not ship a broker yet; this is a pattern you can use today with
-any small HTTP service. The [Hermes example](../guide/example-hermes/) shows an
-agent running in a VM with only the access it is granted.
+A compromised agent can still use the access you granted, within the policy's
+limits, but it cannot take the key. See [keys on your Mac](../guide/broker/),
+and the [Hermes example](../guide/example-hermes/), which runs an AI agent with
+its model key on your Mac and the internet off. For other services, a
+host-service grant to a small service of your own works the same way.
 
 ## The trust model
 
@@ -181,8 +191,8 @@ Koala **does not trust** anything inside a VM: guest root, the guest kernel,
 image contents, and every message from the guest agent. Access controls sit
 outside the guest, in separate host processes, where a compromised guest
 cannot switch them off. The network helper and image extractor run in the App
-Sandbox, and each VM worker runs under a per-VM sandbox profile that allows
-only that VM's files.
+Sandbox, and so does the credential broker. Each VM worker runs under a
+per-VM sandbox profile that allows only that VM's files.
 
 Koala does **not** promise:
 
@@ -193,7 +203,8 @@ Koala does **not** promise:
 - dedicated CPU cores, or a cap on the Mac's total memory use.
 
 <Aside type="caution" title="Preview">
-Adversarial-guest security testing is complete. Crash and endurance
+Adversarial-guest security testing and the credential broker are complete.
+Crash and endurance
 qualification, planned for release, is not finished yet. Use Koala with
 workloads and on machines you trust until v0.1 is released.
 </Aside>
