@@ -113,8 +113,9 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | `NETWORK_POLICY_INVALID` | A grant is not allowed: for example a protected address, or a LAN range wider than `/8`. `koala inspect --json VM` shows the field under `network.policyError`. |
 | `NETWORK_UNAVAILABLE` | The VM's network could not be set up, for example because a published port is already in use on your Mac. |
 
-A VM shown as `Degraded` lost its network, usually after a manager restart.
-Stop and start it. See [networking](networking.md#after-a-manager-restart).
+A VM shown as `Degraded` lost its network and Koala couldn't rebuild it,
+usually after a manager restart. Stop and start it. See
+[networking](networking.md#after-a-manager-restart).
 
 ### Commands, logs and copies
 

@@ -75,8 +75,7 @@ Crash and endurance qualification, planned for release, is not finished yet.
 5. [Secrets](secrets.md): `secret set`, file and environment delivery, the
    login keychain and its approval prompt.
 6. [Keys on your Mac (the broker)](broker.md): `credential`, `policy` and
-   broker grants, so an agent's API keys never enter its VM. In the next
-   release.
+   broker grants, so an agent's API keys never enter its VM.
 7. [Networking](networking.md): internet access, host services, the LAN and
    published ports.
 8. [Shares, volumes and disks](storage.md): host directories, named

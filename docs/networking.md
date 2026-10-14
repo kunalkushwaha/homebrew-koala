@@ -115,12 +115,21 @@ revoke access immediately, stop the VM.
 
 ## After a manager restart
 
-If the manager restarts (or crashes) while a VM runs, the VM keeps running
-but its network is cut off for safety:
+If the manager restarts (or crashes) while a VM runs, the VM keeps running,
+and the restarted manager rebuilds its network within about 10 seconds:
 
-- `koala list` shows it `Degraded`, and its published ports are closed.
-- `exec`, `cp`, `logs` and `stats` keep working.
-- `koala stop VM --wait` then `koala start VM --wait` restores the network.
+- **What comes back,** with the same rules: internet access, host services,
+  broker grants and published ports.
+- **Connections that were open** at the time of the restart are lost, and
+  apps must open new ones.
+- **Published ports keep their host port.**
+- **Throughout,** `exec`, `cp`, `logs` and `stats` keep working.
+
+If the network can't be rebuilt, for example because another program took
+one of the VM's host ports in the meantime:
+- `koala list` shows the VM `Degraded`;
+- its network stays cut off, and its published ports are closed;
+- `koala stop VM --wait` then `koala start VM --wait` restores it.
 
 ## Wi-Fi, VPN and sleep
 

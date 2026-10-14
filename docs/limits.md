@@ -10,7 +10,7 @@
 | The screen locks | VMs keep running. |
 | The Mac sleeps | VMs are paused while the Mac sleeps and continue after wake. An attached `exec` survives. Published ports answer again after wake. |
 | A timeout passes while the Mac sleeps | Sleep time counts. An expired command is stopped right after wake, before new work starts. It cannot be stopped while the Mac is asleep. |
-| The manager restarts or crashes | VMs and commands keep running; `attach`, `exec`, `cp`, `logs` and `stats` keep working. Each VM's network is cut off (`Degraded`) until you stop and start it. |
+| The manager restarts or crashes | VMs and commands keep running; `attach`, `exec`, `cp`, `logs` and `stats` keep working. Within about 10 seconds the manager rebuilds each VM's network, with its broker grants and its published ports on the same host ports. A VM whose network can't be rebuilt shows `Degraded` until you stop and start it. See [networking](networking.md#after-a-manager-restart). |
 | A VM's worker process crashes | Its commands end as `lost` (exit status 125). A job's VM is still cleaned up. |
 | You log out of macOS | **VMs stop.** Koala tries a clean shutdown, but logout may end them first. |
 | The Mac restarts | VMs stop. |
@@ -68,7 +68,6 @@ Planned for v0.1 but not built yet:
 - **A daemon settings file** (`~/Library/Application Support/Koala/config.json`)
   for log and disk budgets is documented but not read by the manager yet.
 - **Terminal names in full-profile shells:** `tty` prints `not a tty`.
-- **A reference host broker** for agents without secrets.
 - **Release qualification:** adversarial-guest tests, crash, pressure and endurance tests, performance targets
   and the release review.
 

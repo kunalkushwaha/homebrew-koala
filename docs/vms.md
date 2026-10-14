@@ -199,8 +199,8 @@ A job is removed whether its command succeeds or fails; a service or
 environment VM keeps its disk until `koala rm`.
 
 VM states you will see: `Creating`, `Stopped`, `Starting`, `Running`,
-`Degraded` (running, but its network was lost; see
-[networking](networking.md#after-a-manager-restart)), `Stopping`,
+`Degraded` (running, but its network was lost and couldn't be rebuilt;
+see [networking](networking.md#after-a-manager-restart)), `Stopping`,
 `TerminationUnknown`, `Failed`, `Deleting`, `Deleted`.
 
 `koala stats` shows the reservations the manager made for the running VM.
