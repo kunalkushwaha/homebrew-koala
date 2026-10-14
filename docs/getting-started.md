@@ -86,11 +86,12 @@ koala system info
 ```
 
 ```text
-installation: verified /path/to/koala-manager
-manager: running BUILD
+koala
+  install    verified, /path/to/koala-manager
+  manager    running, build BUILD
 ```
 
-`installation: unverified (...)` means the launchd agent is missing or does
+`install    unverified (...)` means the launchd agent is missing or does
 not pass Koala's checks (owner, permissions, signature). See
 [troubleshooting](troubleshooting.md#the-manager-does-not-start).
 

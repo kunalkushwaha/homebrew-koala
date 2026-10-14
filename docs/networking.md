@@ -98,9 +98,10 @@ In a spec file:
   the port actually bound, while the VM runs:
 
   ```text
-  attached: true
-  published: tcp 127.0.0.1:52144 -> 8080 (loopback)
+  published  127.0.0.1:52144 -> 8080/tcp (loopback)
   ```
+
+  While the VM is not running, the line ends with `not listening`.
 
 - If the port is already in use on the Mac, the start fails and nothing is
   left listening.

@@ -87,6 +87,14 @@ service VM. A job's disk is removed with the job.
   not on `PATH`, and you don't need to call them.
 - `koala exec` runs a program from the image. An image without a shell, such
   as `scratch` or a distroless image, can only run the programs it contains.
-- In a lean VM, `--user` takes numeric IDs (`--user 1000` or
-  `--user 1000:1000`). User names from the image's `/etc/passwd` are not
-  looked up yet, and that includes a named user set in the image.
+- **Users:** the image's user, a spec's `"user"` and `--user` can be names
+  from the image's own `/etc/passwd` and `/etc/group`:
+  - `app` takes the user's primary group, and `app:staff` names the group;
+  - numeric IDs (`1000`, `1000:1000`) work as before;
+  - `root` works even in an image without `/etc/passwd`;
+  - a user added inside a running VM (with `useradd`) is not seen.
+
+  Koala 0.1.0-preview.5 and earlier take numeric IDs only.
+- **`HOME`:** unless the image, the spec or the command sets it, `HOME` is the
+  user's home directory from `/etc/passwd`: `/root` for root, `/` when there
+  is none.

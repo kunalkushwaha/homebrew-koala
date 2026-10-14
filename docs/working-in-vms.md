@@ -18,7 +18,7 @@ want a shell.
 | `-i` | Send your stdin to the command. |
 | `-t` | Give the command a terminal (a PTY). Needs a terminal on your side. |
 | `-it` | Both: for shells, editors and other interactive programs. |
-| `--user U` | Run as this guest user. Default: the image's user (root in a full VM). A lean VM takes numeric IDs only ([profiles](profiles.md#lean-vms)). |
+| `--user U` | Run as this guest user: a name from the image's `/etc/passwd`, `name:group`, or numeric IDs ([profiles](profiles.md#lean-vms)). Default: the image's user (root in a full VM). |
 | `--workdir DIR` | Start in this guest directory. |
 | `--env KEY=VALUE` | Set a variable. Repeatable. |
 | `--timeout S` | Kill the command after `S` seconds (exit status 124). |

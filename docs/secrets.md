@@ -27,8 +27,16 @@ koala secret rm agent-token
 
 ## Give a secret to a VM
 
-Grant it in the VM's spec file, as a file, as an environment variable, or
+Grant it when you create the VM, as a file, as an environment variable, or
 both:
+
+```sh
+koala create agent --image docker.io/library/alpine:3 \
+  --secret-file agent-token=/run/secrets/agent-token \
+  --secret-env agent-token=AGENT_TOKEN --wait
+```
+
+In a spec file, the same grants are:
 
 ```json
 "secrets": [
@@ -56,11 +64,9 @@ logging or sending a value it has received.
 ## Agents without secrets
 
 For an AI agent or other untrusted tool, you can keep credentials out of the
-VM entirely. Run a small service on your Mac (a *broker*) that holds the
-credentials and performs only the actions you allow. Grant the VM access to
-that one service with a [host-service grant](networking.md#reach-a-service-on-your-mac),
-and give it `"secrets": []`. A reference broker is planned and is not available yet.
-
+VM entirely. With the [broker](broker.md), the key stays on your Mac: the VM
+gets a broker grant and `"secrets": []`, and the broker adds the key to the
+requests you allow.
 ## The login keychain
 
 Secrets (service `dev.koala.guest-secret.v1`) and registry logins (service

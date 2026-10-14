@@ -1,11 +1,11 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.5. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.6. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services and development environments in Koala
 VMs.
-Koala is in preview: `0.1.0-preview.5` is published, and v0.1 is in
+Koala is in preview: `0.1.0-preview.6` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
 
@@ -74,19 +74,23 @@ Crash and endurance qualification, planned for release, is not finished yet.
    login` and `logout`.
 5. [Secrets](secrets.md): `secret set`, file and environment delivery, the
    login keychain and its approval prompt.
-6. [Networking](networking.md): internet access, host services, the LAN and
+6. [Keys on your Mac (the broker)](broker.md): `credential`, `policy` and
+   broker grants, so an agent's API keys never enter its VM. In the next
+   release.
+7. [Networking](networking.md): internet access, host services, the LAN and
    published ports.
-7. [Shares, volumes and disks](storage.md): host directories, named
+8. [Shares, volumes and disks](storage.md): host directories, named
    volumes and disk sizes.
-8. [Profiles: lean and full](profiles.md): systemd and Docker.
-9. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
-   disk, and what is not available yet.
-10. [Troubleshooting](troubleshooting.md): error codes and what to do.
+9. [Profiles: lean and full](profiles.md): systemd and Docker.
+10. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
+    disk, and what is not available yet.
+11. [Troubleshooting](troubleshooting.md): error codes and what to do.
 
 ### Examples
 
 - [Run the Hermes agent](example-hermes.md): an AI agent's gateway from its
-  official image, as a service VM with its data on a volume.
+  official image, as a service VM with internet off, its model key on your
+  Mac, and its data on a volume.
 
 ## Conventions in this guide
 

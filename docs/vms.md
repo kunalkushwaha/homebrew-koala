@@ -71,15 +71,31 @@ koala start box --wait
 | `--publish [ADDR:]HOSTPORT:GUESTPORT[/tcp\|/udp]` | Publish a port ([networking](networking.md#publish-a-port)). Repeatable. |
 | `--volume NAME:/guest/path[:ro\|:rw]` | Attach a named volume, read-write by default ([storage](storage.md#named-volumes)). Repeatable. |
 | `--mount /host/dir:/guest/path[:ro\|:rw]` | Share a host directory, read-only by default ([storage](storage.md#share-a-host-directory)). Repeatable. |
+| `-- ARG...` | After everything else: the process's arguments, replacing the image's command. |
+| `--entrypoint PATH` | Replace the image's entrypoint. |
+| `--env KEY=VALUE` | An environment variable for the process. Repeatable. |
+| `--user U`, `--workdir DIR` | The process's user (a name or `UID[:GID]`) and starting directory. Default: the image's. |
+| `--no-internet` | No internet access. Grants and published ports still work. |
+| `--broker GRANT=POLICY` | Reach a [broker](broker.md) policy at `GRANT.broker.koala.internal`. Repeatable. |
+| `--host-service ADDR:PORT[,PORT...][/tcp\|/udp]` | Reach a service on your Mac ([networking](networking.md)). Repeatable. |
+| `--secret-env NAME=VARIABLE`, `--secret-file NAME=/guest/path` | Give a stored [secret](secrets.md) as a variable or a file. Repeatable. |
 
-Before submitting, `create` prints on stderr every port, volume and share
-the VM will get, so you can see what you are granting.
+Before submitting, `create` prints on stderr everything the VM will be
+able to reach: internet on or off, each grant, port, volume, share and
+secret. So you can see what you are granting.
 
 VM names start with a lower-case letter, then use lower-case letters,
 digits and `-` (at most 63 characters).
 
-Flags cannot set a service's command, environment variables, network
-grants or secrets. Use a spec file for those.
+For example, a service that runs `sleep 3600`, with no internet and one
+broker grant:
+
+```sh
+koala create svc --image docker.io/library/alpine:3 --mode service \
+  --no-internet --broker ai=openai-main --wait -- sleep 3600
+```
+
+LAN grants, labels, a terminal and a process timeout need a spec file.
 
 ## Persistent VMs from a spec file: `koala create -f`
 
@@ -145,12 +161,35 @@ What these numbers mean for your Mac is explained in
 
 ```sh
 koala list                    # all VMs: ID, name, mode, state, spec generation
-koala inspect VM              # summary, network state and published ports
-koala inspect --json VM       # everything, including the resolved spec
+koala inspect VM              # the VM in words: state, image, command, network, storage
+koala inspect --json VM       # everything, as JSON
 koala start VM --wait
 koala stop VM --wait          # returns once the VM has really stopped
 koala rm VM --wait            # removes a stopped VM; named volumes are kept
 koala stats VM                # the memory and disk the manager reserved for it
+```
+
+For example, a service VM that failed to start:
+
+```text
+hermes (8f6d5663-ce25-473e-be8f-3f568c385aa2)
+  state      Failed: GRANT_REQUIRED at 2026-10-13 17:26:15 JST
+  mode       service, lean profile
+  image      docker.io/nousresearch/hermes-agent:latest
+             arm64 digest sha256:1697e5df232a…
+  resources  2 vCPUs, 2 GiB memory, 6 GiB disk
+  command    the image's entrypoint, with: gateway run
+  user       the image's
+  env        API_SERVER_ENABLED=true
+             API_SERVER_HOST=0.0.0.0
+  internet   off
+  grants     broker openai -> policy hermes-openai (openai.broker.koala.internal)
+  published  127.0.0.1:8642 -> 8642/tcp (loopback), not listening
+  volumes    hermes-data at /opt/data, read-write
+  shares     none
+  secrets    none
+  run        none
+  spec       generation 3; cleanup: retain
 ```
 
 ![VM states, from Creating to Deleted, and the commands that move a VM between them](images/vm-states.svg)
@@ -170,17 +209,30 @@ Usage figures from inside the guest are not available yet.
 ## Change a VM: `koala update`
 
 You change a persistent VM by replacing its spec while it is stopped. The
-change applies at the next start.
+change applies at the next start. The simplest way is `koala edit`:
+
+```sh
+koala stop web --wait
+koala edit web --wait      # opens the spec in your editor; prints the new grants, then applies them
+koala start web --wait
+```
+
+- `koala edit` opens the VM's current spec in `$VISUAL` or `$EDITOR` (`vi`
+  if neither is set). When you save and quit, it checks the file and
+  applies it. It says "no change" if nothing changed.
+- If the edit is not valid, or cannot be applied, `koala edit` keeps your
+  file and tells you where it is, so you can fix it and apply it with
+  `koala update`.
+
+To work on the file yourself:
 
 ```sh
 koala inspect --export web > web.json    # the VM's current, fully resolved spec
 # edit web.json
-koala stop web --wait
 koala update web -f web.json --wait      # prints the new grants, then applies them
-koala start web --wait
 ```
 
-- `update` on a running VM is refused (`INVALID_STATE`).
+- `edit` and `update` on a running VM are refused.
 - `update` replaces the whole spec with the file's content, so start from a
   fresh `inspect --export`.
 - The base image and the profile cannot be changed. Create a new VM instead.

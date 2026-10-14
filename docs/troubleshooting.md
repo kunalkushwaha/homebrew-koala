@@ -102,7 +102,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 
 | Code | Meaning and what to do |
 | --- | --- |
-| `RESOURCE_ADMISSION_FAILED` | Not enough unreserved memory or disk to start the VM. Stop other VMs, or lower `memoryMiB`. See [limits](limits.md#memory-cpu-and-disk). |
+| `RESOURCE_ADMISSION_FAILED` | Not enough unreserved memory or disk to start the VM, or macOS reports memory pressure. Stop other VMs, or lower `memoryMiB`. See [limits](limits.md#memory-cpu-and-disk). Koala starts nothing while macOS memory pressure is above normal: check Activity Monitor's Memory Pressure graph, or `sysctl kern.memorystatus_vm_pressure_level` (1 is normal). Quit memory-hungry apps and start again; each start checks the pressure afresh. The manager log names the cause (memory pressure or disk space). |
 | `STORAGE_SPACE_EXHAUSTED` | Your Mac's disk is too full. Free space and retry. |
 | `RESOURCE_EXHAUSTED` | A manager limit was reached, such as too many open log or event streams, or a busy state store. Retry shortly. |
 
@@ -120,8 +120,8 @@ Stop and start it. See [networking](networking.md#after-a-manager-restart).
 
 | Code | Meaning and what to do |
 | --- | --- |
-| `EXEC_START_FAILED` | The command could not be started in the VM, for example the program does not exist. This is not the program's exit code. |
-| `RETENTION_EXPIRED` | The output you asked for is no longer kept. |
+| `EXEC_START_FAILED` | The command could not be started in the VM, for example the program does not exist, or the image's user is unknown. This is not the program's exit code. `koala start --wait` prints the reason after the code, and `koala inspect VM --json` shows it as `lastFailure`. (Koala 0.1.0-preview.5 and earlier print only the code.) |
+| `RETENTION_EXPIRED` | The output you asked for is no longer kept, or was never captured: a VM that fails within a second or two of starting can end before its serial console is read. Use `koala inspect VM --json` (`lastFailure`) for why it failed. |
 | `TRANSFER_EXISTS` | The `cp` destination already exists. Choose another name or add `--replace`. |
 | `TRANSFER_INVALID_PATH` | A path in the copy is not usable, for example the copied entry is itself a symlink. |
 | `TRANSFER_INVALID_ENTRY` | The tree contains something `cp` refuses: a hard link, a device file, a FIFO or a symlink that leads outside the tree. |
