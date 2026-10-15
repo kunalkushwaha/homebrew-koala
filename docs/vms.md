@@ -169,6 +169,16 @@ koala rm VM --wait            # removes a stopped VM; named volumes are kept
 koala stats VM                # the memory and disk the manager reserved for it
 ```
 
+**How `koala stop` stops a lean VM:**
+1. It sends SIGTERM to the VM's command, and to any `koala exec` command
+   still running.
+2. It waits up to 10 seconds for them to exit.
+3. It stops the VM, ending whatever is left.
+
+So a service can save its work and exit cleanly. If your command is a shell
+script that starts other programs, have it pass the signal on (`trap`), so
+they can close too.
+
 For example, a service VM that failed to start:
 
 ```text

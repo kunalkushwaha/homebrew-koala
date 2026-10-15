@@ -48,8 +48,13 @@ not public yet.
   service on your Mac, or give a secret to one VM.
 - **Keep API keys on your Mac:** give a VM a broker grant instead of a key.
   The key stays in your login keychain, and the broker adds it only to the
-  requests a policy allows, even with the VM's internet off. This suits AI
-  agents ([example](docs/example-hermes.md)).
+  requests a policy allows, even with the VM's internet off. Templates
+  cover model providers, chat bots (Telegram, Slack, Discord) and GitHub
+  Apps. This suits AI agents ([example](docs/example-hermes.md)).
+- **Run a browser agent:** a normal browser in a VM that you sign in to
+  through a live view, and an agent beside it that drafts posts and replies
+  for you to approve ([example](docs/example-x-agent.md), code in
+  [examples/x-agent](examples/x-agent)).
 - **No `sudo`:** a background manager that runs as you keeps track of your VMs.
 
 ## Requirements

@@ -1,11 +1,11 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.6. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.7. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services and development environments in Koala
 VMs.
-Koala is in preview: `0.1.0-preview.6` is published, and v0.1 is in
+Koala is in preview: `0.1.0-preview.7` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
 
@@ -90,6 +90,9 @@ Crash and endurance qualification, planned for release, is not finished yet.
 - [Run the Hermes agent](example-hermes.md): an AI agent's gateway from its
   official image, as a service VM with internet off, its model key on your
   Mac, and its data on a volume.
+- [An X agent](example-x-agent.md): a normal browser in a VM that you sign
+  in to through a live view, and an agent that reads X, drafts with a model
+  (local Ollama or through the broker), and posts only what you approve.
 
 ## Conventions in this guide
 

@@ -1,0 +1,34 @@
+{
+  "me": "YOUR_HANDLE",
+  "model": "gemma4:12b",
+  "sources": [
+    {
+      "kind": "home"
+    },
+    {
+      "kind": "search",
+      "query": "microVM"
+    }
+  ],
+  "persona": "You follow virtualization and sandboxing: microVMs, containers, and running AI agents safely on a Mac (for example with Koala). You reply briefly, helpfully and honestly, in English, and only when you have something useful to add about these topics; for anything else answer reply false. Don't advertise: mention Koala only when it genuinely helps. No hashtags. No links.",
+  "replies": {
+    "enabled": true,
+    "dryRun": true,
+    "perDay": 2,
+    "perAuthorPerDay": 1,
+    "minGapSeconds": 180,
+    "jitterSeconds": 60,
+    "maxLength": 240
+  },
+  "compose": {
+    "enabled": true,
+    "topic": "microVMs and sandboxing for AI agents",
+    "dryRun": true,
+    "perDay": 1,
+    "minGapSeconds": 3600,
+    "maxLength": 280,
+    "context": 10
+  },
+  "readEverySeconds": 300,
+  "scrolls": 2
+}
