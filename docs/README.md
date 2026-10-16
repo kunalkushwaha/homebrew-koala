@@ -1,11 +1,11 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.8. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.9. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services and development environments in Koala
 VMs.
-Koala is in preview: `0.1.0-preview.8` is published, and v0.1 is in
+Koala is in preview: `0.1.0-preview.9` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
 
@@ -76,20 +76,25 @@ Crash and endurance qualification, planned for release, is not finished yet.
    login keychain and its approval prompt.
 6. [Keys on your Mac (the broker)](broker.md): `credential`, `policy` and
    broker grants, so an agent's API keys never enter its VM.
-7. [Networking](networking.md): internet access, host services, the LAN and
+7. [VM templates for agents](templates.md): `koala create --template`, an
+   agent's VM, keys, volumes and setup in one command.
+8. [Networking](networking.md): internet access, host services, the LAN and
    published ports.
-8. [Shares, volumes and disks](storage.md): host directories, named
+9. [Shares, volumes and disks](storage.md): host directories, named
    volumes and disk sizes.
-9. [Profiles: lean and full](profiles.md): systemd and Docker.
-10. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
+10. [Profiles: lean and full](profiles.md): systemd and Docker.
+11. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
     disk, and what is not available yet.
-11. [Troubleshooting](troubleshooting.md): error codes and what to do.
+12. [Troubleshooting](troubleshooting.md): error codes and what to do.
 
 ### Examples
 
 - [Run the Hermes agent](example-hermes.md): an AI agent's gateway from its
   official image, as a service VM with internet off, its model key on your
   Mac, and its data on a volume.
+- [Run OpenClaw](example-openclaw.md) (not tested on Koala): the OpenClaw
+  gateway from its official image, with one script, internet off and its
+  model key on your Mac.
 - [An X agent](example-x-agent.md): a normal browser in a VM that you sign
   in to through a live view, and an agent that reads X, drafts with a model
   (local Ollama or through the broker), and posts only what you approve.

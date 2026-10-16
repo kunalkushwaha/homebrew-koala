@@ -293,14 +293,15 @@ koala policy list                 # policies, their templates, and whether they 
 koala policy status               # per-VM request counts (no content)
 koala policy disable openai-main  # stop it at once; in-flight requests are cancelled
 koala policy enable openai-main
-koala policy upgrade openai-main  # after a Koala upgrade: show, then apply with --yes
+koala policy upgrade openai-main  # after a Koala or template update: show, then apply with --yes
 koala policy add -f openai-main.json   # replace; applies at once
 koala policy rm openai-main            # VMs lose access at once; their next start fails
 koala credential rm openai-main
 ```
 
-- **Templates improve with Koala releases.** When a newer version of a
-  policy's template is available, `koala policy list` says so. `koala
+- **Templates improve with Koala releases,** and with `koala template
+  update` ([Newer templates](templates.md#newer-templates)). When a newer
+  version of a policy's template is available, `koala policy list` says so. `koala
   policy upgrade` shows the change, keeping your key, service, models and
   groups, and applies it only with `--yes`.
 - **A disable holds** until you enable the policy again, including across

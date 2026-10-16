@@ -51,6 +51,13 @@ not public yet.
   requests a policy allows, even with the VM's internet off. Templates
   cover model providers, chat bots (Telegram, Slack, Discord) and GitHub
   Apps. This suits AI agents ([example](docs/example-hermes.md)).
+- **Set up an agent in one command:** `koala create hermes --template hermes`
+  makes the agent's VM, the policy that keeps its key on your Mac, a volume
+  and its setup, after showing you the plan ([templates](docs/templates.md)).
+  `koala template update` gets newer templates, signed with the release key.
+  Examples: [Hermes](docs/example-hermes.md) and
+  [OpenClaw](docs/example-openclaw.md) (not tested on Koala yet), with their
+  files in [examples](examples).
 - **Run a browser agent:** a normal browser in a VM that you sign in to
   through a live view, and an agent beside it that drafts posts and replies
   for you to approve ([example](docs/example-x-agent.md), code in

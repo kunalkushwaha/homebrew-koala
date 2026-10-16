@@ -1,0 +1,159 @@
+{
+  "format": 1,
+  "name": "hermes",
+  "version": 1,
+  "description": "The Hermes agent's gateway, with its model key on your Mac and no internet",
+  "parameters": {
+    "model": {
+      "description": "The model's name at your provider",
+      "default": "gpt-4.1-mini"
+    },
+    "origin": {
+      "description": "Your provider, if not OpenAI: one with the same API under /v1",
+      "default": "https://api.openai.com"
+    },
+    "tls-pin": {
+      "description": "Trust only this certificate of the provider's (its SHA-256)",
+      "default": ""
+    },
+    "credential": {
+      "description": "The stored key to use; koala asks for it if it is missing",
+      "default": "{{vm}}-openai"
+    },
+    "image": {
+      "description": "The Hermes image",
+      "default": "docker.io/nousresearch/hermes-agent:latest"
+    },
+    "port": {
+      "description": "The port on your Mac for the gateway's API",
+      "type": "integer",
+      "default": 8642
+    }
+  },
+  "policies": [
+    {
+      "name": "{{vm}}-openai",
+      "template": "openai",
+      "credential": "{{credential}}",
+      "origin": "{{origin}}",
+      "tlsPin": "{{tls-pin}}",
+      "models": [
+        "{{model}}"
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "{{vm}}-data",
+      "size": "2GiB"
+    }
+  ],
+  "vm": {
+    "mode": "service",
+    "profile": "lean",
+    "image": {
+      "kind": "oci",
+      "reference": "{{image}}",
+      "platform": "linux/arm64"
+    },
+    "resources": {
+      "vcpus": 2,
+      "memoryMiB": 2048,
+      "diskMiB": 6144
+    },
+    "process": {
+      "arguments": [
+        "gateway",
+        "run"
+      ],
+      "environment": {
+        "API_SERVER_ENABLED": "true",
+        "API_SERVER_HOST": "0.0.0.0"
+      }
+    },
+    "network": {
+      "internet": false,
+      "allow": [
+        {
+          "kind": "broker",
+          "name": "openai",
+          "policy": "{{vm}}-openai"
+        }
+      ],
+      "publish": [
+        {
+          "protocol": "tcp",
+          "hostAddress": "127.0.0.1",
+          "hostPort": "{{port}}",
+          "guestPort": 8642
+        }
+      ]
+    },
+    "volumes": [
+      {
+        "name": "{{vm}}-data",
+        "destination": "/opt/data",
+        "readOnly": false
+      }
+    ]
+  },
+  "setup": {
+    "ready": {
+      "command": [
+        "curl",
+        "-fsS",
+        "-m",
+        "2",
+        "-o",
+        "/dev/null",
+        "http://127.0.0.1:8642/health"
+      ],
+      "timeoutSeconds": 300
+    },
+    "commands": [
+      {
+        "command": [
+          "hermes",
+          "config",
+          "set",
+          "model.provider",
+          "custom"
+        ]
+      },
+      {
+        "command": [
+          "hermes",
+          "config",
+          "set",
+          "model.base_url",
+          "http://openai.broker.koala.internal/v1"
+        ]
+      },
+      {
+        "command": [
+          "hermes",
+          "config",
+          "set",
+          "model.default",
+          "{{model}}"
+        ]
+      },
+      {
+        "command": [
+          "hermes",
+          "config",
+          "set",
+          "model.api_key",
+          "koala-brokered"
+        ]
+      }
+    ],
+    "restart": true
+  },
+  "notes": [
+    "The gateway's API is on http://127.0.0.1:{{port}}; check it with: curl -s http://127.0.0.1:{{port}}/health",
+    "Its API key: koala exec {{vm}} -- sed -n 's/^API_SERVER_KEY=//p' /opt/data/.env",
+    "Ask Hermes: koala exec {{vm}} -- hermes chat -q \"Hello\"",
+    "Hermes keeps its configuration, sessions and memory on the volume {{vm}}-data."
+  ]
+}

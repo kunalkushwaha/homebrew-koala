@@ -75,6 +75,21 @@ Inside the VM, the service is `http://openai.broker.koala.internal/v1`, and
 [networking](guide/networking/) and the [Hermes example](guide/example-hermes/).
 
 </TabItem>
+<TabItem label="Agent from a template" icon="puzzle">
+
+One command sets an agent up: its VM, the policy that keeps its key on your
+Mac, a volume, and its setup. Koala shows the whole plan and asks first:
+
+```sh
+koala template list                     # the templates
+koala create hermes --template hermes   # asks for the model key, shows the plan, then asks
+```
+
+See [VM templates for agents](guide/templates/), and the examples:
+[Hermes](guide/example-hermes/), [OpenClaw](guide/example-openclaw/) (not
+tested on Koala yet) and [an X agent](guide/example-x-agent/).
+
+</TabItem>
 </Tabs>
 
 <p class="koala-eyebrow">03 · What you get</p>

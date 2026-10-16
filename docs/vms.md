@@ -97,6 +97,15 @@ koala create svc --image docker.io/library/alpine:3 --mode service \
 
 LAN grants, labels, a terminal and a process timeout need a spec file.
 
+## Persistent VMs from a template: `koala create --template`
+
+For an agent such as Hermes, a [VM template](templates.md) makes the VM, its
+broker policies and volumes, and its setup inside the VM, in one command:
+
+```sh
+koala create hermes --template hermes
+```
+
 ## Persistent VMs from a spec file: `koala create -f`
 
 A spec file is JSON. Example `web.json`, a busybox web server that serves a

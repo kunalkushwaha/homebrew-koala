@@ -53,6 +53,10 @@ export default defineConfig({
 					{ label: 'Images and registries', slug: 'guide/images' },
 					{ label: 'Profiles: lean and full', slug: 'guide/profiles' },
 				] },
+				{ label: 'Agents', items: [
+					{ label: 'Keys on your Mac (the broker)', slug: 'guide/broker' },
+					{ label: 'VM templates for agents', slug: 'guide/templates' },
+				] },
 				{ label: 'Access and isolation', items: [
 					{ label: 'Networking', slug: 'guide/networking' },
 					{ label: 'Shares, volumes and disks', slug: 'guide/storage' },
@@ -65,6 +69,8 @@ export default defineConfig({
 				] },
 				{ label: 'Examples', items: [
 					{ label: 'Run the Hermes agent', slug: 'guide/example-hermes' },
+					{ label: 'Run OpenClaw (not tested)', slug: 'guide/example-openclaw' },
+					{ label: 'An X agent', slug: 'guide/example-x-agent' },
 				] },
 			],
 		}),

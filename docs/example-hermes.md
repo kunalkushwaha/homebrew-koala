@@ -18,6 +18,31 @@ Tested on 2026-10-14 with the code of Koala 0.1.0-preview.6 and
 `sha256:444b42594e7f…` (Hermes 0.21.7). The model was a stand-in
 OpenAI-compatible server on the Mac, not a real provider.
 
+## The quick way: a template
+
+```sh
+koala create hermes --template hermes
+```
+
+This one command sets up everything the rest of this page does by hand:
+- the policy, with your API key, which it asks for;
+- the volume and the VM;
+- Hermes's configuration.
+
+It shows all of that and asks before it changes anything. When it ends,
+the gateway is running, and it prints how to reach it.
+
+- For another model, or another OpenAI-compatible provider, add `--set
+  model=…` or `--set origin=…`. See
+  [VM templates for agents](templates.md#parameters).
+- `koala template inspect hermes` lists the parameters and what the
+  template makes.
+- The template's file is `examples/hermes/template.json` in Koala's
+  Homebrew tap (`brew --repository kunalkushwaha/koala`). To change it,
+  copy it, edit it, and use `--template ./template.json`.
+
+The rest of this page sets Hermes up step by step, and explains each part.
+
 ## What to know about the image
 
 The image works in a lean VM without changes, but four things need care:
