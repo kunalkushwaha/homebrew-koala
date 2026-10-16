@@ -1,11 +1,11 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.7. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.8. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services and development environments in Koala
 VMs.
-Koala is in preview: `0.1.0-preview.7` is published, and v0.1 is in
+Koala is in preview: `0.1.0-preview.8` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
 

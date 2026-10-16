@@ -47,7 +47,9 @@ limits, but it can't steal the key.
      you name.
    - `--allow chat,models,embeddings` picks other groups of requests from
      the template.
-   - `--origin https://api.groq.com` uses another service with the same API.
+   - `--origin https://api.mistral.ai` uses another service with the same
+     API under `/v1`. For one under another path, such as Groq, see
+     [Write your own policy](#write-your-own-policy).
    - `--credential NAME` uses a key you already stored, by its name.
 
    `koala policy inspect openai-main` shows what the policy allows, and
@@ -88,6 +90,19 @@ koala policy add -f my-api.json
 
 A policy you edit this way keeps its `template` record. `koala policy
 upgrade` would replace your edits, and shows them first.
+
+**For example, Groq.** Its API has the OpenAI shape, but under
+`/openai/v1`, not `/v1`. Print the `openai` template's policy for it, and
+change `/v1` to `/openai/v1`: in the three rules, and in the VM's
+`OPENAI_BASE_URL`:
+
+```sh
+koala policy create groq --template openai --origin https://api.groq.com \
+  --model llama-3.3-70b-versatile --print | sed 's#/v1#/openai/v1#g' > groq.json
+koala policy validate -f groq.json
+koala credential set groq
+koala policy add -f groq.json
+```
 
 ## Chat platforms
 

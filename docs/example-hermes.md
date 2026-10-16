@@ -53,8 +53,8 @@ koala policy create hermes-openai --template openai --model gpt-4.1-mini
   the model list, for the model you name. Use your provider's model name,
   here and when you set up Hermes below.
 - For another OpenAI-compatible provider, add its address, such as
-  `--origin https://api.groq.com`. A provider whose API is not under `/v1`
-  needs a policy of your own; see
+  `--origin https://api.mistral.ai`. A provider whose API is not under
+  `/v1`, such as Groq, needs the paths changed; see
   [Write your own policy](broker.md#write-your-own-policy).
 - `koala policy inspect hermes-openai` shows what the policy allows: the
   service, the requests, the model and the limits.
