@@ -135,6 +135,34 @@ koala stop dev --wait
 koala rm dev --wait
 ```
 
+## Set up an agent from a template
+
+A template sets an AI agent up in one command: its VM, the broker policy
+that keeps its API key on your Mac, a volume for its data, and its setup.
+See the templates, and what one makes:
+
+```sh
+koala template list
+koala template inspect hermes
+```
+
+Then make it:
+
+```sh
+koala create hermes --template hermes
+```
+
+Koala shows the whole plan, including what the VM can reach, and asks
+before it changes anything. Then it asks for your OpenAI API key. For
+another provider with the same API, add `--set origin=https://…` (see
+[Parameters](templates.md#parameters)). The key goes to your login
+keychain, not into the VM. The first start downloads the agent's image, so
+it takes a while.
+
+To use the agent, and to remove it, see
+[Run the Hermes agent](example-hermes.md). For other agents, and your own,
+see [VM templates for agents](templates.md).
+
 ## Stop the manager
 
 ```sh
@@ -158,3 +186,10 @@ command's usage, options and examples: for example `koala create --help` or
 
 - [Jobs and VMs](vms.md): services, VM spec files and resources.
 - [Working inside a VM](working-in-vms.md): `exec`, `cp`, logs.
+- [Keys on your Mac (the broker)](broker.md): API keys that never enter a
+  VM.
+- [VM templates for agents](templates.md): an agent in one command, and
+  `koala template update`.
+- Examples: [Run the Hermes agent](example-hermes.md),
+  [Run OpenClaw](example-openclaw.md) (not tested on Koala), and
+  [an X agent](example-x-agent.md).

@@ -105,6 +105,16 @@ tested on Koala yet) and [an X agent](guide/example-x-agent/).
 		VMs that keep running after your terminal closes. `exec`, attach a
 		shell, `cp` files in and out. [Working inside a VM →](guide/working-in-vms/)
 	</Card>
+	<Card title="Keys stay on your Mac" icon="approve-check">
+		An agent's API keys stay in your login keychain. The broker adds a key
+		only to the requests a policy allows, so it never enters the VM.
+		[Keys on your Mac →](guide/broker/)
+	</Card>
+	<Card title="Agents in one command" icon="star">
+		`koala create hermes --template hermes` makes an agent's VM, its key's
+		policy, a volume and its setup, after showing the plan.
+		[VM templates →](guide/templates/)
+	</Card>
 	<Card title="The images you have" icon="seti:docker">
 		OCI images from Docker Hub or a private registry, pinned by digest when
 		a VM is created. [Images →](guide/images/)

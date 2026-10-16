@@ -192,7 +192,8 @@ in the file, such as `at /vm/network/publish/0/hostPort`.
 
 Templates come with Koala, and newer ones can be published between
 releases. `koala template update` downloads them, with the
-[policy templates](broker.md#set-it-up):
+[policy templates](broker.md#set-it-up) (which `koala policy templates`
+lists):
 
 ```sh
 koala template update
@@ -205,6 +206,9 @@ serial 7, signed by koala-release-1
   policy openai v1: same as built-in
 ```
 
+- **Until a template changes, nothing changes.** Each line says `same as
+  built-in`, and your koala keeps using its own copy, so `template list`
+  shows no `(downloaded)`.
 - **It runs only when you ask.** Koala never fetches templates on its own.
 - **It keeps only what Koala's release key signed.** The templates' index
   is signed with the key that signs Koala's releases. Your koala checks it

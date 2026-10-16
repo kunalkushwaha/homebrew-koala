@@ -3,8 +3,8 @@
 This guide matches Koala 0.1.0-preview.9. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
-explains how to run jobs, services and development environments in Koala
-VMs.
+explains how to run jobs, services, development environments and AI agents
+in Koala VMs.
 Koala is in preview: `0.1.0-preview.9` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
@@ -23,6 +23,11 @@ machine on your Mac:
 - **Two guest profiles.** *Lean* VMs run one OCI image (a Docker-style
   image) with a minimal init. *Full* VMs run a Linux distribution with
   systemd and Docker Engine.
+- **Agents with their keys on your Mac.** An AI agent's API keys can stay
+  in your login keychain: the [broker](broker.md) adds a key only to the
+  requests a policy allows, so the key never enters the VM. A
+  [VM template](templates.md) sets an agent up in one command, as in
+  `koala create hermes --template hermes`.
 
 ![How Koala fits together: the koala CLI talks to a per-user manager, which runs one VM per workload, each behind its own network helper](images/overview.svg)
 
