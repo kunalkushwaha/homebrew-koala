@@ -33,7 +33,9 @@ limits, but it can't steal the key.
 1. **Create a policy from a template.** `koala policy templates` lists them:
    `openai` (OpenAI and services with the same API), `anthropic`, for bots
    `telegram`, `slack` and `discord` (see [Chat platforms](#chat-platforms)),
-   and `github` (see [GitHub](#github)).
+   and `github` (see [GitHub](#github)). `koala policy templates openai`
+   shows one: what it is for, how it sends the key, its groups, and the
+   command to use it.
 
    ```sh
    koala policy create openai-main --template openai --model gpt-4.1-mini

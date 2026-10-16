@@ -10,7 +10,7 @@ everything the agent needs:
 - the setup to run inside the VM once it is up.
 
 ```sh
-koala template list                     # the templates
+koala template list                     # the VM and policy templates
 koala template inspect hermes           # what one makes, and its parameters
 koala create hermes --template hermes   # make it
 koala template update                   # get newer templates, when you want them
