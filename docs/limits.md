@@ -60,9 +60,6 @@ measured inside the guest is not reported yet.
 
 Planned for v0.1 but not built yet:
 
-- **The full profile in a release:** the preview publishes the lean
-  runtime only. The full runtime and the signed catalog (the full-profile
-  image you can use) are not published yet.
 - **Reattaching running VMs across an upgrade:** an upgrade stops them
   (`--stop-vms`).
 - **A daemon settings file** (`~/Library/Application Support/Koala/config.json`)

@@ -75,7 +75,8 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | --- | --- |
 | `IMAGE_INCOMPATIBLE` | The image does not fit the profile: OCI images need `lean`, catalog entries `full`. Or the catalog entry is unknown. |
 | `UNSUPPORTED_ARCHITECTURE` | The image has no `linux/arm64` variant. |
-| `IMAGE_PREPARATION_FAILED`, `REGISTRY_ERROR` | The image could not be fetched or prepared, or the registry answered with an error (for example a wrong password or a missing image). Check the reference, your network and your login. |
+| `IMAGE_PREPARATION_FAILED`, `REGISTRY_ERROR` | The image could not be fetched or prepared, or the registry answered with an error (for example a wrong password or a missing image). Check the reference, your network and your login. If `--wait` adds "the image helper failed", Koala's own helper stopped, not the image: run the command again. |
+| `IMAGE_PULL_INTERRUPTED`, `IMAGE_PRUNE_INTERRUPTED` | The Koala manager restarted while the pull or prune ran. Nothing half-made is kept. Run the command again; content already fetched is reused. |
 | `REGISTRY_AUTH_INVALID` | The registry's sign-in challenge could not be used. Check the registry address. |
 | `NOT_FOUND` on `image pull --registry-login` | The login ID no longer exists (for example after `registry logout`). |
 
@@ -122,11 +123,14 @@ usually after a manager restart. Stop and start it. See
 | Code | Meaning and what to do |
 | --- | --- |
 | `EXEC_START_FAILED` | The command could not be started in the VM, for example the program does not exist, or the image's user is unknown. This is not the program's exit code. `koala start --wait` prints the reason after the code, and `koala inspect VM --json` shows it as `lastFailure`. (Koala 0.1.0-preview.5 and earlier print only the code.) |
+| `start_failed` right after a manager restart | The manager stopped after it accepted the command and before it sent it to the VM, so the command never ran. Run it again. The VM was not touched. |
 | `RETENTION_EXPIRED` | The output you asked for is no longer kept, or was never captured: a VM that fails within a second or two of starting can end before its serial console is read. Use `koala inspect VM --json` (`lastFailure`) for why it failed. |
 | `TRANSFER_EXISTS` | The `cp` destination already exists. Choose another name or add `--replace`. |
 | `TRANSFER_INVALID_PATH` | A path in the copy is not usable, for example the copied entry is itself a symlink. |
 | `TRANSFER_INVALID_ENTRY` | The tree contains something `cp` refuses: a hard link, a device file, a FIFO or a symlink that leads outside the tree. |
 | `TRANSFER_BUDGET` | The copy exceeds 100,000 entries or 16 GiB. |
+| `TRANSFER_HELPER_FAILED` (host) | Koala's file-copy helper on your Mac stopped during the copy. The message says what didn't change: nothing in the VM, or the host destination. Run the command again. |
+| `TRANSFER_CHANNEL_LOST` | The copy's connection ended, for example `koala cp` was closed mid-copy. A copy into a VM whose `koala cp` ended is stopped after 2 minutes, and nothing is published. Run the command again. |
 
 ### Internal failures
 

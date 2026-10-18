@@ -42,8 +42,8 @@ not public yet.
 - **Use the images you already have:** Docker-style (OCI) images from Docker
   Hub or a private registry.
 - **Choose a profile:** *lean* VMs run one image with a minimal init. *Full*
-  VMs, which run a Linux distribution with systemd and Docker Engine, are not
-  in the current preview.
+  VMs run Ubuntu 24.04 with systemd and Docker Engine
+  (`koala create NAME --catalog ubuntu-24.04`).
 - **Grant access explicitly:** share a host folder, publish a port, allow a
   service on your Mac, or give a secret to one VM.
 - **Keep API keys on your Mac:** give a VM a broker grant instead of a key.

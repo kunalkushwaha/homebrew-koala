@@ -25,13 +25,14 @@ A full VM comes from a catalog entry:
 
 ```sh
 koala volume create dev-data --size 1GiB --wait
-koala create dev --catalog CATALOG_ENTRY --volume dev-data:/data --mount "$PWD/src:/src:ro" --wait
+koala create dev --catalog ubuntu-24.04 --volume dev-data:/data --mount "$PWD/src:/src:ro" --wait
 koala start dev --wait          # returns once systemd and Docker are ready
 ```
 
-**Not available yet:** the signed Koala catalog, with its versioned full
-image, is not published; the preview has the lean runtime only. Until then there is no public catalog entry to
-use. The full profile was tested with a test catalog entry.
+The catalog has one entry, `ubuntu-24.04`: Ubuntu 24.04 with systemd and
+Docker Engine, on Linux 6.18. It is part of the runtime that `koala system
+install` downloads and verifies, so it works offline once Koala is
+installed.
 
 Commands run inside systemd's environment, as root by default:
 

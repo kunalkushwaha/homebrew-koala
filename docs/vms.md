@@ -262,5 +262,6 @@ koala update web -f web.json --wait      # prints the new grants, then applies t
 
 `koala runtime update VM --bundle DIGEST [--rollback]` selects a different
 verified kernel and init bundle for a stopped VM, without touching its
-image or disk. Runtime bundles beyond the preview's lean runtime come with
-the catalog, which is not available yet.
+image or disk. A release installs one lean and one full bundle, and a VM
+can switch only to a bundle of its own profile. New bundles come with Koala
+releases.
