@@ -22,6 +22,10 @@ development environments in ARM64 Linux VMs on Apple silicon, using Apple's
 Virtualization framework. Each VM has its own kernel, disk and network, and
 gets only the access you grant it.
 
+[![Watch the explainer: Koala - run agents with confidence (YouTube)](https://img.youtube.com/vi/1--kPBb8dOU/maxresdefault.jpg)](https://youtu.be/1--kPBb8dOU)
+
+*Watch the explainer: [Koala - run agents with confidence](https://youtu.be/1--kPBb8dOU) (YouTube).*
+
 > **Preview:** Koala is in preview, and v0.1 is in development. Its security
 > work is not complete, so use it with workloads and on machines you trust.
 > Each release's notes say what is done and what is not.
