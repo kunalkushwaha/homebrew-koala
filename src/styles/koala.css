@@ -207,3 +207,20 @@ h1#_top {
 .sl-markdown-content .koala-eyebrow { margin-top: 3.5rem; margin-bottom: 0; }
 .sl-markdown-content .koala-eyebrow + * { margin-top: 0.35rem !important; }
 .sl-markdown-content .koala-eyebrow + * h2 { padding-top: 0; }
+
+/* The explainer video on the home page: 16:9, as wide as the text column. */
+.koala-video {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--sl-color-black);
+}
+.koala-video iframe {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
