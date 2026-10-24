@@ -45,6 +45,8 @@ koala system check
 
 ## Installing
 
+![Installing Koala on Linux: the package once as root, then koala system install as each user](images/linux-install.svg)
+
 With the Debian package, from the release page (check its checksum against
 the release notes first):
 
@@ -73,6 +75,16 @@ koala-VERSION/bin/koala system install
 ```
 
 Keep the extracted folder: the `koala` command runs from it.
+
+## Networking
+
+A VM's network works as on a Mac: the internet by default, and your
+computer's services, the LAN and published ports only as you grant them
+([Networking](networking.md)). On Linux the VM's processes have no network
+of their own; its traffic leaves only through its network session, which
+applies its rules. No TAP device, bridge or root is needed.
+
+![A VM's network on Linux: the guest's frames go through the koala-net device to its session, which applies the VM's rules](images/linux-networking.svg)
 
 ## Logging out
 
@@ -125,8 +137,12 @@ archive.
 
 ## What is not done yet on Linux
 
-- User, PID and mount namespaces for each helper, with a private `/proc`.
-  Today each helper is confined with Landlock and seccomp.
+- Helpers get their own user, PID and mount namespaces, with a private
+  `/proc`, only where Koala's AppArmor profile is loaded (from
+  0.1.0-preview.13; the `.deb` installs and loads it). Without it, as with
+  an archive install, each helper is still confined with Landlock and
+  seccomp, but can see other processes' `/proc` entries. `koala system
+  check` says which.
 - The network session with a VPN, Wi-Fi changes and sleep, tested on a
   real machine.
 - Install, upgrade and removal were tested on a clean Ubuntu 24.04 system
