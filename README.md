@@ -22,6 +22,10 @@ development environments in ARM64 Linux VMs on Apple silicon, using Apple's
 Virtualization framework. Each VM has its own kernel, disk and network, and
 gets only the access you grant it.
 
+**New: Koala on Linux (preview).** From `0.1.0-preview.12`, Koala also runs on
+x86-64 Ubuntu 24.04 hosts with KVM, using Cloud Hypervisor: the same commands,
+with `linux/amd64` VMs. See [Koala on Linux](docs/linux.md).
+
 [![Watch the explainer: Koala - run agents with confidence (YouTube)](https://img.youtube.com/vi/1--kPBb8dOU/maxresdefault.jpg)](https://youtu.be/1--kPBb8dOU)
 
 *Watch the explainer: [Koala - run agents with confidence](https://youtu.be/1--kPBb8dOU) (YouTube).*
@@ -70,9 +74,17 @@ not public yet.
 
 ## Requirements
 
+**macOS:**
+
 - A Mac with Apple silicon.
 - macOS 26 or newer.
 - Images built for `linux/arm64`. Intel (x86-64) images are not supported.
+
+**Linux (preview):**
+
+- Ubuntu 24.04 on x86-64, kernel 6.12 or newer (`linux-generic-hwe-24.04`).
+- Access to `/dev/kvm` (the `kvm` group), and a systemd user session.
+- Images built for `linux/amd64`.
 
 ## Install
 
@@ -85,6 +97,19 @@ Or download an archive from the
 [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 Each release's notes give the archive checksum and the runtime signing key,
 and [getting started](docs/getting-started.md) explains the archive install.
+
+**On Linux (preview),** download the Debian package from the
+[releases page](https://github.com/kunalkushwaha/homebrew-koala/releases), check
+its checksum against the release notes, then:
+
+```sh
+sudo apt install ./koala_VERSION_amd64.deb
+koala system check            # what this host has, and what is missing
+koala system install          # set up and start the manager for your user (no sudo)
+```
+
+[Koala on Linux](docs/linux.md) covers the requirements, logging out,
+upgrading and removing.
 
 ## Quick start
 

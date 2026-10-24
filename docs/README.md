@@ -1,6 +1,6 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.11. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.11 on macOS and 0.1.0-preview.12 on Linux. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services, development environments and AI agents
@@ -91,6 +91,8 @@ Crash and endurance qualification, planned for release, is not finished yet.
 11. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
     disk, and what is not available yet.
 12. [Troubleshooting](troubleshooting.md): error codes and what to do.
+13. [Koala on Linux (preview)](linux.md): requirements, the Debian
+    package, logging out, upgrading and removing on Linux.
 
 ### Examples
 

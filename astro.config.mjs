@@ -65,6 +65,7 @@ export default defineConfig({
 				{ label: 'Reference', items: [
 					{ label: 'Limits and behaviour', slug: 'guide/limits' },
 					{ label: 'Troubleshooting', slug: 'guide/troubleshooting' },
+					{ label: 'Koala on Linux (preview)', slug: 'guide/linux' },
 					{ label: 'Releases', link: 'https://github.com/kunalkushwaha/homebrew-koala/releases', attrs: { target: '_blank' } },
 				] },
 				{ label: 'Examples', items: [
