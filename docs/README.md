@@ -1,6 +1,6 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.11 on macOS and 0.1.0-preview.13 on Linux. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-preview.11 on macOS and 0.1.0-preview.14 on Linux. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for macOS developers who use the `koala` command line. It
 explains how to run jobs, services, development environments and AI agents
