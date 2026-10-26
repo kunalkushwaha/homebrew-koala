@@ -79,8 +79,8 @@ Mac and the Linux files. Koala's source code is not public yet.
   volume and its setup, after showing you the plan
   ([templates](docs/templates.md)). `koala template update` gets newer
   templates, signed with the release key. Examples:
-  [Hermes](docs/example-hermes.md) and [OpenClaw](docs/example-openclaw.md)
-  (not tested on Koala yet), with their files in [examples](examples).
+  [Hermes](docs/example-hermes.md) and [OpenClaw](docs/example-openclaw.md),
+  with their files in [examples](examples).
 - **Run a browser agent (on a Mac):** a normal browser in a VM that you sign
   in to through a live view, and an agent beside it that drafts posts and
   replies for you to approve ([example](docs/example-x-agent.md), code in

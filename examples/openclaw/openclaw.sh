@@ -1,7 +1,7 @@
 #!/bin/bash
-# OpenClaw's gateway in a Koala VM: no internet, the model key on your Mac
+# OpenClaw's gateway in a Koala VM: no internet, the model key on your computer
 # (through Koala's broker), its state on a volume, and the Control UI on
-# 127.0.0.1. Not tested on Koala. See README.md.
+# 127.0.0.1. Tested on Linux and macOS with OpenClaw 2026.10.7. See README.md.
 #
 #   openclaw.sh up [--model M] [--origin URL] [--port N]
 #                              create and start the VM (asks for your API key once)
@@ -86,7 +86,7 @@ up() {
     --secret-env "$TOKEN_SECRET=OPENCLAW_GATEWAY_TOKEN" \
     --wait --timeout 1800 -- /openclaw/vm/start.sh
   quiet start "$VM" --wait --timeout 1800
-  echo "starting: the first start downloads the image (about 1.3 GB)"
+  echo "starting (the first start downloads the image, about 1.3 GB)"
   local ready=""
   for _ in $(seq 120); do
     if healthy; then ready=1; break; fi
@@ -94,7 +94,7 @@ up() {
   done
   [[ -n "$ready" ]] || { echo "the gateway isn't answering after 10 minutes; see: $0 logs" >&2; exit 1; }
   echo "ready. Control UI: http://127.0.0.1:$port (sign in with the gateway token)"
-  echo "then approve your browser: $0 approve, and $0 approve ID"
+  echo "if OpenClaw asks to approve your browser: $0 approve, then $0 approve ID"
 }
 
 case "${1:-}" in

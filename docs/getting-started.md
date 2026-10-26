@@ -196,5 +196,5 @@ command's usage, options and examples: for example `koala create --help` or
 - [VM templates for agents](templates.md): an agent in one command, and
   `koala template update`.
 - Examples: [Run the Hermes agent](example-hermes.md),
-  [Run OpenClaw](example-openclaw.md) (not tested on Koala), and
+  [Run OpenClaw](example-openclaw.md) (tested on Linux and macOS), and
   [an X agent](example-x-agent.md).

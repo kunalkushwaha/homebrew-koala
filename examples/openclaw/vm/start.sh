@@ -1,7 +1,8 @@
 #!/bin/sh
 # OpenClaw's gateway in a Koala VM: the VM's main command, run as root from
 # /openclaw/vm/start.sh (openclaw.sh up shares this folder there, read-only).
-# Not tested on Koala; written from OpenClaw's documentation of its image.
+# Tested on Linux and macOS with OpenClaw 2026.10.7; written from OpenClaw's
+# documentation of its image.
 #
 # 1. Gives the state volume (/home/node/.openclaw) to node, the user
 #    OpenClaw's image runs as (uid 1000).
@@ -12,7 +13,7 @@
 #    broker as an OpenAI-compatible provider. Koala never reads or writes
 #    that file itself.
 # 3. On every start, with the gateway not yet running (as `config set`
-#    requires), allows the Control UI's address on the Mac ($KOALA_UI_PORT).
+#    requires), allows the Control UI's address on the host ($KOALA_UI_PORT).
 # 4. Runs the image's own entrypoint as node, with the gateway.
 set -e
 STATE=/home/node/.openclaw
