@@ -3,8 +3,8 @@
 A Koala example. It runs the [Hermes agent](https://github.com/NousResearch/hermes-agent)'s
 gateway in a VM:
 - with no internet access;
-- with your model provider's API key on your Mac, reached through Koala's
-  broker;
+- with your model provider's API key on this computer, reached through
+  Koala's broker;
 - with Hermes's data on a volume;
 - with its API on `127.0.0.1:8642`.
 
@@ -39,8 +39,12 @@ koala stop hermes --wait && koala rm hermes
 koala volume rm hermes-data && koala policy rm hermes-openai && koala credential rm hermes-openai
 ```
 
-You need Koala 0.1.0-preview.9 or later, and an
-OpenAI-compatible API key.
+You need an OpenAI-compatible API key, and Koala:
+- for the built-in template, 0.1.0-preview.9 or later on a Mac, or
+  0.1.0-preview.12 or later on Linux;
+- for this folder's `template.json`, 0.1.0-preview.15 or later on a Mac. It
+  uses `{{platform}}`, which older Macs refuse. On Linux, 0.1.0-preview.12
+  or later.
 
 ## Files
 

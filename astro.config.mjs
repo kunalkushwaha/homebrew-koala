@@ -70,7 +70,7 @@ export default defineConfig({
 				] },
 				{ label: 'Examples', items: [
 					{ label: 'Run the Hermes agent', slug: 'guide/example-hermes' },
-					{ label: 'Run OpenClaw (not tested)', slug: 'guide/example-openclaw' },
+					{ label: 'Run OpenClaw', slug: 'guide/example-openclaw' },
 					{ label: 'An X agent', slug: 'guide/example-x-agent' },
 				] },
 			],

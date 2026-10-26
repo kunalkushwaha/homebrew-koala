@@ -2,19 +2,21 @@
 
 [User guide](README.md) > Example: run OpenClaw
 
-> **Not tested on Koala.** This page is written from OpenClaw's own
-> documentation and its image, as of 2026-10-16
-> (`ghcr.io/openclaw/openclaw:latest`, OpenClaw 2026.10.4). It has not been
-> run on Koala. Expect to adjust it: see
-> [What may need changing](#what-may-need-changing).
+> **Tested on Linux and macOS** (2026-10-26): Koala 0.1.0-preview.14 on
+> Linux and 0.1.0-preview.15 on an Apple silicon Mac, OpenClaw 2026.10.7
+> (`ghcr.io/openclaw/openclaw:latest`), with a local OpenAI-compatible model
+> in place of OpenAI's. Everything on this page ran as written on both, and
+> the browser didn't need approving on either. A newer OpenClaw may change
+> its onboarding or its Control UI: see
+> [If something doesn't work](#if-something-doesnt-work).
 
 [OpenClaw](https://openclaw.ai) is a personal AI assistant. Its gateway
 connects a model to chat apps and runs tools. This page runs the gateway
 in a Koala service VM:
 - with no internet access;
-- with its model key on your Mac, reached through the [broker](broker.md);
+- with its model key on your computer, reached through the [broker](broker.md);
 - with its state on a volume;
-- with its Control UI on your Mac's `127.0.0.1`.
+- with its Control UI on your computer's `127.0.0.1`.
 
 The agent's tools run inside the VM, so they reach only what the VM is
 granted.
@@ -56,13 +58,22 @@ its image:
 
 ## Get the example
 
-The files are in the `examples/openclaw` folder of Koala's Homebrew tap,
-which Homebrew keeps on your Mac. Copy it to a folder of your own, outside
-Desktop, Documents and Downloads: macOS protects those, and the VM reads
-this folder.
+The files are in the `examples/openclaw` folder of Koala's Homebrew tap.
+Copy it to a folder of your own: the VM reads this folder.
+
+On a Mac, Homebrew already keeps the tap. Choose a folder outside Desktop,
+Documents and Downloads, which macOS protects:
 
 ```sh
 cp -R "$(brew --repository kunalkushwaha/koala)/examples/openclaw" ~/openclaw
+cd ~/openclaw
+```
+
+On Linux, clone the tap:
+
+```sh
+git clone --depth 1 https://github.com/kunalkushwaha/homebrew-koala ~/koala-tap
+cp -R ~/koala-tap/examples/openclaw ~/openclaw
 cd ~/openclaw
 ```
 
@@ -77,7 +88,7 @@ cd ~/openclaw
 ./openclaw.sh up
 ```
 
-It asks for your model provider's API key, which stays on your Mac. It
+It asks for your model provider's API key, which stays on your computer. It
 prints the gateway token once: keep it, for example in your password
 manager. The Control UI asks for it, and Koala doesn't show it again.
 
@@ -88,7 +99,7 @@ manager. The Control UI asks for it, and Koala doesn't show it again.
 
 **What `up` does with Koala:**
 1. `koala policy create claw-openai --template openai --model …`: the
-   key on your Mac, for that model only.
+   key on your computer, for that model only.
 2. `koala secret set claw-gateway-token`: a random gateway token.
 3. `koala volume create claw-state`: OpenClaw's state.
 4. `koala create claw …`, with flags:
@@ -115,7 +126,7 @@ Each step that exists already (the policy, the token, the volume) is reused.
    - the gateway token from `OPENCLAW_GATEWAY_TOKEN`;
    - your model, through the broker, as an OpenAI-compatible provider. Its
      key is `koala-brokered`, a placeholder that the broker replaces.
-3. It allows the Control UI's address on your Mac, with `openclaw config
+3. It allows the Control UI's address on your computer, with `openclaw config
    set`.
 4. As `node`, it runs OpenClaw's own entrypoint with the gateway.
 
@@ -124,18 +135,27 @@ OpenClaw's own commands, such as `openclaw config set`.
 
 ## Open the Control UI
 
-Open `http://127.0.0.1:18789` and sign in with the gateway token.
+Open `http://127.0.0.1:18789`, paste the gateway token into **Gateway
+secret**, and choose **Connect**:
 
-OpenClaw treats a browser that arrives through a published port as remote,
-so it asks for the device to be approved. Approve it from the VM:
+![OpenClaw's sign-in page, asking for the gateway token](images/openclaw-sign-in.png)
+
+Then the Control UI opens. Messages go to your model through the broker:
+
+![The OpenClaw Control UI, connected, with two messages answered by the model](images/openclaw-control-ui.png)
+
+In the run on Linux, signing in with the token was enough: OpenClaw paired
+the browser at once. If OpenClaw asks for the device to be approved instead,
+approve it from the VM:
 
 ```sh
-./openclaw.sh approve             # the devices waiting
+./openclaw.sh approve             # the devices paired, and those waiting
 ./openclaw.sh approve REQUEST_ID  # approve yours
 ```
 
 These run OpenClaw's `devices list` and `devices approve` in the VM, as the
-user that owns its state.
+user that owns its state. The browser stays paired after the VM restarts,
+and after `down` and `up`, since its pairing is on the volume.
 
 ## Stop or remove it
 
@@ -168,10 +188,10 @@ own token. To give it those:
 
 With internet on, the agent can send anything it reads anywhere.
 
-## What may need changing
+## If something doesn't work
 
-Nothing on this page has run on Koala. These are the parts most likely to
-need work, and where to look:
+This page ran as written with OpenClaw 2026.10.7. A newer OpenClaw may
+change these parts, and this is where to look:
 
 | Part | What to check |
 | --- | --- |
@@ -182,9 +202,10 @@ need work, and where to look:
 | Requests to the model | The `openai` policy allows chat completions and the model list for the one model. If OpenClaw asks for more, the broker refuses with `"source":"koala-broker"`. `koala policy status` shows the counts, and `koala policy inspect claw-openai` what is allowed. |
 | The devices commands | They may need the gateway token: run `koala exec --user node claw -- openclaw devices list --token TOKEN`. |
 
-If you get it working, the changes you needed are worth reporting. They
-let a tested built-in template follow, so that OpenClaw becomes `koala
-create claw --template openclaw`, as [Hermes](templates.md) is.
+If you need to change something, it's worth reporting. A built-in
+template follows once OpenClaw has run from one on a real VM, so that
+OpenClaw becomes `koala create claw --template openclaw`, as
+[Hermes](templates.md) is.
 
 ## Keys and what the agent can reach
 

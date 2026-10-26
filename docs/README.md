@@ -110,9 +110,9 @@ to `/dev/kvm`, and images for `linux/amd64`. See
 - [Run the Hermes agent](example-hermes.md): an AI agent's gateway from its
   official image, as a service VM with internet off, its model key on your
   Mac, and its data on a volume.
-- [Run OpenClaw](example-openclaw.md) (not tested on Koala): the OpenClaw
+- [Run OpenClaw](example-openclaw.md) (tested on Linux and macOS): the OpenClaw
   gateway from its official image, with one script, internet off and its
-  model key on your Mac.
+  model key on your computer.
 - [An X agent](example-x-agent.md): a normal browser in a VM that you sign
   in to through a live view, and an agent that reads X, drafts with a model
   (local Ollama or through the broker), and posts only what you approve.
