@@ -1,10 +1,10 @@
 ---
-title: Koala — Linux VMs for your Mac
-description: Run Linux workloads on your Mac, each in its own lightweight virtual machine.
+title: Koala — Linux VMs on your Mac or Linux machine
+description: Run AI agents and other Linux workloads, each in its own lightweight virtual machine, on your Mac or on a Linux machine.
 template: splash
 hero:
-  title: Linux workloads on your Mac, <span class="accent">one VM each.</span>
-  tagline: Koala runs jobs, services, development environments and AI agents in ARM64 Linux VMs on Apple silicon. Each VM has its own kernel, disk and network, and gets only the access you grant it.
+  title: Agents and Linux workloads, <span class="accent">one VM each.</span>
+  tagline: Koala runs jobs, services, development environments and AI agents in Linux VMs, on Apple silicon Macs and on x86-64 Linux machines with KVM. Each VM has its own kernel, disk and network, and gets only the access you grant it.
   actions:
     - text: Get started
       link: /guide/getting-started/
@@ -36,7 +36,10 @@ The explainer is also [on YouTube](https://youtu.be/1--kPBb8dOU).
 
 <p class="koala-eyebrow">01 · Install</p>
 
-## Two commands, no `sudo`
+## Install, then run as you
+
+<Tabs syncKey="host">
+<TabItem label="macOS">
 
 ```sh
 brew install kunalkushwaha/koala/koala
@@ -46,6 +49,29 @@ koala system install          # set up and start the manager for your user
 You need a Mac with Apple silicon and macOS 26 or newer, and images built for
 `linux/arm64`. To install from a release archive, see
 [getting started](guide/getting-started/#installation).
+
+</TabItem>
+<TabItem label="Linux (preview)">
+
+Download the `.deb` from the
+[releases page](https://github.com/kunalkushwaha/homebrew-koala/releases) and
+check its checksum against the release notes, then:
+
+```sh
+sudo apt install ./koala_VERSION_amd64.deb
+koala system check            # what this host has, and what is missing
+koala system install          # set up and start the manager for your user
+```
+
+You need Ubuntu 24.04 on x86-64 with kernel 6.12 or newer, access to
+`/dev/kvm`, and images built for `linux/amd64`. See
+[Koala on Linux](guide/linux/).
+
+</TabItem>
+</Tabs>
+
+After the install, everyday use needs no `sudo`: the same `koala` commands
+on both.
 
 <p class="koala-eyebrow">02 · Try it</p>
 
@@ -76,8 +102,8 @@ koala stop dev --wait
 <TabItem label="Sandboxed agent" icon="seti:lock">
 
 An environment VM with the internet off and an API key that never enters
-it. The key stays in your login keychain, and the broker adds it to the
-requests the policy allows:
+it. The key stays on your computer (in the login keychain on a Mac), and
+the broker adds it to the requests the policy allows:
 
 ```sh
 koala policy create openai-main --template openai --model gpt-4.1-mini   # asks for the key
@@ -88,14 +114,14 @@ koala exec agent -- sh -c 'echo $OPENAI_BASE_URL $OPENAI_API_KEY'
 ```
 
 Inside the VM, the service is `http://openai.broker.koala.internal/v1`, and
-`OPENAI_API_KEY` is only a placeholder. See [keys on your Mac](guide/broker/),
+`OPENAI_API_KEY` is only a placeholder. See [keys outside the VM](guide/broker/),
 [networking](guide/networking/) and the [Hermes example](guide/example-hermes/).
 
 </TabItem>
 <TabItem label="Agent from a template" icon="puzzle">
 
-One command sets an agent up: its VM, the policy that keeps its key on your
-Mac, a volume, and its setup. Koala shows the whole plan and asks first:
+One command sets an agent up: its VM, the policy that keeps its key outside
+the VM, a volume, and its setup. Koala shows the whole plan and asks first:
 
 ```sh
 koala template list                     # the templates
@@ -116,16 +142,16 @@ tested on Koala yet) and [an X agent](guide/example-x-agent/).
 <CardGrid>
 	<Card title="Throwaway jobs" icon="rocket">
 		A command in a fresh VM, removed when it ends. For builds, tests and
-		scripts you would rather not run on your Mac. [Jobs and VMs →](guide/vms/)
+		scripts you would rather not run on your computer. [Jobs and VMs →](guide/vms/)
 	</Card>
 	<Card title="Services and environments" icon="laptop">
 		VMs that keep running after your terminal closes. `exec`, attach a
 		shell, `cp` files in and out. [Working inside a VM →](guide/working-in-vms/)
 	</Card>
-	<Card title="Keys stay on your Mac" icon="approve-check">
-		An agent's API keys stay in your login keychain. The broker adds a key
-		only to the requests a policy allows, so it never enters the VM.
-		[Keys on your Mac →](guide/broker/)
+	<Card title="Keys stay outside the VM" icon="approve-check">
+		An agent's API keys stay on your computer: the login keychain on a Mac,
+		the broker's own encrypted files on Linux. The broker adds a key only to
+		the requests a policy allows. [The broker →](guide/broker/)
 	</Card>
 	<Card title="Agents in one command" icon="star">
 		`koala create hermes --template hermes` makes an agent's VM, its key's
@@ -142,32 +168,52 @@ tested on Koala yet) and [an X agent](guide/example-x-agent/).
 	</Card>
 	<Card title="Deny by default" icon="seti:lock">
 		No host files, no secrets, no LAN, no other VMs, until you grant them.
-		Checked on the Mac side. [Networking →](guide/networking/)
+		Checked on the host side. [Networking →](guide/networking/)
 	</Card>
 	<Card title="Runs as you" icon="approve-check-circle">
-		A per-user launchd manager keeps track of your VMs. Nothing system-wide,
-		no root daemon. [Getting started →](guide/getting-started/)
+		A per-user manager (a launchd agent on a Mac, a systemd user service on
+		Linux) keeps track of your VMs. No root daemon. [Getting started →](guide/getting-started/)
 	</Card>
 </CardGrid>
 
-<p class="koala-eyebrow">04 · Defaults</p>
+<p class="koala-eyebrow">04 · Tested by attacking it</p>
+
+## Hostile guests, crashes and fuzzing, on real VMs
+
+- **Root inside the VM attacks the boundary:** the guest channels, the
+  network (spoofing, fragments, floods), storage and credentials, beside a
+  healthy control VM, on lean and full VMs.
+- **About 1,400 crash checks on each platform** kill the manager, each VM's
+  process and every helper at chosen moments, then check that nothing is
+  lost or left behind and the VM starts again.
+- **Every parser of guest data is fuzzed:** more than 40 targets, each for
+  at least 100,000 inputs, the Swift and C ones under AddressSanitizer.
+- **A canary key is hunted** through the VM's disk, volumes and image; it
+  may appear only on the upstream request.
+- **Every release is checked as you get it:** a simulated fresh Mac, an
+  upgrade from the previous release with a VM running, and a clean install
+  on each platform.
+
+More in the [README](https://github.com/kunalkushwaha/homebrew-koala#how-koala-is-tested).
+
+<p class="koala-eyebrow">05 · Defaults</p>
 
 ## What a VM can reach
 
 | Resource | Default | When you grant it |
 | --- | --- | --- |
 | Internet | Public addresses only | Can be switched off |
-| Files on your Mac | None | Folders you share; read-only unless you ask for read-write |
+| Files on your computer | None | Folders you share; read-only unless you ask for read-write |
 | Secrets | None | Named secrets, to one VM, as a file or an environment variable |
-| API keys | None | A broker grant: the key stays on your Mac, added only to the requests a policy allows |
-| Services on your Mac | None | One address and specific ports |
+| API keys | None | A broker grant: the key stays on your computer, added only to the requests a policy allows |
+| Services on your computer | None | One address and specific ports |
 | Your LAN | None | A specific prefix and ports |
 | Other VMs | Never | Not available in v0.1 |
 | Published ports | None | On `127.0.0.1`, or on the LAN when you ask |
 
 Koala treats everything inside a VM as untrusted, and trusts you, the
-logged-in macOS user. VMs do not keep running after you log out or restart
-your Mac.
+logged-in user. On a Mac, VMs stop when you log out; on Linux, they keep
+running with lingering on. Nothing starts by itself after a restart.
 
 <Aside type="caution" title="Koala is in preview">
 Koala's security work is not complete, so use it with workloads and on

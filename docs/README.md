@@ -2,9 +2,10 @@
 
 This guide matches Koala 0.1.0-preview.15 on macOS and Linux. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
-This guide is for macOS developers who use the `koala` command line. It
-explains how to run jobs, services, development environments and AI agents
-in Koala VMs.
+This guide is for developers who use the `koala` command line, on a Mac or
+on a Linux machine. It explains how to run jobs, services, development
+environments and AI agents in Koala VMs. The commands are the same on both;
+the pages show a Mac, and [Koala on Linux](linux.md) covers what differs.
 Koala is in preview: `0.1.0-preview.15` is published, and v0.1 is in
 development. This guide describes only what works today, and marks anything
 that is planned but not built yet.
@@ -12,26 +13,28 @@ that is planned but not built yet.
 ## What Koala is
 
 Koala runs each of your Linux workloads in its own lightweight virtual
-machine on your Mac:
+machine, on your Mac or on a Linux machine:
 
 - **One VM per environment.** Each job, service or development environment
-  gets its own ARM64 Linux VM, with its own kernel, disk and network stack.
+  gets its own Linux VM (ARM64 on a Mac, x86-64 on Linux), with its own
+  kernel, disk and network stack.
   VMs do not share a network with each other.
 - **A CLI and a background manager.** You type `koala` commands. A per-user
-  manager (a launchd agent) keeps track of VMs and keeps them running after
-  your terminal closes. No `sudo` is needed for everyday use.
+  manager (a launchd agent on a Mac, a systemd user service on Linux) keeps
+  track of VMs and keeps them running after your terminal closes. No `sudo` is needed for everyday use.
 - **Two guest profiles.** *Lean* VMs run one OCI image (a Docker-style
   image) with a minimal init. *Full* VMs run a Linux distribution with
   systemd and Docker Engine.
-- **Agents with their keys on your Mac.** An AI agent's API keys can stay
-  in your login keychain: the [broker](broker.md) adds a key only to the
+- **Agents with their keys outside the VM.** An AI agent's API keys can
+  stay on your computer (in the login keychain on a Mac, in the broker's
+  own encrypted files on Linux): the [broker](broker.md) adds a key only to the
   requests a policy allows, so the key never enters the VM. A
   [VM template](templates.md) sets an agent up in one command, as in
   `koala create hermes --template hermes`.
 
 ![How Koala fits together: the koala CLI talks to a per-user manager, which runs one VM per workload, each behind its own network helper](images/overview.svg)
 
-Each VM has its own kernel and disk, and a network helper on the Mac that
+Each VM has its own kernel and disk, and a network helper on the host that
 checks every connection it makes.
 
 ## What Koala promises, and what it does not
@@ -62,10 +65,16 @@ Crash and endurance qualification, planned for release, is not finished yet.
 
 ## Requirements
 
+On a Mac:
+
 - A Mac with Apple silicon.
 - macOS 26 or newer.
 - Images for `linux/arm64`. Intel (x86-64) images are not supported, and
   there is no Rosetta translation.
+
+On Linux (preview): Ubuntu 24.04 on x86-64 with kernel 6.12 or newer, access
+to `/dev/kvm`, and images for `linux/amd64`. See
+[Koala on Linux](linux.md#requirements).
 
 ## Contents
 

@@ -6,7 +6,10 @@
 
 Koala is published as a preview, on the
 [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases)
-and through a Homebrew tap. Homebrew is the recommended path:
+and through a Homebrew tap. One release holds the Mac and the Linux files.
+On Linux, install the Debian package: see
+[Koala on Linux](linux.md#installing). On a Mac, Homebrew is the recommended
+path:
 
 ```sh
 brew install kunalkushwaha/koala/koala
@@ -34,8 +37,8 @@ user, not with `sudo`. It:
 - copies the manager, network helper and image extractor into
   `~/Library/Application Support/Koala/versions/VERSION/`, then signs them
   for this Mac;
-- downloads the lean runtime and verifies its signature against the
-  release key;
+- downloads the lean and full runtimes (about 330 MB, once for each new
+  runtime) and verifies their signatures against the release key;
 - writes `manager.json`, plus the launchd agent at
   `~/Library/LaunchAgents/dev.koala.manager.plist`;
 - starts the manager.
@@ -43,7 +46,9 @@ user, not with `sudo`. It:
 Running it again changes nothing. `koala --version` prints the release
 version.
 
-**Upgrading:** run `koala system install` from the newer release. If VMs
+**Upgrading:** with Homebrew, `brew upgrade koala`, then
+`koala system install`; from an archive, run `koala system install` from the
+newer release. On Linux, see [Koala on Linux](linux.md#upgrading). If VMs
 are running, it refuses and nothing changes; add `--stop-vms` to stop them
 first. If the new manager does not start, the previous version is put back
 and started again. Installing an older release over data written by a newer

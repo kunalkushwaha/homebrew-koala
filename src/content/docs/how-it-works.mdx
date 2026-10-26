@@ -9,6 +9,14 @@ This page explains Koala's moving parts and where its boundaries are, so you
 can judge what a VM can and cannot do. For commands, see the
 [user guide](../guide/).
 
+<Aside title="On a Mac and on Linux">
+This page shows Koala on a Mac. On Linux the same pieces and boundaries run
+on KVM with Cloud Hypervisor: the manager is a systemd user service, every
+helper is confined with Landlock and seccomp (and its own namespaces where
+Koala's AppArmor profile is loaded), and the broker keeps keys in its own
+encrypted files. See [Koala on Linux](../guide/linux/).
+</Aside>
+
 ## The pieces
 
 ![How Koala fits together: the koala CLI talks to a per-user manager, which runs one VM per workload, each behind its own network helper](./guide/images/overview.svg)
