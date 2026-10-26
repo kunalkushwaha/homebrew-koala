@@ -1,0 +1,23 @@
+---
+// D17: an animated diagram (the animated-diagrams kit's paste-in fragment),
+// outside Starlight's prose styles. Its own script starts it when visible.
+interface Props { html: string }
+const { html } = Astro.props;
+---
+<div class="not-content koala-diagram"><Fragment set:html={html} /></div>
+
+<style>
+	.koala-diagram { margin: 1.5rem 0 2rem; }
+	.koala-diagram :global(.dg) { max-width: 100%; }
+	/* D17: the kit draws on a 1200 px canvas. On a phone, keep the text
+	   readable and let the diagram scroll sideways instead of shrinking. */
+	@media (max-width: 760px) {
+		.koala-diagram { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+		.koala-diagram :global(.dg) { min-width: 900px; }
+		.koala-diagram::before {
+			content: 'Swipe sideways to see the whole diagram →';
+			display: block; position: sticky; left: 0;
+			font-size: 0.8rem; color: var(--sl-color-gray-3); margin-bottom: 0.5rem;
+		}
+	}
+</style>

@@ -16,6 +16,11 @@ hero:
 ---
 
 import { Card, CardGrid, Tabs, TabItem, Aside, LinkCard } from '@astrojs/starlight/components';
+import Diagram from '../../components/Diagram.astro';
+import twoHosts from '../../diagrams/site-two-hosts.html?raw';
+import broker from '../../diagrams/site-broker.html?raw';
+import template from '../../diagrams/site-template.html?raw';
+import tested from '../../diagrams/site-tested.html?raw';
 
 <p class="koala-eyebrow">Watch</p>
 
@@ -72,6 +77,8 @@ You need Ubuntu 24.04 on x86-64 with kernel 6.12 or newer, access to
 
 After the install, everyday use needs no `sudo`: the same `koala` commands
 on both.
+
+<Diagram html={twoHosts} />
 
 <p class="koala-eyebrow">02 · Try it</p>
 
@@ -135,9 +142,13 @@ tested on Koala yet) and [an X agent](guide/example-x-agent/).
 </TabItem>
 </Tabs>
 
+<Diagram html={template} />
+
 <p class="koala-eyebrow">03 · What you get</p>
 
 ## Built for untrusted workloads
+
+<Diagram html={broker} />
 
 <CardGrid>
 	<Card title="Throwaway jobs" icon="rocket">
@@ -179,6 +190,8 @@ tested on Koala yet) and [an X agent](guide/example-x-agent/).
 <p class="koala-eyebrow">04 · Tested by attacking it</p>
 
 ## Hostile guests, crashes and fuzzing, on real VMs
+
+<Diagram html={tested} />
 
 - **Root inside the VM attacks the boundary:** the guest channels, the
   network (spoofing, fragments, floods), storage and credentials, beside a
