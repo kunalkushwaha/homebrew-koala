@@ -60,8 +60,10 @@ untrusted. Koala does **not** promise:
 - Dedicated CPU cores or a cap on total Mac memory use. See
   [limits](limits.md#memory-cpu-and-disk).
 
-The adversarial-guest security testing is complete.
-Crash and endurance qualification, planned for release, is not finished yet.
+Koala is tested against a hostile guest, its broker
+against leaked keys, and its manager, VM processes and
+helpers by crashing them at chosen points, on real
+VMs on both platforms.
 
 ## Requirements
 

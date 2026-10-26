@@ -19,7 +19,7 @@ class Koala < Formula
 
   def caveats
     <<~EOS
-      Koala 0.1.0-preview.15 is a preview: its security proofs are not complete.
+      Koala 0.1.0-preview.15 is a preview: commands and formats may change between previews.
       Finish the installation for your user (no sudo):
         koala system install
       Before `brew uninstall koala`, run:

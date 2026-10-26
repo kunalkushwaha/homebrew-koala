@@ -214,9 +214,10 @@ Koala does **not** promise:
 - that a VM keeps running across logout or restart;
 - dedicated CPU cores, or a cap on the Mac's total memory use.
 
-<Aside type="caution" title="Preview">
-Adversarial-guest security testing and the credential broker are complete.
-Crash and endurance
-qualification, planned for release, is not finished yet. Use Koala with
-workloads and on machines you trust until v0.1 is released.
+<Aside type="note" title="Preview">
+Koala is tested against a hostile guest, its broker against leaked keys, and
+its manager, VM processes and helpers by crashing them at chosen points, on
+real VMs on both platforms ([tested by attacking it](../#hostile-guests-crashes-and-fuzzing-on-real-vms)).
+v0.1 is still in development: commands and file formats may change between
+previews.
 </Aside>

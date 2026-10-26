@@ -28,9 +28,10 @@ VM. The same `koala` commands, VM specs and policies work on both hosts.
 
 *Watch the explainer: [Koala - run agents with confidence](https://youtu.be/1--kPBb8dOU) (YouTube).*
 
-> **Preview:** Koala is in preview, and v0.1 is in development. Its security
-> work is not complete, so use it with workloads and on machines you trust.
-> Each release's notes say what is done and what is not.
+> **Preview:** Koala is in preview. It is tested hard, on real VMs, on both
+> platforms ([how](#how-koala-is-tested)), and v0.1 is still in development:
+> commands and file formats may change between previews. Each release's notes
+> say what changed.
 
 **Documentation:** <https://kunalkushwaha.github.io/homebrew-koala/>
 
