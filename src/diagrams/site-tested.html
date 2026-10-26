@@ -1,0 +1,1098 @@
+<div class="dg" data-dg-id="kt-tested" data-dg-mode="auto" data-dg-delay="1400"
+     role="img"
+     aria-label="Koala's tests: attacks by root inside a VM are refused at its boundary, fuzzing and crash checks hit its parsers and processes, and a canary key is not found in the VM's disk, volumes or image. The same suites run on a Mac and on Linux, and on every release.">
+
+<style data-dg-core>
+.dg {
+
+  --dg-bg:              #FFFFFF;
+  --dg-surface:         #FFFFFF;
+  --dg-surface-raised:  #FFFFFF;
+  --dg-surface-sunken:  #F5F7FA;
+  --dg-border:          rgba(16, 22, 33, 0.13);
+  --dg-border-strong:   rgba(16, 22, 33, 0.26);
+  --dg-grid:            rgba(16, 22, 33, 0.055);
+  --dg-inset:           rgba(16, 22, 33, 0.04);
+  --dg-lift:            drop-shadow(0 1px 2px rgba(16, 22, 33, 0.07));
+
+  --dg-text:            #171B22;
+  --dg-text-dim:        #4E5766;
+  --dg-text-muted:      #68707E;
+
+  --dg-accent:          #1D6FE0;
+  --dg-accent-bright:   #1557C0;
+  --dg-accent-2:        #0E7490;
+  --dg-accent-soft:     rgba(29, 111, 224, 0.09);
+  --dg-accent-edge:     rgba(29, 111, 224, 0.40);
+
+  --dg-success:         #087443;
+  --dg-warn:            #A15C07;
+  --dg-danger:          #C0331F;
+
+  --dg-line:            #AEB6C2;
+  --dg-line-strong:     #7A8494;
+
+  --dg-dur-fast:        180ms;
+  --dg-dur-base:        320ms;
+  --dg-dur-slow:        600ms;
+  --dg-stagger:          70ms;
+  --dg-ease-out:        cubic-bezier(0.22, 1, 0.36, 1);
+  --dg-ease-inout:      cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dg-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --dg-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  display: block;
+  position: relative;
+  width: 100%;
+  font-family: var(--dg-font);
+  color: var(--dg-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dg--dark {
+  --dg-bg:              #0B0D10;
+  --dg-surface:         #14171C;
+  --dg-surface-raised:  #1C2027;
+  --dg-surface-sunken:  #101317;
+  --dg-border:          rgba(255, 255, 255, 0.10);
+  --dg-border-strong:   rgba(255, 255, 255, 0.20);
+  --dg-grid:            rgba(255, 255, 255, 0.045);
+  --dg-inset:           rgba(255, 255, 255, 0.06);
+  --dg-lift:            none;
+
+  --dg-text:            #E9ECF1;
+  --dg-text-dim:        #99A2B0;
+  --dg-text-muted:      #7B8493;
+
+  --dg-accent:          #3B82F6;
+  --dg-accent-bright:   #60A5FA;
+  --dg-accent-2:        #22D3EE;
+  --dg-accent-soft:     rgba(59, 130, 246, 0.14);
+  --dg-accent-edge:     rgba(59, 130, 246, 0.45);
+
+  --dg-success:         #34D399;
+  --dg-warn:            #FBBF24;
+  --dg-danger:          #F87171;
+
+  --dg-line:            #454E5C;
+  --dg-line-strong:     #6B7383;
+}
+
+.dg-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--dg-font);
+}
+
+.dg-t-label   { font-size: 14px; font-weight: 500; fill: var(--dg-text); }
+.dg-t-sub     { font-size: 12px; font-weight: 400; fill: var(--dg-text-dim); }
+.dg-t-eyebrow { font-size: 10px; font-weight: 600; fill: var(--dg-text-muted);
+  letter-spacing: 0.09em; text-transform: uppercase; }
+.dg-t-num     { font-size: 26px; font-weight: 600; fill: var(--dg-text);
+  font-variant-numeric: tabular-nums; }
+.dg-t-mono    { font-family: var(--dg-font-mono); font-size: 12px;
+  fill: var(--dg-text-dim); font-variant-numeric: tabular-nums; }
+.dg-t-title   { font-size: 17px; font-weight: 600; fill: var(--dg-text); }
+.dg-t-accent  { fill: var(--dg-accent-bright); }
+
+.dg-panel {
+  fill: var(--dg-surface);
+  stroke: var(--dg-border);
+  stroke-width: 1;
+  filter: var(--dg-lift);
+}
+.dg-panel--raised { fill: var(--dg-surface-raised); stroke: var(--dg-border-strong); }
+.dg-panel--sunken { fill: var(--dg-surface-sunken); filter: none; }
+.dg-panel--group  { fill: var(--dg-surface-sunken); stroke: var(--dg-border); filter: none; }
+
+.dg-inset { stroke: var(--dg-inset); stroke-width: 1; fill: none; }
+
+.dg-node .dg-panel { transition: fill var(--dg-dur-fast) linear,
+  stroke var(--dg-dur-fast) linear; }
+.dg-node.is-active .dg-panel {
+  fill: var(--dg-surface-raised);
+  stroke: var(--dg-accent-edge);
+}
+
+.dg-chip {
+  fill: var(--dg-accent-soft);
+  stroke: var(--dg-accent-edge);
+  stroke-width: 1;
+}
+.dg-chip--ok {
+  fill:   color-mix(in oklab, var(--dg-success) 11%, transparent);
+  stroke: color-mix(in oklab, var(--dg-success) 42%, transparent);
+}
+.dg-chip--warn {
+  fill:   color-mix(in oklab, var(--dg-warn) 13%, transparent);
+  stroke: color-mix(in oklab, var(--dg-warn) 42%, transparent);
+}
+.dg-chip--bad {
+  fill:   color-mix(in oklab, var(--dg-danger) 11%, transparent);
+  stroke: color-mix(in oklab, var(--dg-danger) 42%, transparent);
+}
+.dg-t-ok   { fill: var(--dg-success); }
+.dg-t-warn { fill: var(--dg-warn); }
+.dg-t-bad  { fill: var(--dg-danger); }
+
+.dg-link {
+  fill: none;
+  stroke: var(--dg-line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dg-link--active { stroke: var(--dg-accent); stroke-width: 2; }
+.dg-link--alt    { stroke: var(--dg-accent-2); }
+.dg-link--ghost  { stroke: var(--dg-line); stroke-dasharray: 3 5; stroke-opacity: 0.7; }
+
+.dg-icon { fill: none; stroke: var(--dg-text-dim); stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; }
+.dg-icon--accent { stroke: var(--dg-accent-bright); }
+.dg-glyph { fill: none; stroke: var(--dg-text-dim); stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+.dg-grid-line { stroke: var(--dg-grid); stroke-width: 1; }
+
+.dg[data-dg-ready] .dg-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  transform var(--dg-dur-base) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-reveal.is-on { opacity: 1; transform: none; }
+
+.dg[data-dg-ready] .dg-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  transform var(--dg-dur-base) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-scale.is-on { opacity: 1; transform: none; }
+
+.dg[data-dg-ready] .dg-draw {
+  stroke-dasharray: var(--dg-len);
+  stroke-dashoffset: var(--dg-len);
+  transition: stroke-dashoffset var(--dg-dur-slow) var(--dg-ease-inout);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-draw.is-on { stroke-dashoffset: 0; }
+
+.dg[data-dg-ready] .dg-fillx {
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform var(--dg-dur-slow) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-fillx.is-on { transform: scaleX(1); }
+
+.dg .dg-dimmable { transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  filter var(--dg-dur-base) var(--dg-ease-out); }
+.dg .dg-dimmable.is-dim { opacity: 0.30; filter: saturate(0.30); }
+
+.dg.is-instant .dg-reveal,
+.dg.is-instant .dg-scale,
+.dg.is-instant .dg-draw,
+.dg.is-instant .dg-fillx,
+.dg.is-instant .dg-dimmable { transition: none; }
+
+.dg-glow    { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--dg-accent) 40%, transparent)); }
+.dg-glow--2 { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--dg-accent-2) 40%, transparent)); }
+.dg--dark .dg-glow    { filter: drop-shadow(0 0 6px color-mix(in oklab, var(--dg-accent) 55%, transparent)); }
+.dg--dark .dg-glow--2 { filter: drop-shadow(0 0 6px color-mix(in oklab, var(--dg-accent-2) 55%, transparent)); }
+
+.dg-hit { fill: transparent; cursor: default; }
+.dg-hoverable { transition: opacity var(--dg-dur-fast) linear; }
+.dg-hoverable:focus-visible { outline: 2px solid var(--dg-accent-bright); outline-offset: 3px; border-radius: 4px; }
+.dg-tip { opacity: 0; pointer-events: none; transition: opacity var(--dg-dur-fast) linear; }
+.dg-hoverable:hover .dg-tip,
+.dg-hoverable:focus-visible .dg-tip { opacity: 1; }
+.dg-tip-bg { fill: var(--dg-surface-raised); stroke: var(--dg-border-strong); stroke-width: 1; }
+
+.dg-caption {
+  margin: 14px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dg-text-dim);
+}
+.dg-caption b { color: var(--dg-text); font-weight: 600; }
+
+.dg-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 2px 0; }
+.dg-legend-item { display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--dg-text-dim); }
+.dg-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none;
+  background: var(--dg-line); }
+
+.dg-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.dg--sketch {
+  --dg-bg:              #FBFAF6;
+  --dg-surface:         #FFFEFA;
+  --dg-surface-raised:  #FFFFFF;
+  --dg-surface-sunken:  #F3F1EA;
+  --dg-graphite:        #3A3E47;
+  --dg-graphite-soft:   #767B86;
+  --dg-border:          rgba(58, 62, 71, 0.22);
+  --dg-border-strong:   rgba(58, 62, 71, 0.38);
+  --dg-text:            #23262C;
+  --dg-text-dim:        #565C67;
+  --dg-text-muted:      #6E747F;
+  --dg-line:            #9AA0AB;
+  --dg-line-strong:     #6E747F;
+  --dg-accent:          #1B5FBE;
+  --dg-accent-bright:   #17469A;
+  --dg-accent-soft:     rgba(27, 95, 190, 0.10);
+  --dg-accent-edge:     rgba(27, 95, 190, 0.42);
+  --dg-lift:            none;
+  --dg-font-hand: "DG Hand", "Bradley Hand", "Segoe Print", "Chalkboard SE", "Comic Sans MS",
+  ui-rounded, var(--dg-font);
+}
+
+.dg--sketch .dg-canvas { font-family: var(--dg-font-hand); }
+.dg-hand { font-family: var(--dg-font-hand); }
+
+.dg-pencil       { fill: none; stroke: var(--dg-graphite); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round; }
+.dg-pencil--thin { stroke-width: 1.1; stroke: var(--dg-graphite-soft); }
+.dg-pencil--bold { stroke-width: 2.6; }
+.dg-pencil--blue { stroke: var(--dg-accent); }
+.dg-pencil--dash { stroke-dasharray: 7 6; }
+.dg-paper        { fill: var(--dg-surface); }
+.dg-paper--tint  { fill: var(--dg-surface-sunken); }
+
+.dg-scene3d {
+  position: absolute;
+  inset: 0;
+  perspective: 125cqw;
+  perspective-origin: 50% 42%;
+}
+
+.dg-stack3d {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46.7cqw;
+  height: 31.7cqw;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%)
+  rotateX(calc(58deg + var(--dg-tilt-x, 0deg)))
+  rotateZ(calc(-36deg + var(--dg-tilt-y, 0deg)))
+  scaleZ(var(--dg-explode, 1));
+  transition: transform 140ms linear;
+}
+
+.dg-layer3d {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+
+  transform: translateZ(calc(var(--dg-z, 0) * 0.0833cqw));
+}
+
+.dg[data-dg-ready] .dg-layer3d {
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity var(--dg-dur-slow) var(--dg-ease-out),
+  transform var(--dg-dur-slow) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-layer3d.is-on {
+  opacity: 1;
+  transform: translateZ(calc(var(--dg-z, 0) * 0.0833cqw));
+}
+
+.dg-layer3d > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+.dg-layer3d.is-merged {
+  transform: translateZ(calc(var(--dg-z-merged, 0) * 0.0833cqw));
+}
+.dg[data-dg-ready] .dg-layer3d.is-on.is-merged {
+  opacity: 1;
+  transform: translateZ(calc(var(--dg-z-merged, 0) * 0.0833cqw));
+}
+.dg-layer3d .dg-merge-hide { transition: opacity var(--dg-dur-base) var(--dg-ease-out); }
+.dg-layer3d.is-merged .dg-merge-hide { opacity: 0; }
+.dg-layer3d .dg-merge-show { opacity: 0; transition: opacity var(--dg-dur-base) var(--dg-ease-out); }
+.dg-layer3d.is-merged .dg-merge-show { opacity: 1; }
+
+.dg-face {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateZ(36deg) rotateX(-58deg);
+  transform-origin: 0 50%;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg-stack3d { transition: none; }
+}
+
+@media print {
+  .dg[data-dg-ready] .dg-layer3d { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .dg-flow {
+  fill: none;
+  stroke: var(--dg-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 5 11;
+  animation: dg-flow-move 1.1s linear infinite;
+  }
+  .dg-flow--alt  { stroke: var(--dg-accent-2); }
+  .dg-flow--slow { animation-duration: 2.2s; }
+  @keyframes dg-flow-move { to { stroke-dashoffset: -16; } }
+
+  .dg-packet {
+  fill: var(--dg-accent-bright);
+  offset-rotate: 0deg;
+  animation: dg-packet-move 2.4s linear infinite;
+  }
+  .dg-packet--alt { fill: var(--dg-accent-2); }
+  @keyframes dg-packet-move {
+  0%   { offset-distance: 0%;   opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  .dg-pulse {
+  fill: none;
+  stroke: var(--dg-accent);
+  stroke-width: 1.5;
+  animation: dg-pulse-ring 2.4s var(--dg-ease-out) infinite;
+  }
+  @keyframes dg-pulse-ring {
+  0%   { r: 6;  opacity: 0.55; }
+  70%  { opacity: 0; }
+  100% { r: 26; opacity: 0; }
+  }
+
+  .dg-belt {
+  animation: dg-belt-move 1.4s linear infinite;
+  }
+  @keyframes dg-belt-move { to { transform: translateX(-24px); } }
+
+  .dg-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dg-spin-rot 6s linear infinite;
+  }
+  .dg-spin--rev { animation-direction: reverse; }
+  @keyframes dg-spin-rot { to { transform: rotate(360deg); } }
+
+  .dg-breathe { animation: dg-breathe-op 2.8s var(--dg-ease-inout) infinite; }
+  @keyframes dg-breathe-op { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
+  .dg.is-paused .dg-flow,
+  .dg.is-paused .dg-packet,
+  .dg.is-paused .dg-pulse,
+  .dg.is-paused .dg-belt,
+  .dg.is-paused .dg-spin,
+  .dg.is-paused .dg-breathe { animation-play-state: paused; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg[data-dg-ready] .dg-reveal,
+  .dg[data-dg-ready] .dg-scale,
+  .dg[data-dg-ready] .dg-draw,
+  .dg[data-dg-ready] .dg-fillx,
+  .dg .dg-dimmable { transition-duration: 1ms; transition-delay: 0ms; }
+  .dg-flow { fill: none; stroke: var(--dg-accent); stroke-width: 2; }
+  .dg-packet { fill: var(--dg-accent-bright); offset-distance: 60%; }
+  .dg-pulse { fill: none; stroke: var(--dg-accent); stroke-width: 1.5; r: 10; opacity: 0.4; }
+}
+
+@media print {
+  .dg[data-dg-ready] .dg-reveal,
+  .dg[data-dg-ready] .dg-scale { opacity: 1; transform: none; }
+  .dg[data-dg-ready] .dg-draw  { stroke-dashoffset: 0; }
+  .dg[data-dg-ready] .dg-fillx { transform: scaleX(1); }
+  .dg .dg-dimmable.is-dim { opacity: 1; filter: none; }
+  .dg-glow, .dg-glow--2 { filter: none; }
+}
+
+</style>
+
+<style>
+.dg[data-dg-id="kt-tested"] .kt-h1{font-size:22px;font-weight:600;fill:var(--dg-text)}
+.dg[data-dg-id="kt-tested"] .kt-mono{font-family:var(--dg-font-mono)}
+.dg[data-dg-id="kt-tested"] .kt-s{font-size:13px;fill:var(--dg-text-dim)}
+.dg[data-dg-id="kt-tested"] .kt-bound{stroke:var(--dg-accent);stroke-width:2}
+.dg[data-dg-id="kt-tested"] .kt-box{fill:none;stroke:var(--dg-line-strong);stroke-dasharray:3 4}
+.dg[data-dg-id="kt-tested"] .kt-red,.dg[data-dg-id="kt-tested"] .kt-x{stroke:var(--dg-danger)}
+.dg[data-dg-id="kt-tested"] .kt-x{fill:var(--dg-surface);stroke-width:1.6;stroke-linecap:round}
+.dg[data-dg-id="kt-tested"] .kt-atk{fill:var(--dg-danger);animation-duration:1.6s}
+.dg[data-dg-id="kt-tested"] .kt-ok{stroke:var(--dg-success)}
+.dg[data-dg-id="kt-tested"] .kt-p2{animation-delay:.5s}
+.dg[data-dg-id="kt-tested"] .kt-n{fill:var(--dg-surface);stroke:var(--dg-border-strong)}
+.dg[data-dg-id="kt-tested"] .kt-last{font-size:15px;font-weight:500;fill:var(--dg-text)}
+.dg[data-dg-id="kt-tested"][data-dg-ready] .dg-reveal:not(.is-on),.dg[data-dg-id="kt-tested"][data-dg-ready] .dg-scale:not(.is-on){opacity:0}
+.dg[data-dg-id="kt-tested"] .dg-dimmable.is-dim.is-on{opacity:.3}
+@media (prefers-reduced-motion:no-preference){.dg[data-dg-id="kt-tested"][data-dg-state="step-4"] .kt-proc{animation:kt-tested-kill 1.3s ease-in-out}}
+@keyframes kt-tested-kill{0%,100%{opacity:1}25%,55%{opacity:.2}}
+</style>
+
+<svg class="dg-canvas" viewBox="0 0 1200 675" aria-hidden="true">
+
+<defs>
+<marker id="dgArrow-kt" viewBox="0 0 8 8" refX="6.5" refY="4"
+markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M1,1 L6.5,4 L1,7" fill="none" stroke="context-stroke" stroke-width="1.4"
+stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+
+<text class="dg-t-eyebrow" x="40" y="44">How Koala is tested</text>
+<text class="kt-h1" x="40" y="76">Tested by attacking it</text>
+
+<g class="dg-scale" data-dg-step="1">
+<rect class="dg-panel dg-panel--group" x="40" y="112" width="620" height="458" rx="14"/>
+<text class="dg-t-eyebrow" x="60" y="138">Host</text>
+<text class="dg-t-eyebrow" x="428" y="162">Sandboxed host processes</text>
+</g>
+
+<g class="dg-scale dg-dimmable" data-dg-step="1" data-dg-focus="2" style="--dg-delay:120ms">
+<rect class="dg-panel kt-bound" x="60" y="156" width="350" height="322" rx="12"/>
+<text class="dg-t-eyebrow" x="80" y="182">Koala VM</text>
+<text class="dg-t-label" x="80" y="202">Guest, inside its boundary</text>
+</g>
+
+<g class="dg-scale kt-proc" data-dg-step="1" style="--dg-delay:240ms">
+<rect class="kt-box" x="428" y="170" width="208" height="60" rx="10"/>
+<rect class="dg-panel" x="434" y="176" width="196" height="48" rx="8"/>
+<text class="dg-t-label" x="450" y="197">VM process</text>
+<text class="dg-t-sub" x="450" y="214">one per VM</text>
+</g>
+<g class="dg-scale kt-proc" data-dg-step="1" style="--dg-delay:320ms">
+<rect class="kt-box" x="428" y="242" width="208" height="60" rx="10"/>
+<rect class="dg-panel" x="434" y="248" width="196" height="48" rx="8"/>
+<text class="dg-t-label kt-mono" x="450" y="269">koala-net</text>
+<text class="dg-t-sub" x="450" y="286">network helper</text>
+</g>
+<g class="dg-scale kt-proc" data-dg-step="1" style="--dg-delay:400ms">
+<rect class="kt-box" x="428" y="314" width="208" height="60" rx="10"/>
+<rect class="dg-panel" x="434" y="320" width="196" height="48" rx="8"/>
+<text class="dg-t-label kt-mono" x="450" y="341">koala-broker</text>
+<text class="dg-t-sub" x="450" y="358">broker</text>
+</g>
+
+<g class="dg-dimmable" data-dg-focus="2">
+<g class="dg-reveal" data-dg-step="2">
+<text class="dg-t-eyebrow" x="80" y="232">Root in the guest attacks</text>
+<text class="dg-t-label" x="80" y="254">Guest channels</text>
+<text class="dg-t-sub" x="80" y="271">lengths, credits, order</text>
+<text class="dg-t-label" x="80" y="298">Network</text>
+<text class="dg-t-sub" x="80" y="315">spoofing, fragments, floods</text>
+<text class="dg-t-sub" x="80" y="331">under resource limits</text>
+<text class="dg-t-label" x="80" y="360">Storage</text>
+<text class="dg-t-label" x="80" y="388">Credentials</text>
+
+<path class="dg-link kt-red dg-draw" data-dg-step="2" d="M270,249 H396" marker-end="url(#dgArrow-kt)"/>
+<path class="dg-link kt-red dg-draw" data-dg-step="2" d="M270,293 H396" marker-end="url(#dgArrow-kt)"/>
+<path class="dg-link kt-red dg-draw" data-dg-step="2" d="M270,355 H396" marker-end="url(#dgArrow-kt)"/>
+<path class="dg-link kt-red dg-draw" data-dg-step="2" d="M270,383 H396" marker-end="url(#dgArrow-kt)"/>
+<circle class="dg-packet kt-atk" r="3.5" style="offset-path:path('M270,249 H400')"/>
+<circle class="dg-packet kt-atk kt-p2" r="3.5" style="offset-path:path('M270,293 H400')"/>
+<circle class="dg-packet kt-atk" r="3.5" style="offset-path:path('M270,355 H400')"/>
+<circle class="dg-packet kt-atk kt-p2" r="3.5" style="offset-path:path('M270,383 H400')"/>
+</g>
+
+<g class="dg-reveal" data-dg-step="2" style="--dg-delay:450ms">
+<g class="kt-x"><circle cx="410" cy="249" r="8"/><circle cx="410" cy="293" r="8"/><circle cx="410" cy="355" r="8"/><circle cx="410" cy="383" r="8"/>
+<path d="M407,246l6,6m0-6l-6,6M407,290l6,6m0-6l-6,6M407,352l6,6m0-6l-6,6M407,380l6,6m0-6l-6,6"/></g>
+<rect class="dg-chip dg-chip--bad" x="236" y="122" width="174" height="24" rx="6"/>
+<text class="dg-t-sub dg-t-bad" x="250" y="138">✕ refused at the boundary</text>
+</g>
+
+<g class="dg-scale" data-dg-step="2" style="--dg-delay:650ms">
+<rect class="dg-panel" x="60" y="494" width="350" height="62" rx="10" stroke="var(--dg-accent-edge)"/>
+<g transform="translate(88,525)">
+<circle class="dg-pulse kt-ok" r="6"/>
+<circle r="3.5" fill="var(--dg-success)"/>
+</g>
+<text class="dg-t-label" x="114" y="520">Control VM</text>
+<text class="dg-t-sub" x="114" y="538">beside it, keeps working</text>
+<rect class="dg-chip dg-chip--ok" x="318" y="513" width="76" height="24" rx="6"/>
+<text class="dg-t-sub dg-t-ok" x="332" y="529">working</text>
+</g>
+
+<g class="dg-scale" data-dg-step="2" style="--dg-delay:850ms">
+<rect class="dg-panel" x="428" y="390" width="208" height="102" rx="8"/>
+<text class="dg-t-eyebrow" x="442" y="412">On Linux</text>
+<text class="dg-t-label" x="442" y="432">Escape probe</text>
+<text class="dg-t-sub" x="442" y="450">under each production sandbox</text>
+<rect class="dg-chip dg-chip--bad" x="442" y="460" width="148" height="22" rx="6"/>
+<text class="dg-t-sub dg-t-bad" x="453" y="475">every attempt refused</text>
+</g>
+</g>
+
+<g class="dg-dimmable" data-dg-focus="3">
+<g class="dg-reveal" data-dg-step="3">
+<path class="dg-link" d="M642,176 H650 V368 H642"/>
+<path class="dg-link dg-link--active dg-draw" data-dg-step="3" d="M724,214 H656" marker-end="url(#dgArrow-kt)"/>
+<circle class="dg-packet" r="3.5" style="offset-path:path('M724,214 H656')"/>
+<circle class="dg-packet kt-p2" r="3.5" style="offset-path:path('M724,214 H656')"/>
+</g>
+<g class="dg-scale" data-dg-step="3">
+<rect class="dg-panel dg-panel--raised" x="724" y="112" width="436" height="144" rx="12"/>
+<text class="dg-t-eyebrow" x="744" y="136">Fuzzing</text>
+<text class="dg-t-title" x="744" y="160">More than 40 fuzz targets: Swift, Go and C</text>
+<text class="dg-t-sub" x="744" y="180">They hit every parser of guest data.</text>
+<text x="744" y="216"><tspan class="kt-s">at least</tspan><tspan class="dg-t-num" dx="7"
+data-dg-count="100000" data-dg-step="3">100,000</tspan><tspan class="kt-s" dx="7">generated inputs each</tspan></text>
+<text class="dg-t-sub" x="744" y="240">The Swift and C targets run under AddressSanitizer.</text>
+</g>
+</g>
+
+<g class="dg-dimmable" data-dg-focus="4">
+<g class="dg-scale" data-dg-step="4">
+<rect class="dg-panel dg-panel--raised" x="724" y="270" width="436" height="172" rx="12"/>
+<text class="dg-t-eyebrow" x="744" y="294">Crash testing</text>
+<text class="dg-t-title" x="744" y="318">About 1,400 crash checks on each platform</text>
+<text class="dg-t-sub" x="744" y="340">Kill the manager, each VM's process and every helper</text>
+<text class="dg-t-sub" x="744" y="357">(image extractor, file transfer, network helper, broker)</text>
+<text class="dg-t-sub" x="744" y="374">at chosen moments. Each case checks that nothing is lost</text>
+<text class="dg-t-sub" x="744" y="391">or left behind, and that the VM starts again.</text>
+</g>
+<g class="dg-reveal" data-dg-step="4" style="--dg-delay:200ms">
+<rect class="dg-chip dg-chip--bad" x="744" y="404" width="64" height="24" rx="6"/>
+<text class="dg-t-sub dg-t-bad" x="755" y="420">✕ killed</text>
+</g>
+<g class="dg-reveal" data-dg-step="4" style="--dg-delay:900ms">
+<path class="dg-link" d="M814,416 H842" marker-end="url(#dgArrow-kt)"/>
+<rect class="dg-chip dg-chip--ok" x="848" y="404" width="136" height="24" rx="6"/>
+<text class="dg-t-sub dg-t-ok" x="859" y="420">✓ the VM starts again</text>
+</g>
+</g>
+
+<g class="dg-dimmable" data-dg-focus="5">
+<g class="dg-reveal" data-dg-step="5">
+<path class="dg-link" d="M80,406 H390"/>
+<text class="dg-t-eyebrow" x="80" y="430">Canary key · not found in</text>
+<rect class="kt-n" x="80" y="440" width="104" height="24" rx="6"/>
+<text class="dg-t-sub" x="91" y="456">the VM's disk</text>
+<rect class="kt-n" x="192" y="440" width="88" height="24" rx="6"/>
+<text class="dg-t-sub" x="203" y="456">its volumes</text>
+<rect class="kt-n" x="288" y="440" width="78" height="24" rx="6"/>
+<text class="dg-t-sub" x="299" y="456">the image</text>
+</g>
+<g class="dg-reveal" data-dg-step="5" style="--dg-delay:500ms">
+<text class="dg-t-sub" x="540" y="530">upstream request</text>
+<path class="dg-link dg-link--active dg-draw" data-dg-step="5" d="M540,540 H718" marker-end="url(#dgArrow-kt)"/>
+</g>
+<g class="dg-scale" data-dg-step="5" style="--dg-delay:600ms">
+<rect class="dg-panel dg-panel--raised" x="724" y="456" width="436" height="114" rx="12"/>
+<text class="dg-t-eyebrow" x="744" y="480">Outside the VM</text>
+<text class="dg-t-title" x="744" y="504">API service</text>
+<text class="dg-t-sub" x="744" y="524">The canary key appears only on the upstream request.</text>
+<rect class="dg-chip" x="744" y="536" width="108" height="24" rx="6"/>
+<g class="dg-icon dg-icon--accent" transform="translate(756,548)">
+<circle r="4"/><path d="M4,0 H14 M10,0 V4 M13,0 V3"/>
+</g>
+<text class="dg-t-sub dg-t-accent" x="776" y="552">canary key</text>
+</g>
+</g>
+
+<g class="dg-reveal" data-dg-step="6">
+<rect class="dg-chip" x="320" y="594" width="560" height="36" rx="18"/>
+<text class="kt-last" x="600" y="617" text-anchor="middle">The same suites run on a Mac and on Linux, and on every release.</text>
+</g>
+
+</svg>
+
+<p class="dg-caption">
+<b>Koala is tested by attacking it.</b> Root in the guest attacks the boundary, fuzzers hit every
+parser of guest data, and crash checks kill the manager, VM processes and helpers at chosen moments.
+</p>
+
+<ol class="dg-sr">
+<li>A Koala VM inside its boundary; sandboxed around it on the host: the VM's process, the network helper koala-net and the broker koala-broker.</li>
+<li>Root inside the guest attacks the guest channels (lengths, credits, order), the network (spoofing, fragments, floods under resource limits), storage and credentials. Each is refused at the boundary; a control VM beside it keeps working. On Linux, an escape probe under each production sandbox has every attempt refused.</li>
+<li>More than 40 fuzz targets in Swift, Go and C hit every parser of guest data, each with at least 100,000 generated inputs; the Swift and C ones run under AddressSanitizer.</li>
+<li>About 1,400 crash checks on each platform kill the manager, each VM's process and every helper (image extractor, file transfer, network helper, broker) at chosen moments. Each case checks that nothing is lost or left behind and that the VM starts again.</li>
+<li>A canary key is hunted through the VM's disk, its volumes and the image: not found there. It appears only on the upstream request to the API service, outside the VM.</li>
+<li>The same suites run on a Mac and on Linux, and on every release.</li>
+</ol>
+
+<script data-dg-core>
+(function () {
+  'use strict';
+
+  var cores = document.querySelectorAll('style[data-dg-core]');
+  for (var i = 1; i < cores.length; i++) { cores[i].remove(); }
+
+  if (window.__dg) { window.__dg.scan(); return; }
+
+  var REDUCE = window.matchMedia
+  ? window.matchMedia('(prefers-reduced-motion: reduce)')
+  : { matches: false, addEventListener: function () {} };
+
+  var registry = new Map();
+
+  function seedFrom(str) {
+  var h = 2166136261;
+  for (var i = 0; i < str.length; i++) {
+  h ^= str.charCodeAt(i);
+  h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+  }
+
+  function prng(seed) {
+  var a = seed >>> 0;
+  return function () {
+  a = (a + 0x6D2B79F5) | 0;
+  var t = Math.imul(a ^ (a >>> 15), 1 | a);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  }
+
+  function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+  function num(el, attr, dflt) {
+  var v = parseFloat(el.getAttribute(attr));
+  return isNaN(v) ? dflt : v;
+  }
+
+  function group(nodes, attr) {
+  var max = 0;
+  nodes.forEach(function (el) {
+  var n = parseInt(el.getAttribute(attr), 10);
+  if (!isNaN(n) && n > max) max = n;
+  });
+  return max;
+  }
+
+  function Diagram(root) {
+  var self = this;
+  this.root = root;
+  this.id = root.getAttribute('data-dg-id') ||
+  ('dg-' + Math.random().toString(36).slice(2, 8));
+  root.setAttribute('data-dg-id', this.id);
+
+  this.rand = prng(seedFrom(this.id));
+  this.mode = root.getAttribute('data-dg-mode') === 'manual' ? 'manual' : 'auto';
+  this.stepDelay = num(root, 'data-dg-delay', 900);
+  this.settleHold = num(root, 'data-dg-settle-hold', 900);
+  this.cur = 0;
+  this.armed = true;
+  this.visible = false;
+  this.timers = [];
+  this.handlers = {};
+
+  this.stepEls  = Array.prototype.slice.call(root.querySelectorAll('[data-dg-step]'));
+  this.focusEls = Array.prototype.slice.call(root.querySelectorAll('[data-dg-focus]'));
+  this.counters = Array.prototype.slice.call(root.querySelectorAll('[data-dg-count]'));
+  this.steps = Math.max(1, group(this.stepEls, 'data-dg-step'));
+
+  this.mergeEls = Array.prototype.slice.call(root.querySelectorAll('[data-dg-merge-at]'));
+  this.scrub = root.hasAttribute('data-dg-scrub');
+
+  this.namespace();
+  this.measure();
+  this.parallax();
+
+  root.setAttribute('data-dg-ready', '');
+  root.classList.add('is-instant');
+  this.goTo(0, true);
+
+  if (this.scrub) this.bindScrub();
+
+  requestAnimationFrame(function () {
+  requestAnimationFrame(function () { root.classList.remove('is-instant'); });
+  });
+
+  root.addEventListener('dg:play', function () { self.play(); });
+
+  if (this.mode === 'manual' && !root.hasAttribute('data-dg-noclick')) {
+  root.addEventListener('click', function () {
+  if (self.cur >= self.steps) self.reset(); else self.next();
+  });
+  }
+
+  if (root.hasAttribute('data-dg-keys')) {
+  document.addEventListener('keydown', function (e) {
+  if (!self.visible) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { self.next(); e.preventDefault(); }
+  else if (e.key === 'ArrowLeft') { self.prev(); e.preventDefault(); }
+  });
+  }
+
+  if ('IntersectionObserver' in window) {
+  this.io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (en) {
+  self.visible = en.isIntersecting;
+  root.classList.toggle('is-paused', !en.isIntersecting);
+  if (self.scrub) return;
+  if (en.isIntersecting) {
+  if (self.armed) { self.armed = false; self.play(); }
+  } else {
+
+  self.armed = true;
+  self.reset();
+  }
+  });
+  }, { threshold: 0.35 });
+  this.io.observe(root);
+  } else {
+  this.visible = true;
+  this.play();
+  }
+
+  var slide = root.closest && root.closest('.slide, section, [data-slide]');
+  if (slide && 'MutationObserver' in window) {
+  var wasActive = isActive(slide);
+  this.mo = new MutationObserver(function () {
+  var now = isActive(slide);
+  if (now && !wasActive) { self.armed = false; self.play(); }
+  if (!now && wasActive) { self.armed = true; self.reset(); }
+  wasActive = now;
+  });
+  this.mo.observe(slide, { attributes: true, attributeFilter: ['class', 'aria-hidden', 'hidden'] });
+  }
+
+  REDUCE.addEventListener && REDUCE.addEventListener('change', function () {
+  if (REDUCE.matches) self.finish();
+  });
+  }
+
+  function isActive(el) {
+  return el.classList.contains('active') ||
+  el.classList.contains('current') ||
+  el.classList.contains('present') ||
+  el.classList.contains('is-active');
+  }
+
+  var RE_ESC = /[.*+?^${}()|[\]\\]/g;
+
+  Diagram.prototype.namespace = function () {
+  var self = this, root = this.root;
+  var sel = 'defs [id], symbol[id], marker[id], pattern[id], mask[id], ' +
+  'filter[id], clipPath[id], linearGradient[id], radialGradient[id]';
+  var defs = root.querySelectorAll(sel);
+  if (!defs.length) return;
+
+  var map = Object.create(null), keys = [];
+  Array.prototype.forEach.call(defs, function (el) {
+  if (!el.id || el.id.indexOf('--' + self.id) > -1) return;
+  var next = el.id + '--' + self.id;
+  map[el.id] = next;
+  keys.push(el.id);
+  el.id = next;
+  });
+  if (!keys.length) return;
+
+  var re = new RegExp(
+  'url\\(\\s*[\'"]?#(' +
+  keys.map(function (k) { return k.replace(RE_ESC, '\\$&'); }).join('|') +
+  ')[\'"]?\\s*\\)', 'g');
+
+  var nodes = root.querySelectorAll('*');
+  Array.prototype.forEach.call(nodes, function (el) {
+  for (var i = 0; i < el.attributes.length; i++) {
+  var a = el.attributes[i];
+  if (a.value.indexOf('url(') > -1) {
+  var v = a.value.replace(re, function (_m, g) { return 'url(#' + map[g] + ')'; });
+  if (v !== a.value) a.value = v;
+  } else if ((a.name === 'href' || a.name === 'xlink:href') &&
+  a.value.charAt(0) === '#' && map[a.value.slice(1)]) {
+  a.value = '#' + map[a.value.slice(1)];
+  }
+  }
+  });
+  };
+
+  Diagram.prototype.measure = function () {
+  var paths = this.root.querySelectorAll('.dg-draw');
+  for (var i = 0; i < paths.length; i++) {
+  var p = paths[i];
+  if (typeof p.getTotalLength !== 'function') continue;
+  var len = 0;
+  try { len = p.getTotalLength(); } catch (e) { len = 0; }
+  if (len > 0) p.style.setProperty('--dg-len', Math.ceil(len + 1));
+  }
+  };
+
+  Diagram.prototype.parallax = function () {
+  var self = this, root = this.root;
+  var raw = root.getAttribute('data-dg-parallax');
+  if (raw === null || REDUCE.matches) return;
+
+  var modes = raw.split(/\s+/);
+  var wantMouse  = modes.indexOf('mouse')  > -1 || raw.trim() === '';
+  var wantScroll = modes.indexOf('scroll') > -1 || raw.trim() === '';
+  var maxTilt = num(root, 'data-dg-tilt', 7);
+
+  var tgtX = 0, tgtY = 0, tgtE = 1;
+  var curX = 0, curY = 0, curE = 1;
+  var running = false, pointer = false;
+
+  function tick() {
+  curX += (tgtX - curX) * 0.12;
+  curY += (tgtY - curY) * 0.12;
+  curE += (tgtE - curE) * 0.12;
+  root.style.setProperty('--dg-tilt-x', curX.toFixed(2) + 'deg');
+  root.style.setProperty('--dg-tilt-y', curY.toFixed(2) + 'deg');
+  root.style.setProperty('--dg-explode', curE.toFixed(3));
+  if (Math.abs(tgtX - curX) + Math.abs(tgtY - curY) + Math.abs(tgtE - curE) > 0.002) {
+  requestAnimationFrame(tick);
+  } else {
+  running = false;
+  }
+  }
+  function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+  if (wantMouse) {
+  root.addEventListener('pointermove', function (e) {
+  if (e.pointerType === 'touch') return;
+  var r = root.getBoundingClientRect();
+  if (!r.width || !r.height) return;
+  pointer = true;
+  tgtX = -((e.clientY - r.top) / r.height - 0.5) * 2 * maxTilt;
+  tgtY =  ((e.clientX - r.left) / r.width  - 0.5) * 2 * maxTilt;
+  kick();
+  });
+  root.addEventListener('pointerleave', function () {
+  pointer = false; tgtX = 0; tgtY = 0; kick();
+  });
+  }
+
+  if (wantScroll) {
+  var onScroll = function () {
+  var r = root.getBoundingClientRect();
+  var vh = window.innerHeight || 800;
+  if (r.bottom < 0 || r.top > vh) return;
+
+  var p = 1 - Math.min(1, Math.abs((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2));
+  tgtE = 0.80 + p * 0.28;
+  if (!pointer) {
+
+  tgtX = (p - 0.5) * maxTilt * 0.5;
+  }
+  kick();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  this.on('step', onScroll);
+  onScroll();
+  }
+
+  self.repark = kick;
+  };
+
+  Diagram.prototype.bindScrub = function () {
+  var self = this, root = this.root;
+  var track = root.closest && root.closest('[data-dg-track]');
+  if (!track || REDUCE.matches) {
+
+  this.scrub = false;
+  return;
+  }
+
+  var HYST = 0.08;
+  var ticking = false;
+
+  function progress() {
+  var r = track.getBoundingClientRect();
+  var vh = window.innerHeight || 800;
+  var runway = r.height - vh;
+  if (runway <= 0) return 1;
+  return Math.max(0, Math.min(1, -r.top / runway));
+  }
+
+  function apply() {
+  ticking = false;
+  var p = progress();
+  root.style.setProperty('--dg-scrub', p.toFixed(4));
+
+  var exact = 1 + p * (self.steps - 1);
+  var target = Math.round(exact);
+
+  if (target !== self.cur && Math.abs(exact - self.cur) > 0.5 + HYST) {
+  self.goTo(target);
+  }
+  }
+
+  function onScroll() {
+  if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  apply();
+  };
+
+  Diagram.prototype.clearTimers = function () {
+  this.timers.forEach(clearTimeout);
+  this.timers = [];
+  };
+
+  Diagram.prototype.goTo = function (n, instant) {
+  var self = this;
+  n = Math.max(0, Math.min(this.steps, n));
+  this.cur = n;
+
+  this.stepEls.forEach(function (el) {
+  var s = parseInt(el.getAttribute('data-dg-step'), 10) || 1;
+  el.classList.toggle('is-on', s <= n);
+  });
+
+  this.mergeEls.forEach(function (el) {
+  var m = parseInt(el.getAttribute('data-dg-merge-at'), 10) || 1;
+  el.classList.toggle('is-merged', m <= n);
+  });
+
+  var settled = n >= this.steps;
+  var hasFocus = this.focusEls.some(function (el) {
+  return (parseInt(el.getAttribute('data-dg-focus'), 10) || 0) === n;
+  });
+  var dim = hasFocus && !(settled && (instant || REDUCE.matches));
+  this.focusEls.forEach(function (el) {
+  var f = parseInt(el.getAttribute('data-dg-focus'), 10) || 0;
+  el.classList.toggle('is-dim', dim && f !== n);
+  });
+  if (settled && dim) {
+  this.timers.push(setTimeout(function () {
+  self.focusEls.forEach(function (el) { el.classList.remove('is-dim'); });
+  self.emit('released', n);
+  }, this.settleHold));
+  }
+
+  this.counters.forEach(function (c) {
+  var s = parseInt(c.getAttribute('data-dg-step'), 10) || 1;
+  if (s <= n) self.count(c, instant); else self.uncount(c);
+  });
+
+  this.root.setAttribute('data-dg-state',
+  n === 0 ? 'idle' : (n >= this.steps ? 'settled' : 'step-' + n));
+  this.emit('step', n);
+  return this;
+  };
+
+  Diagram.prototype.play = function () {
+  var self = this;
+  this.clearTimers();
+  if (REDUCE.matches) return this.finish();
+  this.goTo(0);
+
+  requestAnimationFrame(function () {
+  for (var s = 1; s <= self.steps; s++) {
+  if (self.mode === 'manual' && s > 1) break;
+  (function (step) {
+  self.timers.push(setTimeout(function () { self.goTo(step); },
+  (step - 1) * self.stepDelay + 60));
+  })(s);
+  }
+  });
+  return this;
+  };
+
+  Diagram.prototype.next   = function () { this.clearTimers(); return this.goTo(this.cur + 1); };
+  Diagram.prototype.prev   = function () { this.clearTimers(); return this.goTo(this.cur - 1); };
+  Diagram.prototype.reset  = function () { this.clearTimers(); return this.goTo(0); };
+
+  Diagram.prototype.finish = function () {
+  var self = this;
+  this.clearTimers();
+  this.root.classList.add('is-instant');
+  this.goTo(this.steps, true);
+  requestAnimationFrame(function () {
+  requestAnimationFrame(function () { self.root.classList.remove('is-instant'); });
+  });
+  return this;
+  };
+
+  Diagram.prototype.count = function (el, instant) {
+  if (el.__dgCounting || el.__dgDone) return;
+  var target   = parseFloat(el.getAttribute('data-dg-count')) || 0;
+  var decimals = parseInt(el.getAttribute('data-dg-decimals'), 10) || 0;
+  var prefix   = el.getAttribute('data-dg-prefix') || '';
+  var suffix   = el.getAttribute('data-dg-suffix') || '';
+  var dur      = num(el, 'data-dg-count-dur', 1100);
+
+  function render(v) {
+  el.textContent = prefix +
+  v.toLocaleString('en-US', { minimumFractionDigits: decimals,
+  maximumFractionDigits: decimals }) + suffix;
+  }
+
+  if (instant || REDUCE.matches || dur <= 0) {
+  render(target); el.__dgDone = true; return;
+  }
+
+  el.__dgCounting = true;
+  var t0 = null;
+  function frame(ts) {
+  if (t0 === null) t0 = ts;
+  var p = Math.min(1, (ts - t0) / dur);
+  render(target * easeOutExpo(p));
+  if (p < 1) { requestAnimationFrame(frame); }
+  else { el.__dgCounting = false; el.__dgDone = true; }
+  }
+  requestAnimationFrame(frame);
+  };
+
+  Diagram.prototype.uncount = function (el) {
+  el.__dgDone = false;
+  el.__dgCounting = false;
+  var decimals = parseInt(el.getAttribute('data-dg-decimals'), 10) || 0;
+  var prefix   = el.getAttribute('data-dg-prefix') || '';
+  var suffix   = el.getAttribute('data-dg-suffix') || '';
+  el.textContent = prefix + (0).toFixed(decimals) + suffix;
+  };
+
+  Diagram.prototype.on = function (evt, fn) {
+  (this.handlers[evt] = this.handlers[evt] || []).push(fn);
+  return this;
+  };
+  Diagram.prototype.emit = function (evt, payload) {
+  (this.handlers[evt] || []).forEach(function (fn) { fn(payload); });
+  this.root.dispatchEvent(new CustomEvent('dg:' + evt, { detail: payload }));
+  };
+  Object.defineProperty(Diagram.prototype, 'current', {
+  get: function () { return this.cur; }
+  });
+
+  function scan() {
+  var roots = document.querySelectorAll('.dg[data-dg-id]:not([data-dg-ready])');
+  for (var i = 0; i < roots.length; i++) {
+  var d = new Diagram(roots[i]);
+  registry.set(d.id, d);
+  }
+  }
+
+  window.__dg = {
+  scan: scan,
+  get: function (id) { return registry.get(id); },
+  all: function () { return Array.prototype.slice.call(registry.values()); }
+  };
+
+  if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', scan);
+  } else {
+  scan();
+  }
+})();
+
+</script>
+</div>

@@ -1,0 +1,1043 @@
+<div class="dg dg--stack" data-dg-id="kt-hosts" data-dg-mode="auto" data-dg-delay="1100"
+     role="img"
+     aria-label="One Koala, two hosts. Shared on both hosts: the koala CLI, the same /v1 API, the same VM specs, policy templates and security model, and a per-user manager that runs as you with no root daemon. Below that the host provides the rest. On macOS (Apple silicon, macOS 26 or newer): a launchd agent, Apple's Virtualization framework, App Sandbox for the helpers and a Seatbelt profile per VM run, the login Keychain, linux/arm64 images, installed with Homebrew. On Linux, in preview (x86-64 Ubuntu 24.04, kernel 6.12 or newer, /dev/kvm): a systemd user service, KVM through Cloud Hypervisor, Landlock and seccomp plus namespaces where Koala's AppArmor profile is loaded, the desktop keyring (Secret Service) or encrypted files, linux/amd64 images, installed as a Debian package. On both, each VM has its own kernel, disk and network.">
+
+<style data-dg-core>
+.dg {
+
+  --dg-bg:              #FFFFFF;
+  --dg-surface:         #FFFFFF;
+  --dg-surface-raised:  #FFFFFF;
+  --dg-surface-sunken:  #F5F7FA;
+  --dg-border:          rgba(16, 22, 33, 0.13);
+  --dg-border-strong:   rgba(16, 22, 33, 0.26);
+  --dg-grid:            rgba(16, 22, 33, 0.055);
+  --dg-inset:           rgba(16, 22, 33, 0.04);
+  --dg-lift:            drop-shadow(0 1px 2px rgba(16, 22, 33, 0.07));
+
+  --dg-text:            #171B22;
+  --dg-text-dim:        #4E5766;
+  --dg-text-muted:      #68707E;
+
+  --dg-accent:          #1D6FE0;
+  --dg-accent-bright:   #1557C0;
+  --dg-accent-2:        #0E7490;
+  --dg-accent-soft:     rgba(29, 111, 224, 0.09);
+  --dg-accent-edge:     rgba(29, 111, 224, 0.40);
+
+  --dg-success:         #087443;
+  --dg-warn:            #A15C07;
+  --dg-danger:          #C0331F;
+
+  --dg-line:            #AEB6C2;
+  --dg-line-strong:     #7A8494;
+
+  --dg-dur-fast:        180ms;
+  --dg-dur-base:        320ms;
+  --dg-dur-slow:        600ms;
+  --dg-stagger:          70ms;
+  --dg-ease-out:        cubic-bezier(0.22, 1, 0.36, 1);
+  --dg-ease-inout:      cubic-bezier(0.65, 0, 0.35, 1);
+
+  --dg-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+  Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --dg-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  display: block;
+  position: relative;
+  width: 100%;
+  font-family: var(--dg-font);
+  color: var(--dg-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dg--dark {
+  --dg-bg:              #0B0D10;
+  --dg-surface:         #14171C;
+  --dg-surface-raised:  #1C2027;
+  --dg-surface-sunken:  #101317;
+  --dg-border:          rgba(255, 255, 255, 0.10);
+  --dg-border-strong:   rgba(255, 255, 255, 0.20);
+  --dg-grid:            rgba(255, 255, 255, 0.045);
+  --dg-inset:           rgba(255, 255, 255, 0.06);
+  --dg-lift:            none;
+
+  --dg-text:            #E9ECF1;
+  --dg-text-dim:        #99A2B0;
+  --dg-text-muted:      #7B8493;
+
+  --dg-accent:          #3B82F6;
+  --dg-accent-bright:   #60A5FA;
+  --dg-accent-2:        #22D3EE;
+  --dg-accent-soft:     rgba(59, 130, 246, 0.14);
+  --dg-accent-edge:     rgba(59, 130, 246, 0.45);
+
+  --dg-success:         #34D399;
+  --dg-warn:            #FBBF24;
+  --dg-danger:          #F87171;
+
+  --dg-line:            #454E5C;
+  --dg-line-strong:     #6B7383;
+}
+
+.dg-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--dg-font);
+}
+
+.dg-t-label   { font-size: 14px; font-weight: 500; fill: var(--dg-text); }
+.dg-t-sub     { font-size: 12px; font-weight: 400; fill: var(--dg-text-dim); }
+.dg-t-eyebrow { font-size: 10px; font-weight: 600; fill: var(--dg-text-muted);
+  letter-spacing: 0.09em; text-transform: uppercase; }
+.dg-t-num     { font-size: 26px; font-weight: 600; fill: var(--dg-text);
+  font-variant-numeric: tabular-nums; }
+.dg-t-mono    { font-family: var(--dg-font-mono); font-size: 12px;
+  fill: var(--dg-text-dim); font-variant-numeric: tabular-nums; }
+.dg-t-title   { font-size: 17px; font-weight: 600; fill: var(--dg-text); }
+.dg-t-accent  { fill: var(--dg-accent-bright); }
+
+.dg-panel {
+  fill: var(--dg-surface);
+  stroke: var(--dg-border);
+  stroke-width: 1;
+  filter: var(--dg-lift);
+}
+.dg-panel--raised { fill: var(--dg-surface-raised); stroke: var(--dg-border-strong); }
+.dg-panel--sunken { fill: var(--dg-surface-sunken); filter: none; }
+.dg-panel--group  { fill: var(--dg-surface-sunken); stroke: var(--dg-border); filter: none; }
+
+.dg-inset { stroke: var(--dg-inset); stroke-width: 1; fill: none; }
+
+.dg-node .dg-panel { transition: fill var(--dg-dur-fast) linear,
+  stroke var(--dg-dur-fast) linear; }
+.dg-node.is-active .dg-panel {
+  fill: var(--dg-surface-raised);
+  stroke: var(--dg-accent-edge);
+}
+
+.dg-chip {
+  fill: var(--dg-accent-soft);
+  stroke: var(--dg-accent-edge);
+  stroke-width: 1;
+}
+.dg-chip--ok {
+  fill:   color-mix(in oklab, var(--dg-success) 11%, transparent);
+  stroke: color-mix(in oklab, var(--dg-success) 42%, transparent);
+}
+.dg-chip--warn {
+  fill:   color-mix(in oklab, var(--dg-warn) 13%, transparent);
+  stroke: color-mix(in oklab, var(--dg-warn) 42%, transparent);
+}
+.dg-chip--bad {
+  fill:   color-mix(in oklab, var(--dg-danger) 11%, transparent);
+  stroke: color-mix(in oklab, var(--dg-danger) 42%, transparent);
+}
+.dg-t-ok   { fill: var(--dg-success); }
+.dg-t-warn { fill: var(--dg-warn); }
+.dg-t-bad  { fill: var(--dg-danger); }
+
+.dg-link {
+  fill: none;
+  stroke: var(--dg-line);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dg-link--active { stroke: var(--dg-accent); stroke-width: 2; }
+.dg-link--alt    { stroke: var(--dg-accent-2); }
+.dg-link--ghost  { stroke: var(--dg-line); stroke-dasharray: 3 5; stroke-opacity: 0.7; }
+
+.dg-icon { fill: none; stroke: var(--dg-text-dim); stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; }
+.dg-icon--accent { stroke: var(--dg-accent-bright); }
+.dg-glyph { fill: none; stroke: var(--dg-text-dim); stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; }
+
+.dg-grid-line { stroke: var(--dg-grid); stroke-width: 1; }
+
+.dg[data-dg-ready] .dg-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  transform var(--dg-dur-base) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-reveal.is-on { opacity: 1; transform: none; }
+
+.dg[data-dg-ready] .dg-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  transform var(--dg-dur-base) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-scale.is-on { opacity: 1; transform: none; }
+
+.dg[data-dg-ready] .dg-draw {
+  stroke-dasharray: var(--dg-len);
+  stroke-dashoffset: var(--dg-len);
+  transition: stroke-dashoffset var(--dg-dur-slow) var(--dg-ease-inout);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-draw.is-on { stroke-dashoffset: 0; }
+
+.dg[data-dg-ready] .dg-fillx {
+  transform: scaleX(0);
+  transform-box: fill-box;
+  transform-origin: left center;
+  transition: transform var(--dg-dur-slow) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-fillx.is-on { transform: scaleX(1); }
+
+.dg .dg-dimmable { transition: opacity var(--dg-dur-base) var(--dg-ease-out),
+  filter var(--dg-dur-base) var(--dg-ease-out); }
+.dg .dg-dimmable.is-dim { opacity: 0.30; filter: saturate(0.30); }
+
+.dg.is-instant .dg-reveal,
+.dg.is-instant .dg-scale,
+.dg.is-instant .dg-draw,
+.dg.is-instant .dg-fillx,
+.dg.is-instant .dg-dimmable { transition: none; }
+
+.dg-glow    { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--dg-accent) 40%, transparent)); }
+.dg-glow--2 { filter: drop-shadow(0 0 5px color-mix(in oklab, var(--dg-accent-2) 40%, transparent)); }
+.dg--dark .dg-glow    { filter: drop-shadow(0 0 6px color-mix(in oklab, var(--dg-accent) 55%, transparent)); }
+.dg--dark .dg-glow--2 { filter: drop-shadow(0 0 6px color-mix(in oklab, var(--dg-accent-2) 55%, transparent)); }
+
+.dg-hit { fill: transparent; cursor: default; }
+.dg-hoverable { transition: opacity var(--dg-dur-fast) linear; }
+.dg-hoverable:focus-visible { outline: 2px solid var(--dg-accent-bright); outline-offset: 3px; border-radius: 4px; }
+.dg-tip { opacity: 0; pointer-events: none; transition: opacity var(--dg-dur-fast) linear; }
+.dg-hoverable:hover .dg-tip,
+.dg-hoverable:focus-visible .dg-tip { opacity: 1; }
+.dg-tip-bg { fill: var(--dg-surface-raised); stroke: var(--dg-border-strong); stroke-width: 1; }
+
+.dg-caption {
+  margin: 14px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dg-text-dim);
+}
+.dg-caption b { color: var(--dg-text); font-weight: 600; }
+
+.dg-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 2px 0; }
+.dg-legend-item { display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--dg-text-dim); }
+.dg-legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none;
+  background: var(--dg-line); }
+
+.dg-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.dg--sketch {
+  --dg-bg:              #FBFAF6;
+  --dg-surface:         #FFFEFA;
+  --dg-surface-raised:  #FFFFFF;
+  --dg-surface-sunken:  #F3F1EA;
+  --dg-graphite:        #3A3E47;
+  --dg-graphite-soft:   #767B86;
+  --dg-border:          rgba(58, 62, 71, 0.22);
+  --dg-border-strong:   rgba(58, 62, 71, 0.38);
+  --dg-text:            #23262C;
+  --dg-text-dim:        #565C67;
+  --dg-text-muted:      #6E747F;
+  --dg-line:            #9AA0AB;
+  --dg-line-strong:     #6E747F;
+  --dg-accent:          #1B5FBE;
+  --dg-accent-bright:   #17469A;
+  --dg-accent-soft:     rgba(27, 95, 190, 0.10);
+  --dg-accent-edge:     rgba(27, 95, 190, 0.42);
+  --dg-lift:            none;
+  --dg-font-hand: "DG Hand", "Bradley Hand", "Segoe Print", "Chalkboard SE", "Comic Sans MS",
+  ui-rounded, var(--dg-font);
+}
+
+.dg--sketch .dg-canvas { font-family: var(--dg-font-hand); }
+.dg-hand { font-family: var(--dg-font-hand); }
+
+.dg-pencil       { fill: none; stroke: var(--dg-graphite); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round; }
+.dg-pencil--thin { stroke-width: 1.1; stroke: var(--dg-graphite-soft); }
+.dg-pencil--bold { stroke-width: 2.6; }
+.dg-pencil--blue { stroke: var(--dg-accent); }
+.dg-pencil--dash { stroke-dasharray: 7 6; }
+.dg-paper        { fill: var(--dg-surface); }
+.dg-paper--tint  { fill: var(--dg-surface-sunken); }
+
+.dg-scene3d {
+  position: absolute;
+  inset: 0;
+  perspective: 125cqw;
+  perspective-origin: 50% 42%;
+}
+
+.dg-stack3d {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46.7cqw;
+  height: 31.7cqw;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%)
+  rotateX(calc(58deg + var(--dg-tilt-x, 0deg)))
+  rotateZ(calc(-36deg + var(--dg-tilt-y, 0deg)))
+  scaleZ(var(--dg-explode, 1));
+  transition: transform 140ms linear;
+}
+
+.dg-layer3d {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+
+  transform: translateZ(calc(var(--dg-z, 0) * 0.0833cqw));
+}
+
+.dg[data-dg-ready] .dg-layer3d {
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity var(--dg-dur-slow) var(--dg-ease-out),
+  transform var(--dg-dur-slow) var(--dg-ease-out);
+  transition-delay: var(--dg-delay, 0ms);
+}
+.dg[data-dg-ready] .dg-layer3d.is-on {
+  opacity: 1;
+  transform: translateZ(calc(var(--dg-z, 0) * 0.0833cqw));
+}
+
+.dg-layer3d > svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+.dg-layer3d.is-merged {
+  transform: translateZ(calc(var(--dg-z-merged, 0) * 0.0833cqw));
+}
+.dg[data-dg-ready] .dg-layer3d.is-on.is-merged {
+  opacity: 1;
+  transform: translateZ(calc(var(--dg-z-merged, 0) * 0.0833cqw));
+}
+.dg-layer3d .dg-merge-hide { transition: opacity var(--dg-dur-base) var(--dg-ease-out); }
+.dg-layer3d.is-merged .dg-merge-hide { opacity: 0; }
+.dg-layer3d .dg-merge-show { opacity: 0; transition: opacity var(--dg-dur-base) var(--dg-ease-out); }
+.dg-layer3d.is-merged .dg-merge-show { opacity: 1; }
+
+.dg-face {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateZ(36deg) rotateX(-58deg);
+  transform-origin: 0 50%;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg-stack3d { transition: none; }
+}
+
+@media print {
+  .dg[data-dg-ready] .dg-layer3d { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .dg-flow {
+  fill: none;
+  stroke: var(--dg-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 5 11;
+  animation: dg-flow-move 1.1s linear infinite;
+  }
+  .dg-flow--alt  { stroke: var(--dg-accent-2); }
+  .dg-flow--slow { animation-duration: 2.2s; }
+  @keyframes dg-flow-move { to { stroke-dashoffset: -16; } }
+
+  .dg-packet {
+  fill: var(--dg-accent-bright);
+  offset-rotate: 0deg;
+  animation: dg-packet-move 2.4s linear infinite;
+  }
+  .dg-packet--alt { fill: var(--dg-accent-2); }
+  @keyframes dg-packet-move {
+  0%   { offset-distance: 0%;   opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  .dg-pulse {
+  fill: none;
+  stroke: var(--dg-accent);
+  stroke-width: 1.5;
+  animation: dg-pulse-ring 2.4s var(--dg-ease-out) infinite;
+  }
+  @keyframes dg-pulse-ring {
+  0%   { r: 6;  opacity: 0.55; }
+  70%  { opacity: 0; }
+  100% { r: 26; opacity: 0; }
+  }
+
+  .dg-belt {
+  animation: dg-belt-move 1.4s linear infinite;
+  }
+  @keyframes dg-belt-move { to { transform: translateX(-24px); } }
+
+  .dg-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dg-spin-rot 6s linear infinite;
+  }
+  .dg-spin--rev { animation-direction: reverse; }
+  @keyframes dg-spin-rot { to { transform: rotate(360deg); } }
+
+  .dg-breathe { animation: dg-breathe-op 2.8s var(--dg-ease-inout) infinite; }
+  @keyframes dg-breathe-op { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
+  .dg.is-paused .dg-flow,
+  .dg.is-paused .dg-packet,
+  .dg.is-paused .dg-pulse,
+  .dg.is-paused .dg-belt,
+  .dg.is-paused .dg-spin,
+  .dg.is-paused .dg-breathe { animation-play-state: paused; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dg[data-dg-ready] .dg-reveal,
+  .dg[data-dg-ready] .dg-scale,
+  .dg[data-dg-ready] .dg-draw,
+  .dg[data-dg-ready] .dg-fillx,
+  .dg .dg-dimmable { transition-duration: 1ms; transition-delay: 0ms; }
+  .dg-flow { fill: none; stroke: var(--dg-accent); stroke-width: 2; }
+  .dg-packet { fill: var(--dg-accent-bright); offset-distance: 60%; }
+  .dg-pulse { fill: none; stroke: var(--dg-accent); stroke-width: 1.5; r: 10; opacity: 0.4; }
+}
+
+@media print {
+  .dg[data-dg-ready] .dg-reveal,
+  .dg[data-dg-ready] .dg-scale { opacity: 1; transform: none; }
+  .dg[data-dg-ready] .dg-draw  { stroke-dashoffset: 0; }
+  .dg[data-dg-ready] .dg-fillx { transform: scaleX(1); }
+  .dg .dg-dimmable.is-dim { opacity: 1; filter: none; }
+  .dg-glow, .dg-glow--2 { filter: none; }
+}
+
+</style>
+
+<style>
+  .dg[data-dg-id="kt-hosts"] .h1 { font-size: 22px; font-weight: 600; fill: var(--dg-text); }
+  .dg[data-dg-id="kt-hosts"] .v { font-size: 16px; font-weight: 500; fill: var(--dg-text); }
+  .dg[data-dg-id="kt-hosts"] .s { font-size: 14px; fill: var(--dg-text-dim); }
+  .dg[data-dg-id="kt-hosts"] .t { font-size: 18px; font-weight: 600; fill: var(--dg-text); }
+  .dg[data-dg-id="kt-hosts"] .k { font-size: 13px; font-weight: 600; fill: var(--dg-text-muted);
+    letter-spacing: .08em; text-transform: uppercase; text-anchor: middle; }
+  .dg[data-dg-id="kt-hosts"] .dg-t-eyebrow { font-size: 12px; }
+  .dg[data-dg-id="kt-hosts"] .m { font-family: var(--dg-font-mono); }
+  .dg[data-dg-id="kt-hosts"] .band { fill: var(--dg-accent); }
+  .dg[data-dg-id="kt-hosts"][data-dg-ready] .dg-reveal:not(.is-on),
+  .dg[data-dg-id="kt-hosts"][data-dg-ready] .dg-scale:not(.is-on) { opacity: 0; }
+  .dg[data-dg-id="kt-hosts"] .dg-dimmable.is-dim.is-on { opacity: .3; }
+  .dg[data-dg-id="kt-hosts"] .cap { display: grid; }
+  .dg[data-dg-id="kt-hosts"] .cap > span { grid-area: 1 / 1; visibility: hidden; }
+  .dg[data-dg-id="kt-hosts"] .cap > .z,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="step-1"] .cap > .c1,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="step-2"] .cap > .c2,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="step-3"] .cap > .c3,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="step-4"] .cap > .c4,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="step-5"] .cap > .c5 { visibility: visible; }
+  .dg[data-dg-id="kt-hosts"][data-dg-state^="step-"] .cap > .z,
+  .dg[data-dg-id="kt-hosts"][data-dg-state="idle"] .cap > .z { visibility: hidden; }
+</style>
+
+<svg class="dg-canvas" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg"
+     preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+
+  <defs>
+    <marker id="dgTick-kt" viewBox="0 0 8 8" refX="6.5" refY="4"
+            markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M1,1 L6.5,4 L1,7" fill="none" stroke="context-stroke" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <text class="dg-t-eyebrow" x="40" y="40">How it works</text>
+  <text class="h1" x="40" y="68">One Koala, two hosts</text>
+
+    <g class="dg-scale dg-dimmable" data-dg-step="1" data-dg-focus="1">
+    <rect class="dg-panel dg-panel--group" x="40" y="86" width="1120" height="110" rx="14"/>
+    <text class="dg-t-eyebrow" x="58" y="107">Same on both hosts</text>
+    <rect class="dg-panel" x="56" y="116" width="263" height="66" rx="10"/>
+    <rect class="band" x="56" y="116" width="4" height="66" rx="2"/>
+    <text class="v" x="76" y="154">The <tspan class="m">koala</tspan> CLI</text>
+    <rect class="dg-panel" x="331" y="116" width="263" height="66" rx="10"/>
+    <rect class="band" x="331" y="116" width="4" height="66" rx="2"/>
+    <text class="v" x="351" y="154">The same <tspan class="m">/v1</tspan> API</text>
+    <rect class="dg-panel" x="606" y="116" width="263" height="66" rx="10"/>
+    <rect class="band" x="606" y="116" width="4" height="66" rx="2"/>
+    <text class="v" x="626" y="144">VM specs, policy templates</text>
+    <text class="s" x="626" y="164">and the security model</text>
+    <rect class="dg-panel" x="881" y="116" width="263" height="66" rx="10"/>
+    <rect class="band" x="881" y="116" width="4" height="66" rx="2"/>
+    <text class="v" x="901" y="144">Per-user manager</text>
+    <text class="s" x="901" y="164">runs as you (no root daemon)</text>
+  </g>
+
+    <g class="dg-reveal" data-dg-step="2">
+    <path class="dg-link dg-draw" data-dg-step="2" d="M600,196V213H280V229" marker-end="url(#dgTick-kt)"/>
+    <path class="dg-link dg-draw" data-dg-step="2" d="M600,196V213H920V229" marker-end="url(#dgTick-kt)"/>
+  </g>
+  <g class="dg-reveal dg-dimmable" data-dg-step="2" data-dg-focus="2" style="--dg-delay:200ms">
+    <rect class="dg-panel dg-panel--raised" x="40" y="234" width="480" height="48" rx="10"/>
+    <text class="t" x="58" y="256">macOS</text>
+    <text class="s" x="58" y="274">Apple silicon · macOS 26 or newer</text>
+    <text class="k" x="600" y="263">Host</text>
+    <rect class="dg-panel dg-panel--raised" x="680" y="234" width="480" height="48" rx="10"/>
+    <text class="t" x="698" y="256">Linux (preview)</text>
+    <text class="s" x="698" y="274">x86-64 Ubuntu 24.04 · kernel 6.12 or newer · <tspan class="m">/dev/kvm</tspan></text>
+  </g>
+
+    <g class="dg-reveal dg-dimmable" data-dg-step="3" data-dg-focus="3">
+    <rect class="dg-panel" x="40" y="292" width="480" height="48" rx="8"/>
+    <text class="v" x="58" y="322">a launchd agent</text>
+    <text class="k" x="600" y="321">Manager</text>
+    <rect class="dg-panel" x="680" y="292" width="480" height="48" rx="8"/>
+    <text class="v" x="698" y="322">a systemd user service</text>
+  </g>
+  <g class="dg-reveal dg-dimmable" data-dg-step="3" data-dg-focus="3" style="--dg-delay:120ms">
+    <rect class="dg-panel" x="40" y="344" width="480" height="48" rx="8"/>
+    <text class="v" x="58" y="374">Apple's Virtualization framework</text>
+    <text class="k" x="600" y="373">Hypervisor</text>
+    <rect class="dg-panel" x="680" y="344" width="480" height="48" rx="8"/>
+    <text class="v" x="698" y="374">KVM, through Cloud Hypervisor</text>
+  </g>
+
+    <g class="dg-reveal dg-dimmable" data-dg-step="4" data-dg-focus="4">
+    <rect class="dg-panel" x="40" y="396" width="480" height="48" rx="8"/>
+    <text class="v" x="58" y="417">App Sandbox for the helpers</text>
+    <text class="s" x="58" y="435">a Seatbelt profile per VM run</text>
+    <text class="k" x="600" y="425">Sandboxes</text>
+    <rect class="dg-panel" x="680" y="396" width="480" height="48" rx="8"/>
+    <text class="v" x="698" y="417">Landlock and seccomp</text>
+    <text class="s" x="698" y="435">namespaces where Koala's AppArmor profile is loaded</text>
+  </g>
+  <g class="dg-reveal dg-dimmable" data-dg-step="4" data-dg-focus="4" style="--dg-delay:120ms">
+    <rect class="dg-panel" x="40" y="448" width="480" height="48" rx="8"/>
+    <text class="v" x="58" y="478">the login Keychain</text>
+    <text class="k" x="600" y="477">Secrets</text>
+    <rect class="dg-panel" x="680" y="448" width="480" height="48" rx="8"/>
+    <text class="v" x="698" y="469">desktop keyring (Secret Service)</text>
+    <text class="s" x="698" y="487">or encrypted files</text>
+  </g>
+
+    <g class="dg-reveal dg-dimmable" data-dg-step="5" data-dg-focus="5">
+    <rect class="dg-panel" x="40" y="500" width="480" height="48" rx="8"/>
+    <text class="v m" x="58" y="530">linux/arm64</text>
+    <text class="k" x="600" y="529">Images</text>
+    <rect class="dg-panel" x="680" y="500" width="480" height="48" rx="8"/>
+    <text class="v m" x="698" y="530">linux/amd64</text>
+  </g>
+  <g class="dg-reveal dg-dimmable" data-dg-step="5" data-dg-focus="5" style="--dg-delay:120ms">
+    <rect class="dg-panel" x="40" y="552" width="480" height="48" rx="8"/>
+    <text class="v" x="58" y="582">Homebrew</text>
+    <text class="k" x="600" y="581">Install</text>
+    <rect class="dg-panel" x="680" y="552" width="480" height="48" rx="8"/>
+    <text class="v" x="698" y="582">a Debian package</text>
+  </g>
+
+    <g class="dg-scale dg-dimmable" data-dg-step="6" data-dg-focus="6">
+    <rect class="dg-chip" x="40" y="610" width="480" height="46" rx="10"/>
+    <text class="v" x="58" y="638">VM <tspan class="s" dx="8">its own kernel, disk and network</tspan></text>
+    <text class="k" x="600" y="638">Each VM</text>
+    <rect class="dg-chip" x="680" y="610" width="480" height="46" rx="10"/>
+    <text class="v" x="698" y="638">VM <tspan class="s" dx="8">its own kernel, disk and network</tspan></text>
+  </g>
+</svg>
+
+<p class="dg-caption cap">
+  <span class="c1">Shared on both hosts: the <code>koala</code> CLI, the <code>/v1</code> API, VM specs, policy templates, the security model, and a per-user manager that runs as you.</span>
+  <span class="c2">Below that, each host provides its own parts.</span>
+  <span class="c3">Each host runs the manager in the background and provides the hypervisor.</span>
+  <span class="c4">Each host has its own sandboxes and its own store for secrets.</span>
+  <span class="c5">Images: <code>linux/arm64</code> on a Mac, <code>linux/amd64</code> on Linux. Install with Homebrew or a Debian package.</span>
+  <span class="z"><b>One code base: only the parts the host provides differ.</b></span>
+</p>
+
+<ol class="dg-sr">
+  <li>Shared on both hosts: the koala CLI, the same /v1 API, the same VM specs, policy templates and security model, and a per-user manager that runs as you, with no root daemon.</li>
+  <li>The stack splits by host: macOS on Apple silicon, macOS 26 or newer; Linux in preview on x86-64 Ubuntu 24.04, kernel 6.12 or newer, with /dev/kvm.</li>
+  <li>Background manager: a launchd agent on macOS, a systemd user service on Linux. Hypervisor: Apple's Virtualization framework on macOS, KVM through Cloud Hypervisor on Linux.</li>
+  <li>Sandboxes: App Sandbox for the helpers and a Seatbelt profile per VM run on macOS; Landlock and seccomp, and namespaces where Koala's AppArmor profile is loaded, on Linux. Secrets: the login Keychain on macOS; the desktop keyring (Secret Service) or encrypted files on Linux.</li>
+  <li>Images: linux/arm64 on macOS, linux/amd64 on Linux. Install: Homebrew on macOS, a Debian package on Linux.</li>
+  <li>On each host, every VM has its own kernel, disk and network. One code base: only the parts the host provides differ.</li>
+</ol>
+
+<script data-dg-core>
+(function () {
+  'use strict';
+
+  var cores = document.querySelectorAll('style[data-dg-core]');
+  for (var i = 1; i < cores.length; i++) { cores[i].remove(); }
+
+  if (window.__dg) { window.__dg.scan(); return; }
+
+  var REDUCE = window.matchMedia
+  ? window.matchMedia('(prefers-reduced-motion: reduce)')
+  : { matches: false, addEventListener: function () {} };
+
+  var registry = new Map();
+
+  function seedFrom(str) {
+  var h = 2166136261;
+  for (var i = 0; i < str.length; i++) {
+  h ^= str.charCodeAt(i);
+  h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+  }
+
+  function prng(seed) {
+  var a = seed >>> 0;
+  return function () {
+  a = (a + 0x6D2B79F5) | 0;
+  var t = Math.imul(a ^ (a >>> 15), 1 | a);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  }
+
+  function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+  function num(el, attr, dflt) {
+  var v = parseFloat(el.getAttribute(attr));
+  return isNaN(v) ? dflt : v;
+  }
+
+  function group(nodes, attr) {
+  var max = 0;
+  nodes.forEach(function (el) {
+  var n = parseInt(el.getAttribute(attr), 10);
+  if (!isNaN(n) && n > max) max = n;
+  });
+  return max;
+  }
+
+  function Diagram(root) {
+  var self = this;
+  this.root = root;
+  this.id = root.getAttribute('data-dg-id') ||
+  ('dg-' + Math.random().toString(36).slice(2, 8));
+  root.setAttribute('data-dg-id', this.id);
+
+  this.rand = prng(seedFrom(this.id));
+  this.mode = root.getAttribute('data-dg-mode') === 'manual' ? 'manual' : 'auto';
+  this.stepDelay = num(root, 'data-dg-delay', 900);
+  this.settleHold = num(root, 'data-dg-settle-hold', 900);
+  this.cur = 0;
+  this.armed = true;
+  this.visible = false;
+  this.timers = [];
+  this.handlers = {};
+
+  this.stepEls  = Array.prototype.slice.call(root.querySelectorAll('[data-dg-step]'));
+  this.focusEls = Array.prototype.slice.call(root.querySelectorAll('[data-dg-focus]'));
+  this.counters = Array.prototype.slice.call(root.querySelectorAll('[data-dg-count]'));
+  this.steps = Math.max(1, group(this.stepEls, 'data-dg-step'));
+
+  this.mergeEls = Array.prototype.slice.call(root.querySelectorAll('[data-dg-merge-at]'));
+  this.scrub = root.hasAttribute('data-dg-scrub');
+
+  this.namespace();
+  this.measure();
+  this.parallax();
+
+  root.setAttribute('data-dg-ready', '');
+  root.classList.add('is-instant');
+  this.goTo(0, true);
+
+  if (this.scrub) this.bindScrub();
+
+  requestAnimationFrame(function () {
+  requestAnimationFrame(function () { root.classList.remove('is-instant'); });
+  });
+
+  root.addEventListener('dg:play', function () { self.play(); });
+
+  if (this.mode === 'manual' && !root.hasAttribute('data-dg-noclick')) {
+  root.addEventListener('click', function () {
+  if (self.cur >= self.steps) self.reset(); else self.next();
+  });
+  }
+
+  if (root.hasAttribute('data-dg-keys')) {
+  document.addEventListener('keydown', function (e) {
+  if (!self.visible) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { self.next(); e.preventDefault(); }
+  else if (e.key === 'ArrowLeft') { self.prev(); e.preventDefault(); }
+  });
+  }
+
+  if ('IntersectionObserver' in window) {
+  this.io = new IntersectionObserver(function (entries) {
+  entries.forEach(function (en) {
+  self.visible = en.isIntersecting;
+  root.classList.toggle('is-paused', !en.isIntersecting);
+  if (self.scrub) return;
+  if (en.isIntersecting) {
+  if (self.armed) { self.armed = false; self.play(); }
+  } else {
+
+  self.armed = true;
+  self.reset();
+  }
+  });
+  }, { threshold: 0.35 });
+  this.io.observe(root);
+  } else {
+  this.visible = true;
+  this.play();
+  }
+
+  var slide = root.closest && root.closest('.slide, section, [data-slide]');
+  if (slide && 'MutationObserver' in window) {
+  var wasActive = isActive(slide);
+  this.mo = new MutationObserver(function () {
+  var now = isActive(slide);
+  if (now && !wasActive) { self.armed = false; self.play(); }
+  if (!now && wasActive) { self.armed = true; self.reset(); }
+  wasActive = now;
+  });
+  this.mo.observe(slide, { attributes: true, attributeFilter: ['class', 'aria-hidden', 'hidden'] });
+  }
+
+  REDUCE.addEventListener && REDUCE.addEventListener('change', function () {
+  if (REDUCE.matches) self.finish();
+  });
+  }
+
+  function isActive(el) {
+  return el.classList.contains('active') ||
+  el.classList.contains('current') ||
+  el.classList.contains('present') ||
+  el.classList.contains('is-active');
+  }
+
+  var RE_ESC = /[.*+?^${}()|[\]\\]/g;
+
+  Diagram.prototype.namespace = function () {
+  var self = this, root = this.root;
+  var sel = 'defs [id], symbol[id], marker[id], pattern[id], mask[id], ' +
+  'filter[id], clipPath[id], linearGradient[id], radialGradient[id]';
+  var defs = root.querySelectorAll(sel);
+  if (!defs.length) return;
+
+  var map = Object.create(null), keys = [];
+  Array.prototype.forEach.call(defs, function (el) {
+  if (!el.id || el.id.indexOf('--' + self.id) > -1) return;
+  var next = el.id + '--' + self.id;
+  map[el.id] = next;
+  keys.push(el.id);
+  el.id = next;
+  });
+  if (!keys.length) return;
+
+  var re = new RegExp(
+  'url\\(\\s*[\'"]?#(' +
+  keys.map(function (k) { return k.replace(RE_ESC, '\\$&'); }).join('|') +
+  ')[\'"]?\\s*\\)', 'g');
+
+  var nodes = root.querySelectorAll('*');
+  Array.prototype.forEach.call(nodes, function (el) {
+  for (var i = 0; i < el.attributes.length; i++) {
+  var a = el.attributes[i];
+  if (a.value.indexOf('url(') > -1) {
+  var v = a.value.replace(re, function (_m, g) { return 'url(#' + map[g] + ')'; });
+  if (v !== a.value) a.value = v;
+  } else if ((a.name === 'href' || a.name === 'xlink:href') &&
+  a.value.charAt(0) === '#' && map[a.value.slice(1)]) {
+  a.value = '#' + map[a.value.slice(1)];
+  }
+  }
+  });
+  };
+
+  Diagram.prototype.measure = function () {
+  var paths = this.root.querySelectorAll('.dg-draw');
+  for (var i = 0; i < paths.length; i++) {
+  var p = paths[i];
+  if (typeof p.getTotalLength !== 'function') continue;
+  var len = 0;
+  try { len = p.getTotalLength(); } catch (e) { len = 0; }
+  if (len > 0) p.style.setProperty('--dg-len', Math.ceil(len + 1));
+  }
+  };
+
+  Diagram.prototype.parallax = function () {
+  var self = this, root = this.root;
+  var raw = root.getAttribute('data-dg-parallax');
+  if (raw === null || REDUCE.matches) return;
+
+  var modes = raw.split(/\s+/);
+  var wantMouse  = modes.indexOf('mouse')  > -1 || raw.trim() === '';
+  var wantScroll = modes.indexOf('scroll') > -1 || raw.trim() === '';
+  var maxTilt = num(root, 'data-dg-tilt', 7);
+
+  var tgtX = 0, tgtY = 0, tgtE = 1;
+  var curX = 0, curY = 0, curE = 1;
+  var running = false, pointer = false;
+
+  function tick() {
+  curX += (tgtX - curX) * 0.12;
+  curY += (tgtY - curY) * 0.12;
+  curE += (tgtE - curE) * 0.12;
+  root.style.setProperty('--dg-tilt-x', curX.toFixed(2) + 'deg');
+  root.style.setProperty('--dg-tilt-y', curY.toFixed(2) + 'deg');
+  root.style.setProperty('--dg-explode', curE.toFixed(3));
+  if (Math.abs(tgtX - curX) + Math.abs(tgtY - curY) + Math.abs(tgtE - curE) > 0.002) {
+  requestAnimationFrame(tick);
+  } else {
+  running = false;
+  }
+  }
+  function kick() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+  if (wantMouse) {
+  root.addEventListener('pointermove', function (e) {
+  if (e.pointerType === 'touch') return;
+  var r = root.getBoundingClientRect();
+  if (!r.width || !r.height) return;
+  pointer = true;
+  tgtX = -((e.clientY - r.top) / r.height - 0.5) * 2 * maxTilt;
+  tgtY =  ((e.clientX - r.left) / r.width  - 0.5) * 2 * maxTilt;
+  kick();
+  });
+  root.addEventListener('pointerleave', function () {
+  pointer = false; tgtX = 0; tgtY = 0; kick();
+  });
+  }
+
+  if (wantScroll) {
+  var onScroll = function () {
+  var r = root.getBoundingClientRect();
+  var vh = window.innerHeight || 800;
+  if (r.bottom < 0 || r.top > vh) return;
+
+  var p = 1 - Math.min(1, Math.abs((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2));
+  tgtE = 0.80 + p * 0.28;
+  if (!pointer) {
+
+  tgtX = (p - 0.5) * maxTilt * 0.5;
+  }
+  kick();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  this.on('step', onScroll);
+  onScroll();
+  }
+
+  self.repark = kick;
+  };
+
+  Diagram.prototype.bindScrub = function () {
+  var self = this, root = this.root;
+  var track = root.closest && root.closest('[data-dg-track]');
+  if (!track || REDUCE.matches) {
+
+  this.scrub = false;
+  return;
+  }
+
+  var HYST = 0.08;
+  var ticking = false;
+
+  function progress() {
+  var r = track.getBoundingClientRect();
+  var vh = window.innerHeight || 800;
+  var runway = r.height - vh;
+  if (runway <= 0) return 1;
+  return Math.max(0, Math.min(1, -r.top / runway));
+  }
+
+  function apply() {
+  ticking = false;
+  var p = progress();
+  root.style.setProperty('--dg-scrub', p.toFixed(4));
+
+  var exact = 1 + p * (self.steps - 1);
+  var target = Math.round(exact);
+
+  if (target !== self.cur && Math.abs(exact - self.cur) > 0.5 + HYST) {
+  self.goTo(target);
+  }
+  }
+
+  function onScroll() {
+  if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  apply();
+  };
+
+  Diagram.prototype.clearTimers = function () {
+  this.timers.forEach(clearTimeout);
+  this.timers = [];
+  };
+
+  Diagram.prototype.goTo = function (n, instant) {
+  var self = this;
+  n = Math.max(0, Math.min(this.steps, n));
+  this.cur = n;
+
+  this.stepEls.forEach(function (el) {
+  var s = parseInt(el.getAttribute('data-dg-step'), 10) || 1;
+  el.classList.toggle('is-on', s <= n);
+  });
+
+  this.mergeEls.forEach(function (el) {
+  var m = parseInt(el.getAttribute('data-dg-merge-at'), 10) || 1;
+  el.classList.toggle('is-merged', m <= n);
+  });
+
+  var settled = n >= this.steps;
+  var hasFocus = this.focusEls.some(function (el) {
+  return (parseInt(el.getAttribute('data-dg-focus'), 10) || 0) === n;
+  });
+  var dim = hasFocus && !(settled && (instant || REDUCE.matches));
+  this.focusEls.forEach(function (el) {
+  var f = parseInt(el.getAttribute('data-dg-focus'), 10) || 0;
+  el.classList.toggle('is-dim', dim && f !== n);
+  });
+  if (settled && dim) {
+  this.timers.push(setTimeout(function () {
+  self.focusEls.forEach(function (el) { el.classList.remove('is-dim'); });
+  self.emit('released', n);
+  }, this.settleHold));
+  }
+
+  this.counters.forEach(function (c) {
+  var s = parseInt(c.getAttribute('data-dg-step'), 10) || 1;
+  if (s <= n) self.count(c, instant); else self.uncount(c);
+  });
+
+  this.root.setAttribute('data-dg-state',
+  n === 0 ? 'idle' : (n >= this.steps ? 'settled' : 'step-' + n));
+  this.emit('step', n);
+  return this;
+  };
+
+  Diagram.prototype.play = function () {
+  var self = this;
+  this.clearTimers();
+  if (REDUCE.matches) return this.finish();
+  this.goTo(0);
+
+  requestAnimationFrame(function () {
+  for (var s = 1; s <= self.steps; s++) {
+  if (self.mode === 'manual' && s > 1) break;
+  (function (step) {
+  self.timers.push(setTimeout(function () { self.goTo(step); },
+  (step - 1) * self.stepDelay + 60));
+  })(s);
+  }
+  });
+  return this;
+  };
+
+  Diagram.prototype.next   = function () { this.clearTimers(); return this.goTo(this.cur + 1); };
+  Diagram.prototype.prev   = function () { this.clearTimers(); return this.goTo(this.cur - 1); };
+  Diagram.prototype.reset  = function () { this.clearTimers(); return this.goTo(0); };
+
+  Diagram.prototype.finish = function () {
+  var self = this;
+  this.clearTimers();
+  this.root.classList.add('is-instant');
+  this.goTo(this.steps, true);
+  requestAnimationFrame(function () {
+  requestAnimationFrame(function () { self.root.classList.remove('is-instant'); });
+  });
+  return this;
+  };
+
+  Diagram.prototype.count = function (el, instant) {
+  if (el.__dgCounting || el.__dgDone) return;
+  var target   = parseFloat(el.getAttribute('data-dg-count')) || 0;
+  var decimals = parseInt(el.getAttribute('data-dg-decimals'), 10) || 0;
+  var prefix   = el.getAttribute('data-dg-prefix') || '';
+  var suffix   = el.getAttribute('data-dg-suffix') || '';
+  var dur      = num(el, 'data-dg-count-dur', 1100);
+
+  function render(v) {
+  el.textContent = prefix +
+  v.toLocaleString('en-US', { minimumFractionDigits: decimals,
+  maximumFractionDigits: decimals }) + suffix;
+  }
+
+  if (instant || REDUCE.matches || dur <= 0) {
+  render(target); el.__dgDone = true; return;
+  }
+
+  el.__dgCounting = true;
+  var t0 = null;
+  function frame(ts) {
+  if (t0 === null) t0 = ts;
+  var p = Math.min(1, (ts - t0) / dur);
+  render(target * easeOutExpo(p));
+  if (p < 1) { requestAnimationFrame(frame); }
+  else { el.__dgCounting = false; el.__dgDone = true; }
+  }
+  requestAnimationFrame(frame);
+  };
+
+  Diagram.prototype.uncount = function (el) {
+  el.__dgDone = false;
+  el.__dgCounting = false;
+  var decimals = parseInt(el.getAttribute('data-dg-decimals'), 10) || 0;
+  var prefix   = el.getAttribute('data-dg-prefix') || '';
+  var suffix   = el.getAttribute('data-dg-suffix') || '';
+  el.textContent = prefix + (0).toFixed(decimals) + suffix;
+  };
+
+  Diagram.prototype.on = function (evt, fn) {
+  (this.handlers[evt] = this.handlers[evt] || []).push(fn);
+  return this;
+  };
+  Diagram.prototype.emit = function (evt, payload) {
+  (this.handlers[evt] || []).forEach(function (fn) { fn(payload); });
+  this.root.dispatchEvent(new CustomEvent('dg:' + evt, { detail: payload }));
+  };
+  Object.defineProperty(Diagram.prototype, 'current', {
+  get: function () { return this.cur; }
+  });
+
+  function scan() {
+  var roots = document.querySelectorAll('.dg[data-dg-id]:not([data-dg-ready])');
+  for (var i = 0; i < roots.length; i++) {
+  var d = new Diagram(roots[i]);
+  registry.set(d.id, d);
+  }
+  }
+
+  window.__dg = {
+  scan: scan,
+  get: function (id) { return registry.get(id); },
+  all: function () { return Array.prototype.slice.call(registry.values()); }
+  };
+
+  if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', scan);
+  } else {
+  scan();
+  }
+})();
+
+</script>
+</div>
