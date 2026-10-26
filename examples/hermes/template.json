@@ -2,7 +2,7 @@
   "format": 1,
   "name": "hermes",
   "version": 1,
-  "description": "The Hermes agent's gateway, with its model key on your Mac and no internet",
+  "description": "The Hermes agent's gateway, with its model key on this computer, no internet",
   "parameters": {
     "model": {
       "description": "The model's name at your provider",
@@ -25,7 +25,7 @@
       "default": "docker.io/nousresearch/hermes-agent:latest"
     },
     "port": {
-      "description": "The port on your Mac for the gateway's API",
+      "description": "The port on this computer for the gateway's API",
       "type": "integer",
       "default": 8642
     }
@@ -54,7 +54,7 @@
     "image": {
       "kind": "oci",
       "reference": "{{image}}",
-      "platform": "linux/arm64"
+      "platform": "{{platform}}"
     },
     "resources": {
       "vcpus": 2,

@@ -126,7 +126,10 @@ koala cp --replace ./src dev:/work/src
   it.
 - Regular files, directories and relative symlinks that stay inside the
   tree are copied. Hard links, device files, FIFOs and escaping symlinks are
-  refused.
+  refused, and so is a symlink whose target goes through another symlink in
+  the copy.
+- Copied files and directories keep their permissions, except that group and
+  other write are removed.
 - Limits per copy: 100,000 entries and 16 GiB.
 - The VM must be running. Ctrl-C cancels the copy (exit status 130); files
   that already existed at the destination are left alone.

@@ -28,14 +28,14 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | Message | What to do |
 | --- | --- |
 | `manager unavailable: ...` | The manager is not running. Run `koala system start`. |
-| `koala: no .../Library/LaunchAgents/dev.koala.manager.plist` | Koala is not installed for this user. Run `koala system install` ([getting started](getting-started.md#installation)). |
+| `koala: no .../Library/LaunchAgents/dev.koala.manager.plist`, or `install    unverified (no .../dev.koala.manager.plist)` in `system info` | Koala is not installed for this user. Run `koala system install` ([getting started](getting-started.md#installation)). |
 | `INSTALL_VMS_RUNNING` | `system install` (upgrade) or `system uninstall` found running VMs. Stop them, or add `--stop-vms`. |
 | `INSTALL_START_FAILED ... is running again` | The new manager did not start, and the previous version was restored. The message quotes the end of `~/Library/Application Support/Koala/logs/manager.log`. |
 | `INSTALL_MANAGER_UNAVAILABLE` | The installed manager would not start, so running VMs could not be checked; nothing was changed. A common cause is data written by a newer Koala: install that version or a later one. |
 | `INSTALL_PAYLOAD_INVALID` | The release folder is incomplete or altered. Download it again. |
 | `INSTALL_FOREIGN_INSTALLATION` | The launchd agent belongs to an installation with another `--root` or made by hand. Use that root, or remove the plist. |
 | `INSTALL_FAILED: cannot delete a keychain item` or `... keychain item(s) remain` (from `system uninstall --purge`) | The purge stopped before deleting Koala's data folder. Delete the item it names with `security delete-generic-password -s SERVICE -a ACCOUNT`, or in Keychain Access, and run the purge again. |
-| `installation: unverified (...)` in `system info`, or `the job plist is not a private regular file`, `the manager executable's signature is invalid` | The launchd agent or the manager binary is not owned by you, is writable by others, or is not signed as expected. Reinstall. |
+| `install    unverified (...)` in `system info` with another reason, or `the job plist is not a private regular file`, `the manager executable's signature is invalid` | The launchd agent or the manager binary is not owned by you, is writable by others, or is not signed as expected. Reinstall. |
 | `launchd has no loaded job gui/UID/dev.koala.manager` | The agent is installed but not loaded by launchd. Log out and in, or reinstall. |
 | `the manager did not answer within 600s` (exit status 3) | Run `koala system info` to see whether it came up late. |
 | `refusing the manager socket: ...` | The socket is not a private socket owned by you. Do not point `--socket` at another user's socket. |

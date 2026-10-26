@@ -52,7 +52,7 @@ script does.
 The plan for the built-in `hermes` template looks like this:
 
 ```text
-Template hermes v1 (built in): The Hermes agent's gateway, with its model key on your Mac and no internet
+Template hermes v1 (built in): The Hermes agent's gateway, with its model key on this computer, no internet
 Parameters: credential=hermes-openai image=docker.io/nousresearch/hermes-agent:latest model=gpt-4.1-mini origin=https://api.openai.com port=8642 tls-pin=
 It will make:
   VM hermes: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory, 6144 MiB disk
@@ -143,7 +143,7 @@ A template is a JSON file:
  "parameters": {"port": {"description": "The port on your Mac", "type": "integer", "default": 8080}},
  "policies": [{"name": "{{vm}}-openai", "template": "openai", "models": ["gpt-4.1-mini"]}],
  "volumes": [{"name": "{{vm}}-data", "size": "1GiB"}],
- "vm": {"mode": "service", "image": {"kind": "oci", "reference": "docker.io/example/my-agent:1", "platform": "linux/arm64"},
+ "vm": {"mode": "service", "image": {"kind": "oci", "reference": "docker.io/example/my-agent:1", "platform": "{{platform}}"},
         "network": {"internet": false,
                     "allow": [{"kind": "broker", "name": "openai", "policy": "{{vm}}-openai"}],
                     "publish": [{"protocol": "tcp", "hostAddress": "127.0.0.1", "hostPort": "{{port}}", "guestPort": 8080}]},
@@ -177,8 +177,11 @@ A template is a JSON file:
 - **`parameters`** each have a `description`, an optional `type`
   (`string` or `integer`) and an optional `default`. A parameter with no
   default must be set.
-  - `{{NAME}}` in any value is replaced by the parameter's value, and
-    `{{vm}}` by the VM's name.
+  - `{{NAME}}` in any value is replaced by the parameter's value,
+    `{{vm}}` by the VM's name, and `{{platform}}` by the host's guest
+    platform (`linux/arm64` on a Mac or an ARM64 Linux host, `linux/amd64`
+    on an x86_64 Linux host). A template that writes `"platform":
+    "{{platform}}"` works on either.
   - A value that is exactly `"{{port}}"`, for an integer parameter, becomes
     a number.
   - Replaced text is never read again for `{{`.
