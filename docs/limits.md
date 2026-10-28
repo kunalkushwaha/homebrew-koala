@@ -4,6 +4,8 @@
 
 ## Your terminal, logout, sleep and restarts
 
+On a Mac:
+
 | Event | What happens to your VMs |
 | --- | --- |
 | You close the terminal or `koala` exits | VMs and commands keep running. Reattach with `koala attach`. |
@@ -14,6 +16,15 @@
 | A VM's worker process crashes | Its commands end as `lost` (exit status 125). A job's VM is still cleaned up. |
 | You log out of macOS | **VMs stop.** Koala tries a clean shutdown, but logout may end them first. |
 | The Mac restarts | VMs stop. |
+
+On Linux, closing the terminal and a crash of the manager or of a VM's
+worker are as on a Mac. These differ:
+
+| Event | What happens to your VMs |
+| --- | --- |
+| You log out | systemd stops the manager and **your VMs stop**, unless lingering is on. With `sudo loginctl enable-linger "$USER"`, they keep running. See [Koala on Linux](linux.md#logging-out). |
+| The computer restarts | VMs stop. |
+| The computer sleeps | Not tested on Linux yet, nor VPN or Wi-Fi changes with VMs running. |
 
 After logout or a restart, nothing is started again automatically. At your
 next login the manager records interrupted runs; persistent VMs keep their
@@ -65,8 +76,10 @@ Planned for v0.1 but not built yet:
 - **A daemon settings file** (`~/Library/Application Support/Koala/config.json`)
   for log and disk budgets is documented but not read by the manager yet.
 - **Terminal names in full-profile shells:** `tty` prints `not a tty`.
-- **Release qualification:** adversarial-guest tests, crash, pressure and endurance tests, performance targets
-  and the release review.
+- **Release qualification:** pressure and endurance tests, performance targets
+  and the release review. The adversarial-guest
+  tests and the crash tests are done; see
+  [how Koala is tested](https://github.com/kunalkushwaha/homebrew-koala#how-koala-is-tested).
 
 Not part of v0.1:
 
