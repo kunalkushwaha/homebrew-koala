@@ -175,7 +175,8 @@ koala inspect --json VM       # everything, as JSON
 koala start VM --wait
 koala stop VM --wait          # returns once the VM has really stopped
 koala rm VM --wait            # removes a stopped VM; named volumes are kept
-koala stats VM                # the memory and disk the manager reserved for it
+koala stats                   # every running VM: CPU, memory, disk, network
+koala stats VM                # one VM: what was reserved for it and what it uses
 ```
 
 **How `koala stop` stops a lean VM:**
@@ -222,8 +223,40 @@ VM states you will see: `Creating`, `Stopped`, `Starting`, `Running`,
 see [networking](networking.md#after-a-manager-restart)), `Stopping`,
 `TerminationUnknown`, `Failed`, `Deleting`, `Deleted`.
 
-`koala stats` shows the reservations the manager made for the running VM.
-Usage figures from inside the guest are not available yet.
+### What a VM uses: `koala stats`
+
+`koala stats` lists the running VMs; `koala stats VM` shows one in detail.
+Add `--follow` to refresh every 2 seconds (Ctrl-C to stop), or `--json` for
+scripts.
+
+```text
+$ koala stats
+NAME   CPU %  MEMORY           PIDS  DISK     NET I/O
+web    4.1%   212 MiB / 2 GiB  7     312 MiB  1.2 MiB / 340 KiB
+CPU %, MEMORY and PIDS are reported by each guest (not verified); DISK and NET I/O by the host.
+```
+
+Where each figure comes from matters, so Koala keeps them apart:
+
+- **Reported by the guest, not verified:** CPU, memory and the number of
+  processes of your workload (its cgroup inside the VM). A guest can report
+  anything, so treat these as the guest's word. CPU % is of one CPU, so a
+  VM with several busy CPUs can show more than 100%. If the guest doesn't
+  answer within 2 seconds, the figures show `-` and the details say why.
+- **Measured by the host:**
+  - **disk:** the blocks allocated to the VM's disk files. A writable disk
+    shares blocks with its image, so it isn't extra space to add up across
+    VMs;
+  - **network:** the bytes the VM received and sent through Koala's network,
+    the connections it made and how many were blocked;
+  - **Koala's own processes for the VM:** the worker and koala-net. The VM's
+    own memory and CPU, held by Apple's Virtualization process, are not
+    included. On Linux these processes aren't measured yet.
+- **Reserved by the manager:** the memory and disk set aside when the VM
+  started, as before.
+
+A VM started before you upgraded Koala keeps its older worker, which can't
+report guest figures; restart the VM to get them.
 
 ## Change a VM: `koala update`
 

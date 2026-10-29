@@ -92,9 +92,24 @@ koala system info
 
 ```text
 koala
+  version    0.1.0-preview.16
   install    verified, /path/to/koala-manager
-  manager    running, build BUILD
+  manager    running, build koala-manager
+  events     kept 30 days
+  audit copy the unified log (dev.koala, audit), up to date; drops aren't reported by macOS
+  new VMs    accepted (2 running)
+  memory     37.0 GiB free for new VMs: 48 GiB, less 9.6 GiB kept for the system
+             and 1.4 GiB reserved by running VMs
+             a new VM needs its memory plus 192 MiB (lean) or 256 MiB (full)
+  disk       9.7 GiB free for new VMs: 30.2 GiB free, less 18.5 GiB kept free
+             and 2 GiB promised to running VMs
 ```
+
+The `new VMs`, `memory` and `disk` rows say whether Koala would start
+another VM now, and if not, why and what frees room. `version` shows the
+manager's release too when it differs from `koala`'s (after an upgrade,
+restart the manager). On Linux, the `audit copy` row counts lines syslog
+dropped.
 
 `install    unverified (...)` means the launchd agent is missing or does
 not pass Koala's checks (owner, permissions, signature). See

@@ -189,3 +189,66 @@ koala events --vm dev --follow  # follow one VM's events
 
 Events record lifecycle changes, operations, executions and errors, one
 line each. `--json` prints one JSON object per event.
+
+Two kinds help answer "what could this VM reach, and what did it try":
+
+- `spec.updated`: `koala update` replaced the VM's spec. `transition` says
+  whether what the VM may reach changed (`grants-changed`) or not
+  (`grants-unchanged`), and `grants=sha256:…` is a digest of its network,
+  shares, volumes and secrets. `vm.created` carries the first digest.
+- `flow.denied`: Koala refused connections from the VM, for example to
+  your Mac or your local network. `denied=tcp.22.prohibited-prefix` is the
+  protocol, the port and the kind of destination; `count` is how many.
+  There is at most one line a minute for each kind of destination, and the
+  rest are counted, so a busy VM can't flood the log. The address itself
+  isn't recorded. A first refusal shows up within a few seconds; the rest
+  of its minute's count when the minute ends or the VM stops.
+  `denied=other.0.unsupported-ipv6` is normal: Linux sends IPv6 discovery
+  packets on its own, and Koala doesn't forward IPv6.
+
+```text
+12 2026-10-27T10:40:02.118Z flow.denied vm=… run=… denied=tcp.22.prohibited-prefix count=7
+```
+
+### Events in the macOS log
+
+On macOS, Koala also writes every event to the unified log, where `log
+show` and device-management or endpoint-security tools can read it, kept
+by macOS's own rules:
+
+```sh
+log show --last 1h --predicate 'subsystem == "dev.koala" AND category == "audit"'
+```
+
+Each line is the event as `koala events --json` prints it, with its `id`.
+On Linux, the events go to the system log with the identifier
+`koala-audit`: `journalctl -t koala-audit`, or `/var/log/syslog` on a host
+where rsyslog keeps the log. Only events carry that identifier.
+
+### How long events are kept
+
+Events are kept **30 days** by default. `koala system info` shows the
+current value (`events    kept 30 days`). To keep them longer, from 1 to
+365 days, add an `audit` entry to
+`~/Library/Application Support/Koala/manager.json` (on Linux,
+`~/.local/share/koala/manager.json`):
+
+```json
+"audit": {"retentionDays": 90}
+```
+
+Then restart the manager:
+
+```sh
+koala system stop --stop-vms
+koala system start
+```
+
+- The new value applies to events recorded after the restart. Events
+  already recorded keep the expiry they were written with.
+- A value outside 1–365, or a misspelt key, stops the manager from
+  starting: `koala system info` then shows `manager    not reachable`, and
+  the manager's log names the key.
+- `koala system install` keeps the setting when you upgrade.
+- How long workload output is kept (`koala logs`) is a separate setting
+  and doesn't change.

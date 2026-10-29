@@ -62,10 +62,14 @@ cores, and VMs together can have more vCPUs than your Mac has cores.
   larger). When space runs short, new work is refused
   (`STORAGE_SPACE_EXHAUSTED` or `RESOURCE_ADMISSION_FAILED`), and Koala may
   stop running VMs to protect their disks. It never deletes persistent data
-  to free space.
+  to free space. `koala system info` shows what is free for new VMs, what
+  Koala keeps in reserve and what running VMs hold.
 
-`koala stats VM` shows what the manager reserved for a running VM. Usage
-measured inside the guest is not reported yet.
+`koala stats` shows what each running VM uses: CPU, memory and processes as
+the guest reports them (not verified), and disk and network as your Mac
+measures them. On a Mac, the VM's own memory and CPU, held by Apple's
+Virtualization process, aren't shown yet; neither are Koala's own processes
+on Linux. See [what a VM uses](vms.md#what-a-vm-uses-koala-stats).
 
 ## Not available yet
 

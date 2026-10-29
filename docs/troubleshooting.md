@@ -38,6 +38,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | `install    unverified (...)` in `system info` with another reason, or `the job plist is not a private regular file`, `the manager executable's signature is invalid` | The launchd agent or the manager binary is not owned by you, is writable by others, or is not signed as expected. Reinstall. |
 | `launchd has no loaded job gui/UID/dev.koala.manager` | The agent is installed but not loaded by launchd. Log out and in, or reinstall. |
 | `the manager did not answer within 600s` (exit status 3) | Run `koala system info` to see whether it came up late. |
+| `manager    not reachable` in `system info` after you edited `manager.json`, and its log (`~/Library/Application Support/Koala/logs/manager.log`) ends with `invalid configuration: audit.retentionDays (1 to 365 days)` or `unknown field audit.NAME` | The `audit` entry is wrong. Write it as `"audit": {"retentionDays": 90}`, a whole number from 1 to 365, then run `koala system start` ([how long events are kept](working-in-vms.md#how-long-events-are-kept)). |
 | `refusing the manager socket: ...` | The socket is not a private socket owned by you. Do not point `--socket` at another user's socket. |
 
 ## Messages from `koala` itself
@@ -103,7 +104,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 
 | Code | Meaning and what to do |
 | --- | --- |
-| `RESOURCE_ADMISSION_FAILED` | Not enough unreserved memory or disk to start the VM, or macOS reports memory pressure. Stop other VMs, or lower `memoryMiB`. See [limits](limits.md#memory-cpu-and-disk). Koala starts nothing while macOS memory pressure is above normal: check Activity Monitor's Memory Pressure graph, or `sysctl kern.memorystatus_vm_pressure_level` (1 is normal). Quit memory-hungry apps and start again; each start checks the pressure afresh. The manager log names the cause (memory pressure or disk space). |
+| `RESOURCE_ADMISSION_FAILED` | Not enough unreserved memory or disk to start the VM, or macOS reports memory pressure. The message says which, with the figures, for example `not enough memory for new VMs: this VM needs 37.7 GiB … and 37.0 GiB is free for new VMs`. **Run `koala system info`:** its `new VMs`, `memory` and `disk` rows show what is free for new VMs, what Koala keeps for the system (memory) or keeps free (disk: 2% of the volume, at least 2 GiB), and what running VMs hold, and they name the fix. Stop other VMs, lower `memoryMiB`, free disk space or run `koala image prune`. See [limits](limits.md#memory-cpu-and-disk). Koala starts nothing while macOS memory pressure is above normal: check Activity Monitor's Memory Pressure graph, or `sysctl kern.memorystatus_vm_pressure_level` (1 is normal). Quit memory-hungry apps and start again; each start checks the pressure afresh. |
 | `STORAGE_SPACE_EXHAUSTED` | Your Mac's disk is too full. Free space and retry. |
 | `RESOURCE_EXHAUSTED` | A manager limit was reached, such as too many open log or event streams, or a busy state store. Retry shortly. |
 
