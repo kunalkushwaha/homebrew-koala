@@ -1,8 +1,8 @@
-# Koala on Linux (preview)
+# Koala on Linux
 
 [User guide](README.md) > Koala on Linux
 
-Koala runs on Linux hosts as a preview. Each VM runs on KVM with Cloud
+Koala runs on Linux hosts. Each VM runs on KVM with Cloud
 Hypervisor, instead of macOS's Virtualization framework. The `koala`
 commands and their output are the same as on a Mac. This page covers what
 differs: requirements, installing, upgrading and removing.

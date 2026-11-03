@@ -199,7 +199,7 @@ change these parts, and this is where to look:
 | The volume's owner | If OpenClaw can't write `/home/node/.openclaw`, check with `koala exec claw -- ls -ld /home/node/.openclaw`. |
 | The onboarding flags, from OpenClaw's `onboard` reference for 2026.10 | If onboarding fails, the VM stops, and `./openclaw.sh logs` shows OpenClaw's message. An invalid configuration exits with code 78. To start over, run `./openclaw.sh down --forget`, then `up`. |
 | `openclaw config set --batch-json`, for the Control UI's address | If the start stops there, see the logs. With the default port, the line can be removed from `vm/start.sh`. |
-| Requests to the model | The `openai` policy allows chat completions and the model list for the one model. If OpenClaw asks for more, the broker refuses with `"source":"koala-broker"`. `koala policy status` shows the counts, and `koala policy inspect claw-openai` what is allowed. |
+| Requests to the model | The `openai` policy allows chat completions and the model list for the one model. If OpenClaw asks for more, the broker refuses with `"source":"koala-broker"`. `koala policy status` shows the counts, `koala policy inspect claw-openai` what is allowed, and `koala policy test claw-openai POST /v1/embeddings` why a request is refused. |
 | The devices commands | They may need the gateway token: run `koala exec --user node claw -- openclaw devices list --token TOKEN`. |
 
 If you need to change something, it's worth reporting. A built-in

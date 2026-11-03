@@ -55,7 +55,15 @@ limits, but it can't steal the key.
    - `--credential NAME` uses a key you already stored, by its name.
 
    `koala policy inspect openai-main` shows what the policy allows, and
-   `--json` prints the policy itself.
+   `--json` prints the policy itself. `koala policy test` checks one request
+   against it, as the broker would, without sending anything:
+
+   ```sh
+   koala policy test openai-main POST /v1/chat/completions --model gpt-4.1-mini
+   ```
+
+   It names the rule that allows the request, or says why it's refused and
+   what the policy allows instead. It exits 0 if allowed and 1 if refused.
 
 2. **Grant it to the VM**, with no secrets and, if the agent needs nothing
    else, no internet:
@@ -86,6 +94,7 @@ start from a template's policy, edit it, then add it:
 ```sh
 koala policy create my-api --template openai --print > my-api.json
 koala policy validate -f my-api.json
+koala policy test -f my-api.json POST /v1/chat/completions --model gpt-4.1-mini
 koala credential set my-api
 koala policy add -f my-api.json
 ```
@@ -105,6 +114,50 @@ koala policy validate -f groq.json
 koala credential set groq
 koala policy add -f groq.json
 ```
+
+### Learn from refusals
+
+You don't need to know every request an agent makes. Start with a strict
+policy, run the agent, then see what the broker refused:
+
+```sh
+koala policy suggest openai-main
+```
+
+```
+Refused by openai-main since 11:38 (kept in the broker's memory)
+#  REQUEST                               TIMES  LAST   SUGGESTION
+1  GET /v1/items/5678 +1                 2      11:39  add rule GET /v1/items/{id}
+2  POST /v1/chat/completions (model mo…  1      11:39  allow model model-b
+3  GET /v1/models?limit                  1      11:39  add rule GET /v1/models?limit
+4  POST /v1/embeddings                   2      11:38  add rule POST /v1/embeddings
+
+Add 1, add rule GET /v1/items/{id}? [y/N] y
+Add 2, allow model model-b? [y/N] n
+Add 3, add rule GET /v1/models?limit? [y/N] y
+Add 4, add rule POST /v1/embeddings? [y/N] y
+policy openai-main updated: 3 changes
+  GET /v1/items/5678: now allowed by rule 2
+  GET /v1/items/1234: now allowed by rule 2
+  GET /v1/models?limit: now allowed by rule 3
+  POST /v1/embeddings: now allowed by rule 4
+```
+
+IDs in a path (numbers, UUIDs) become a parameter, so `/v1/items/1234` and
+`/v1/items/5678` are one suggestion; you see the rule before saying yes.
+
+- Each row is the smallest change that would allow those requests. In a
+  terminal, it asks about each, saves the ones you approve, and tests those
+  requests again. Running VMs
+  get the change at once; no restart.
+- Nothing is allowed without your yes. Not in a terminal, or with `--json`,
+  it only lists.
+- The broker keeps refused requests in memory while it runs: the method,
+  the path, the names of query parameters (not their values), and the
+  refused value of a field the policy pins, such as the model. Nothing else
+  from the request, and nothing on disk. They're gone when the broker stops
+  (an upgrade, `koala system stop`, logout or a restart); stopping a VM
+  doesn't clear them.
 
 ## Chat platforms
 
@@ -291,7 +344,10 @@ refuses others before GitHub sees them.
 ## Day to day
 
 ```sh
-koala policy list                 # policies, their templates, and whether they are disabled
+koala policy list                 # policies, their templates, and whether each is loaded or disabled
+koala policy check                # read the keys again; says why a policy isn't loaded
+koala policy test openai-main GET /v1/models   # would the broker allow it? nothing is sent
+koala policy suggest openai-main  # what was refused, and add what you approve
 koala policy status               # per-VM request counts (no content)
 koala policy disable openai-main  # stop it at once; in-flight requests are cancelled
 koala policy enable openai-main
@@ -325,8 +381,18 @@ koala credential rm openai-main
   reaches the agent.
 - **Another process on your Mac can't use a VM's channel,** because there is
   no port to connect to. Policies and keys belong to your macOS user.
-- **After you upgrade Koala,** macOS may ask once whether the new
-  `koala-broker` may use its keychain items. Allow it.
+- **After you upgrade Koala,** macOS asks once whether the new
+  `koala-broker` may use each key: the keychain trusts the program that
+  stored a key, and each release is a new program to macOS. Choose **Always
+  Allow** (it may ask for your login password).
+  - `koala system install` reads the keys right after an upgrade, so the
+    prompts appear while you are there. It then lists any policy that still
+    didn't load, with the reason.
+  - Koala waits up to 45 seconds for your answer. An approval given later
+    still applies: the policy loads when you allow it.
+  - If you chose **Deny**, or missed the prompt, run `koala policy check`:
+    macOS asks again, and it lists any policy that still didn't load, with
+    the reason.
 - **The app must let you set its API address**, as most AI SDKs and agents
   do (for example with `OPENAI_BASE_URL`). An app that insists on holding a
   real key can only use a [secret](secrets.md).

@@ -1,14 +1,14 @@
 # Koala user guide
 
-This guide matches Koala 0.1.0-preview.16 on macOS and Linux. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
+This guide matches Koala 0.1.0-rc.1. The latest release is on the [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases).
 
 This guide is for developers who use the `koala` command line, on a Mac or
 on a Linux machine. It explains how to run jobs, services, development
 environments and AI agents in Koala VMs. The commands are the same on both;
 the pages show a Mac, and [Koala on Linux](linux.md) covers what differs.
-Koala is in preview: `0.1.0-preview.16` is published, and v0.1 is in
-development. This guide describes only what works today, and marks anything
-that is planned but not built yet.
+The latest release is `0.1.0-rc.1`, the release candidate for Koala 0.1.0.
+This guide describes only what works today, and marks anything that is
+planned but not built yet.
 
 ## What Koala is
 
@@ -74,7 +74,7 @@ On a Mac:
 - Images for `linux/arm64`. Intel (x86-64) images are not supported, and
   there is no Rosetta translation.
 
-On Linux (preview): Ubuntu 24.04 on x86-64 with kernel 6.12 or newer, access
+On Linux: Ubuntu 24.04 on x86-64 with kernel 6.12 or newer, access
 to `/dev/kvm`, and images for `linux/amd64`. See
 [Koala on Linux](linux.md#requirements).
 
@@ -102,7 +102,7 @@ to `/dev/kvm`, and images for `linux/amd64`. See
 11. [Limits and behaviour](limits.md): logout, sleep, restarts, memory and
     disk, and what is not available yet.
 12. [Troubleshooting](troubleshooting.md): error codes and what to do.
-13. [Koala on Linux (preview)](linux.md): requirements, the Debian
+13. [Koala on Linux](linux.md): requirements, the Debian
     package, logging out, upgrading and removing on Linux.
 
 ### Examples

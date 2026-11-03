@@ -28,10 +28,9 @@ VM. The same `koala` commands, VM specs and policies work on both hosts.
 
 *Watch the explainer: [Koala - run agents with confidence](https://youtu.be/1--kPBb8dOU) (YouTube).*
 
-> **Preview:** Koala is in preview. It is tested hard, on real VMs, on both
-> platforms ([how](#how-koala-is-tested)), and v0.1 is still in development:
-> commands and file formats may change between previews. Each release's notes
-> say what changed.
+> **Release candidate:** the latest release, `0.1.0-rc.1`, is the release
+> candidate for Koala 0.1.0. It is tested hard, on real VMs, on both platforms
+> ([how](#how-koala-is-tested)). Each release's notes say what changed.
 
 **Documentation:** <https://kunalkushwaha.github.io/homebrew-koala/>
 
@@ -42,7 +41,7 @@ Mac and the Linux files. Koala's source code is not public yet.
 
 ## Platforms
 
-| | macOS | Linux (preview) |
+| | macOS | Linux |
 | --- | --- | --- |
 | Host | Apple silicon, macOS 26 or newer | x86-64 Ubuntu 24.04, kernel 6.12 or newer, access to `/dev/kvm` |
 | Hypervisor | Apple's Virtualization framework | KVM, through Cloud Hypervisor |
@@ -219,7 +218,7 @@ sudo apt remove koala         # on Linux, after each user's koala system uninsta
 - [Profiles: lean and full](docs/profiles.md)
 - [Limits and behaviour](docs/limits.md)
 - [Troubleshooting](docs/troubleshooting.md)
-- [Koala on Linux (preview)](docs/linux.md): requirements, the Debian
+- [Koala on Linux](docs/linux.md): requirements, the Debian
   package, logging out, upgrading and removing.
 
 ## License

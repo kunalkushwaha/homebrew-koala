@@ -1,6 +1,6 @@
 <div class="dg dg--stack" data-dg-id="kt-hosts" data-dg-mode="auto" data-dg-delay="1100"
      role="img"
-     aria-label="One Koala, two hosts. Shared on both hosts: the koala CLI, the same /v1 API, the same VM specs, policy templates and security model, and a per-user manager that runs as you with no root daemon. Below that the host provides the rest. On macOS (Apple silicon, macOS 26 or newer): a launchd agent, Apple's Virtualization framework, App Sandbox for the helpers and a Seatbelt profile per VM run, the login Keychain, linux/arm64 images, installed with Homebrew. On Linux, in preview (x86-64 Ubuntu 24.04, kernel 6.12 or newer, /dev/kvm): a systemd user service, KVM through Cloud Hypervisor, Landlock and seccomp plus namespaces where Koala's AppArmor profile is loaded, the desktop keyring (Secret Service) or encrypted files, linux/amd64 images, installed as a Debian package. On both, each VM has its own kernel, disk and network.">
+     aria-label="One Koala, two hosts. Shared on both hosts: the koala CLI, the same /v1 API, the same VM specs, policy templates and security model, and a per-user manager that runs as you with no root daemon. Below that the host provides the rest. On macOS (Apple silicon, macOS 26 or newer): a launchd agent, Apple's Virtualization framework, App Sandbox for the helpers and a Seatbelt profile per VM run, the login Keychain, linux/arm64 images, installed with Homebrew. On Linux (x86-64 Ubuntu 24.04, kernel 6.12 or newer, /dev/kvm): a systemd user service, KVM through Cloud Hypervisor, Landlock and seccomp plus namespaces where Koala's AppArmor profile is loaded, the desktop keyring (Secret Service) or encrypted files, linux/amd64 images, installed as a Debian package. On both, each VM has its own kernel, disk and network.">
 
 <style data-dg-core>
 .dg {
@@ -499,7 +499,7 @@
     <text class="s" x="58" y="274">Apple silicon · macOS 26 or newer</text>
     <text class="k" x="600" y="263">Host</text>
     <rect class="dg-panel dg-panel--raised" x="680" y="234" width="480" height="48" rx="10"/>
-    <text class="t" x="698" y="256">Linux (preview)</text>
+    <text class="t" x="698" y="256">Linux</text>
     <text class="s" x="698" y="274">x86-64 Ubuntu 24.04 · kernel 6.12 or newer · <tspan class="m">/dev/kvm</tspan></text>
   </g>
 
@@ -571,7 +571,7 @@
 
 <ol class="dg-sr">
   <li>Shared on both hosts: the koala CLI, the same /v1 API, the same VM specs, policy templates and security model, and a per-user manager that runs as you, with no root daemon.</li>
-  <li>The stack splits by host: macOS on Apple silicon, macOS 26 or newer; Linux in preview on x86-64 Ubuntu 24.04, kernel 6.12 or newer, with /dev/kvm.</li>
+  <li>The stack splits by host: macOS on Apple silicon, macOS 26 or newer; Linux on x86-64 Ubuntu 24.04, kernel 6.12 or newer, with /dev/kvm.</li>
   <li>Background manager: a launchd agent on macOS, a systemd user service on Linux. Hypervisor: Apple's Virtualization framework on macOS, KVM through Cloud Hypervisor on Linux.</li>
   <li>Sandboxes: App Sandbox for the helpers and a Seatbelt profile per VM run on macOS; Landlock and seccomp, and namespaces where Koala's AppArmor profile is loaded, on Linux. Secrets: the login Keychain on macOS; the desktop keyring (Secret Service) or encrypted files on Linux.</li>
   <li>Images: linux/arm64 on macOS, linux/amd64 on Linux. Install: Homebrew on macOS, a Debian package on Linux.</li>
