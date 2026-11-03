@@ -57,6 +57,23 @@ cores, and VMs together can have more vCPUs than your Mac has cores.
   written.
 - It does not cover named volumes (each has its own size) or writable host
   shares (no limit beyond your Mac's free space).
+- VM disks and named volumes have a journal. After a hard stop (a crash, a
+  power loss, or the VM's process killed), the guest replays it the next
+  time it mounts the disk, so the filesystem stays consistent. Writes the
+  guest hadn't flushed yet can be lost. The journal takes 1/64 of the size,
+  at least 4 MiB and at most 128 MiB. Lean VMs' disks and volumes made by
+  0.1.0-preview.16 or earlier have no journal; recreate them to get one.
+- When a lean VM's disk is full (or damaged), a command can finish without
+  the VM being able to record how it ended. Koala then stops the VM: it
+  ends `Failed`, and the command `failed` with reason `lost` (no exit code
+  is made up). In 0.1.0-preview.16 and earlier, such a command never
+  ended.
+- To recover a lean VM whose disk is full, start it (it boots while full)
+  and run a command that frees space, for example
+  `koala exec VM -- rm /path/to/big-file`. That command completes normally.
+  Any other command stops the VM again while the disk stays full. Watch a
+  VM's disk with `koala stats`. In 0.1.0-preview.16 and earlier, a VM whose
+  disk was full didn't start (`BOOT_FAILED`).
 - Before creating disks and starting VMs, the manager checks your Mac's free
   space and keeps a reserve (2 GiB or 2% of the volume, whichever is
   larger). When space runs short, new work is refused
@@ -66,10 +83,10 @@ cores, and VMs together can have more vCPUs than your Mac has cores.
   Koala keeps in reserve and what running VMs hold.
 
 `koala stats` shows what each running VM uses: CPU, memory and processes as
-the guest reports them (not verified), and disk and network as your Mac
-measures them. On a Mac, the VM's own memory and CPU, held by Apple's
-Virtualization process, aren't shown yet; neither are Koala's own processes
-on Linux. See [what a VM uses](vms.md#what-a-vm-uses-koala-stats).
+the guest reports them (not verified), and disk, network and Koala's own
+processes as your computer measures them. On Linux it also shows the VM's
+own memory and CPU; on a Mac, Apple's Virtualization process holds them and
+they aren't shown yet. See [what a VM uses](vms.md#what-a-vm-uses-koala-stats).
 
 ## Not available yet
 

@@ -4,7 +4,7 @@
 
 ## Installation
 
-Koala is published as a preview, on the
+Koala is published on the
 [releases page](https://github.com/kunalkushwaha/homebrew-koala/releases)
 and through a Homebrew tap. One release holds the Mac and the Linux files.
 On Linux, install the Debian package: see
@@ -64,7 +64,8 @@ This removes the agent, the binaries and the configuration. It keeps your
 VMs, volumes, images and runtimes under
 `~/Library/Application Support/Koala` and prints their paths, so a later
 install finds them again. `--purge --yes` also deletes that folder, plus
-Koala's registry logins and secrets in your login keychain. `--purge`
+Koala's registry logins, secrets and the broker's API keys in your login
+keychain. `--purge`
 without `--yes` lists what it would delete and stops.
 
 **Files outside the Application Support folder:**
@@ -92,7 +93,7 @@ koala system info
 
 ```text
 koala
-  version    0.1.0-preview.16
+  version    0.1.0-rc.1
   install    verified, /path/to/koala-manager
   manager    running, build koala-manager
   events     kept 30 days

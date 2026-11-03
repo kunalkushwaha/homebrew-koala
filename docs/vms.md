@@ -250,8 +250,13 @@ Where each figure comes from matters, so Koala keeps them apart:
   - **network:** the bytes the VM received and sent through Koala's network,
     the connections it made and how many were blocked;
   - **Koala's own processes for the VM:** the worker and koala-net. The VM's
-    own memory and CPU, held by Apple's Virtualization process, are not
-    included. On Linux these processes aren't measured yet.
+    own memory and CPU aren't included. On a Mac, Apple's Virtualization
+    process holds them, and Koala doesn't measure it;
+  - **the VM itself (Linux):** the memory and CPU of `cloud-hypervisor`,
+    which holds the guest's memory and runs its CPUs, and of `virtiofsd`,
+    which serves shared folders. Its memory is what the host holds for the
+    guest now, which can stay above what the guest reports using, since
+    memory the guest has used and freed stays with the VM.
 - **Reserved by the manager:** the memory and disk set aside when the VM
   started, as before.
 
