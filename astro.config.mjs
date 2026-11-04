@@ -10,7 +10,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'Koala',
-			description: 'Run Linux workloads on your Mac, each in its own lightweight virtual machine.',
+			description: 'Run AI agents and other Linux workloads, each in its own lightweight virtual machine, on your Mac or on a Linux machine.',
 			logo: { src: './src/assets/koala.svg' },
 			favicon: '/favicon.svg',
 			social: [
