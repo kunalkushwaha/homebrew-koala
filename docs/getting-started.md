@@ -1,6 +1,9 @@
-# Getting started
+# Install, upgrade and remove
 
-[User guide](README.md) > Getting started
+[User guide](README.md) > Install, upgrade and remove
+
+Install Koala, start it, and check it's ready. Then go on to
+[Tutorial 1: Your first VM](tutorial-first-vm.md).
 
 ## Installation
 
@@ -116,74 +119,6 @@ dropped.
 not pass Koala's checks (owner, permissions, signature). See
 [troubleshooting](troubleshooting.md#the-manager-does-not-start).
 
-## Run a first job
-
-A job is a command in a throwaway VM. The VM is removed automatically when
-the command ends.
-
-```sh
-koala run --image docker.io/library/alpine:3 -- /bin/sh -c 'echo hello from the guest; uname -m'
-```
-
-- Everything after `--` is the command, passed as-is (no host shell).
-- The image is fetched on first use. See [images](images.md).
-- `koala` stays attached and prints the command's output. Its exit status is
-  the command's exit status.
-
-## Create a first persistent VM
-
-An *environment* VM stays up until you stop it, and you run commands in it
-with `koala exec`:
-
-```sh
-koala create dev --image docker.io/library/alpine:3 --wait
-koala start dev --wait
-koala exec dev -- /bin/sh -c 'cat /etc/os-release'
-koala exec -it dev -- /bin/sh        # an interactive shell; type exit to leave
-```
-
-See what you have:
-
-```sh
-koala list
-koala inspect dev
-```
-
-## Clean up
-
-```sh
-koala stop dev --wait
-koala rm dev --wait
-```
-
-## Set up an agent from a template
-
-A template sets an AI agent up in one command: its VM, the broker policy
-that keeps its API key on your Mac, a volume for its data, and its setup.
-See the templates, and what one makes:
-
-```sh
-koala template list
-koala template inspect hermes
-```
-
-Then make it:
-
-```sh
-koala create hermes --template hermes
-```
-
-Koala shows the whole plan, including what the VM can reach, and asks
-before it changes anything. Then it asks for your OpenAI API key. For
-another provider with the same API, add `--set origin=https://…` (see
-[Parameters](templates.md#parameters)). The key goes to your login
-keychain, not into the VM. The first start downloads the agent's image, so
-it takes a while.
-
-To use the agent, and to remove it, see
-[Run the Hermes agent](example-hermes.md). For other agents, and your own,
-see [VM templates for agents](templates.md).
-
 ## Stop the manager
 
 ```sh
@@ -199,18 +134,9 @@ koala system stop --stop-vms
 
 ## Next steps
 
-`koala --help` lists every command. `koala COMMAND --help` shows one
-command's usage, options and examples: for example `koala create --help` or
-`koala volume create --help`. Docker's names work too: `koala ps` and
-`koala ls` list VMs, `koala images` lists images, and `koala image ls` and
-`koala volume ls` are the same as their `list` commands.
-
-- [Jobs and VMs](vms.md): services, VM spec files and resources.
-- [Working inside a VM](working-in-vms.md): `exec`, `cp`, logs.
-- [Keys on your Mac (the broker)](broker.md): API keys that never enter a
-  VM.
-- [VM templates for agents](templates.md): an agent in one command, and
-  `koala template update`.
-- Examples: [Run the Hermes agent](example-hermes.md),
-  [Run OpenClaw](example-openclaw.md) (tested on Linux and macOS), and
-  [an X agent](example-x-agent.md).
+- [Tutorial 1: Your first VM](tutorial-first-vm.md), then the other
+  [tutorials](README.md#tutorials), in order.
+- `koala --help` lists every command, and `koala COMMAND --help` shows one
+  command's usage, options and examples. Docker's names work too: `koala ps`
+  and `koala ls` list VMs, `koala images` lists images, and `koala image ls`
+  and `koala volume ls` are the same as their `list` commands.

@@ -2,6 +2,8 @@
 
 [User guide](README.md) > Keys on your Mac (the broker)
 
+**Learn by doing:** [Tutorial 4: Decide what an agent can reach](tutorial-policy.md).
+
 An AI agent usually needs an API key: for a model provider, GitHub or a cloud
 service. A [secret](secrets.md) puts that key inside the VM, where anything
 running there can read it and send it anywhere. With the **broker**, the key
@@ -20,8 +22,8 @@ limits, but it can't steal the key.
 - **`koala-broker`** runs on your Mac in the macOS App Sandbox. The Koala
   manager starts it when a VM first needs it. It has no listening port: each
   VM reaches it only through its own private channel.
-- **A credential** is a key the broker stores in your login keychain. It
-  never enters a VM. See `koala credential`.
+- **A credential** is a key the broker stores in your login keychain (on
+  Linux, in its own encrypted files). It never enters a VM. See `koala credential`.
 - **A policy** is a JSON file. It names one service, which credential to add,
   the allowed requests, and limits. See `koala policy`.
 - **A broker grant** in a VM's spec names a policy. Inside the VM the
@@ -50,8 +52,12 @@ limits, but it can't steal the key.
    - `--allow chat,models,embeddings` picks other groups of requests from
      the template.
    - `--origin https://api.mistral.ai` uses another service with the same
-     API under `/v1`. For one under another path, such as Groq, see
-     [Write your own policy](#write-your-own-policy).
+     API under `/v1`. One whose API is under a longer path takes that path
+     in the origin: `--origin https://openrouter.ai/api` (OpenRouter, whose
+     API is at `/api/v1`) or `--origin https://api.groq.com/openai` (Groq).
+   - `--origin http://127.0.0.1:11434` uses a model server on this computer,
+     such as Ollama or LM Studio. It takes no key: the policy is made
+     without one, and nothing is asked. A key is never sent over `http://`.
    - `--credential NAME` uses a key you already stored, by its name.
 
    `koala policy inspect openai-main` shows what the policy allows, and
@@ -102,20 +108,10 @@ koala policy add -f my-api.json
 A policy you edit this way keeps its `template` record. `koala policy
 upgrade` would replace your edits, and shows them first.
 
-**For example, Groq.** Its API has the OpenAI shape, but under
-`/openai/v1`, not `/v1`. Print the `openai` template's policy for it, and
-change `/v1` to `/openai/v1`: in the three rules, and in the VM's
-`OPENAI_BASE_URL`:
-
-```sh
-koala policy create groq --template openai --origin https://api.groq.com \
-  --model llama-3.3-70b-versatile --print | sed 's#/v1#/openai/v1#g' > groq.json
-koala policy validate -f groq.json
-koala credential set groq
-koala policy add -f groq.json
-```
-
 ### Learn from refusals
+
+To try this step by step, see
+[Tutorial 4](tutorial-policy.md#step-5-allow-one-refused-request-keep-refusing-the-other).
 
 You don't need to know every request an agent makes. Start with a strict
 policy, run the agent, then see what the broker refused:
@@ -150,8 +146,9 @@ IDs in a path (numbers, UUIDs) become a parameter, so `/v1/items/1234` and
   terminal, it asks about each, saves the ones you approve, and tests those
   requests again. Running VMs
   get the change at once; no restart.
-- Nothing is allowed without your yes. Not in a terminal, or with `--json`,
-  it only lists.
+- Nothing is allowed without your yes. It asks only when its input and
+  output are a terminal; otherwise, or with `--json`, it lists them and says
+  nothing was changed.
 - The broker keeps refused requests in memory while it runs: the method,
   the path, the names of query parameters (not their values), and the
   refused value of a field the policy pins, such as the model. Nothing else
@@ -302,44 +299,17 @@ refuses others before GitHub sees them.
   and need a token in the VM. For now, use a [secret](secrets.md) for them.
 - **Page with `?page=`.** GitHub's `Link` header names `api.github.com`,
   which a client following it can't reach through the broker.
-- **GitHub Enterprise Server** isn't supported yet.
+- **GitHub Enterprise Server:** add `--origin https://HOST/api/v3`. Tokens
+  are minted there too, since the origin's path goes before the token
+  request's path.- **The token request is written in the policy,** under `mint`: see
+  [Minting tokens](policy-file.md#minting-tokens).
 
-## What a policy controls
+## The policy file
 
-- **One service,** in `upstream.origin`. HTTPS only, except `http://` to a
-  model server on your own Mac (`127.0.0.1`, `localhost`). The broker never
-  follows redirects.
-- **The key,** in `auth`, with the credential's name. It is sent in one of
-  these ways:
-  - `bearer`;
-  - a named `header` (such as `x-api-key`);
-  - `basic`;
-  - a `query` parameter;
-  - `authorization` with a `type`, such as Discord's `Bot`;
-  - the URL `path`, at a rule segment `PREFIX{credential}`, as in
-    Telegram's `/bot{credential}/sendMessage`. Every rule then has one
-    such segment. The VM's own text in that place is replaced, never sent.
-    `{credential}` is reserved for this: no other policy may use it.
-  - `github-app`, with an `appId` and `installationId`, and optionally
-    `repositories` and `permissions`. The credential is the App's key, and
-    requests carry a one-hour token minted from it.
-- **Requests:**
-  - `rules` lists the allowed method and path pairs. A `{name}` segment can
-    be limited to listed values with `params`, and `query` lists the allowed
-    query parameters. A last segment `{name*}` matches the rest of the path,
-    such as a file's path. Everything else is refused.
-  - `requestHeaders` lists the headers passed through. `Authorization`,
-    cookies and forwarding headers never pass.
-  - `body` limits the size and content types. `fieldAllow` can pin
-    top-level JSON fields, for example the `model`, to listed values.
-- **Responses:** only `responseHeaders` come back. A response that contains
-  the key is refused, including partway through a stream: as is, base64,
-  hex, or percent-encoded as in a URL.
-- **Limits** per VM, in `perVM`: requests per minute, concurrent requests,
-  response size, and total and idle time. A grant can set lower `limits`,
-  never higher.
-- **Environment** for the VM, in `guestEnvironment`. `{grant}` is replaced by
-  the grant's name.
+A policy is a JSON file, `"version": 2`. Every field, minting tokens, and the
+rules no policy can change are in [the policy file reference](policy-file.md).
+To write one by hand, step by step, see
+[Tutorial 4: Decide what an agent can reach](tutorial-policy.md).
 
 ## Day to day
 

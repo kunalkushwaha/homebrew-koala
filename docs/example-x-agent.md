@@ -29,11 +29,7 @@ Tested on 2026-10-14 and 15 with Koala 0.1.0-preview.7's code:
 
 ## What you need
 
-- **Koala 0.1.0-preview.7 or later.** It has two fixes made for this
-  example:
-  - stopping a VM now lets its programs finish, so the browser keeps your
-    sign-in;
-  - a browser's network traffic no longer starves the VM of connections.
+- **Koala, installed and running** ([Tutorial 1](tutorial-first-vm.md)).
 - **The `examples/x-agent` folder**, copied somewhere outside Desktop,
   Documents and Downloads. macOS protects those folders, and the VM reads
   the folder.

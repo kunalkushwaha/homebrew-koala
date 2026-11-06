@@ -135,18 +135,14 @@ If the package goes first, each user's manager keeps running from
 `~/.local/share/koala` until that user runs the uninstall from a release
 archive.
 
-## What is not done yet on Linux
+## Helper isolation on Linux
 
-- Helpers get their own user, PID and mount namespaces, with a private
-  `/proc`, only where Koala's AppArmor profile is loaded (from
-  0.1.0-preview.13; the `.deb` installs and loads it). From
-  0.1.0-preview.14 the profile names only the package's own
-  `koala-confine`, through which the manager starts its helpers. Without it,
-  as with an archive install, each helper is still confined with Landlock
-  and seccomp, but can see other processes' `/proc` entries. `koala system
-  check` says which. After upgrading the package, run `koala system install`
-  again: until then the helpers run without namespaces.
-- The network session with a VPN, Wi-Fi changes and sleep, tested on a
-  real machine.
-- Install, upgrade and removal were tested on a clean Ubuntu 24.04 system
-  in a container with systemd and KVM, not yet on a desktop login.
+Koala's helpers get their own user, PID and mount namespaces, with a private
+`/proc`, where Koala's AppArmor profile is loaded. The `.deb` installs and
+loads it, and the profile names only the package's own `koala-confine`,
+through which the manager starts its helpers. Without it, as with an archive
+install, each helper is still confined with Landlock and seccomp, but can
+see other processes' `/proc` entries. `koala system check` says which. After
+upgrading the package, run `koala system install` again: until then the
+helpers run without namespaces.
+

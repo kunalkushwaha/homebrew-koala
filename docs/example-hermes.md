@@ -13,10 +13,10 @@ key, and reaches your model provider only through the
 [broker](broker.md). To use chat platforms, give the VM internet access and
 its keys instead; see [Keys in the VM](#keys-in-the-vm-instead).
 
-Tested on 2026-10-14 with the code of Koala 0.1.0-preview.6 and
-`docker.io/nousresearch/hermes-agent:latest` at digest
-`sha256:444b42594e7f…` (Hermes 0.21.7). The model was a stand-in
-OpenAI-compatible server on the Mac, not a real provider.
+To try the agent step by step first, see
+[Tutorial 2: Run an AI agent safely](tutorial-agent.md), which is tested by
+running it as written. This page goes further: the gateway, its API key,
+and chat platforms.
 
 ## The quick way: a template
 
@@ -35,6 +35,9 @@ the gateway is running, and it prints how to reach it.
 - For another model, or another OpenAI-compatible provider, add `--set
   model=…` or `--set origin=…`. See
   [VM templates for agents](templates.md#parameters).
+- With Ollama on this computer, `--set origin=http://127.0.0.1:11434` and
+  your model's name. The policy then has no key, and none is asked for:
+  a key is never sent over `http://`.
 - `koala template inspect hermes` lists the parameters and what the
   template makes.
 - The template's file is `examples/hermes/template.json` in Koala's
@@ -78,9 +81,12 @@ koala policy create hermes-openai --template openai --model gpt-4.1-mini
   the model list, for the model you name. Use your provider's model name,
   here and when you set up Hermes below.
 - For another OpenAI-compatible provider, add its address, such as
-  `--origin https://api.mistral.ai`. A provider whose API is not under
-  `/v1`, such as Groq, needs the paths changed; see
-  [Write your own policy](broker.md#write-your-own-policy).
+  `--origin https://api.mistral.ai`. For one whose API is under a longer
+  path, include the path: `--origin https://openrouter.ai/api`
+  (OpenRouter) or `--origin https://api.groq.com/openai` (Groq).
+- For a model server on this computer, such as Ollama, use
+  `--origin http://127.0.0.1:11434`. The policy then has no key, and none is
+  asked for.
 - `koala policy inspect hermes-openai` shows what the policy allows: the
   service, the requests, the model and the limits.
 
@@ -177,9 +183,11 @@ the key gets `401`.
 
 ## Keys in the VM instead
 
-Hermes's chat platforms, such as Telegram and Slack, need internet access
-and their own keys, which the broker does not handle yet. For them, give
-the VM internet access and set Hermes up inside it:
+The broker has policy templates for Telegram, Slack and Discord
+([chat platforms](broker.md#chat-platforms)), for a client that can be
+pointed at the broker's address. This section shows the other way, with
+Hermes's chat-platform keys in the VM: give the VM internet access and set
+Hermes up inside it:
 
 1. Stop the VM and edit its definition:
 

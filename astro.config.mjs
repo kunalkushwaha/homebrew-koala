@@ -42,36 +42,43 @@ export default defineConfig({
 				Hero: './src/components/Hero.astro',
 			},
 			sidebar: [
-				{ label: 'Start here', items: [
+				{ label: 'Get started', items: [
 					{ label: 'Overview', slug: 'guide' },
-					{ label: 'Getting started', slug: 'guide/getting-started' },
+					{ label: 'Install, upgrade and remove', slug: 'guide/getting-started' },
 					{ label: 'How it works', slug: 'how-it-works' },
 				] },
-				{ label: 'Using Koala', items: [
+				{ label: 'Tutorials', items: [
+					{ label: '1. Your first VM', slug: 'guide/tutorial-first-vm' },
+					{ label: '2. Run an AI agent safely', slug: 'guide/tutorial-agent' },
+					{ label: '3. Your data, not your Mac', slug: 'guide/tutorial-data' },
+					{ label: '4. Decide what an agent can reach', slug: 'guide/tutorial-policy' },
+					{ label: '5. Secrets and keys', slug: 'guide/tutorial-secrets' },
+					{ label: '6. Services and ports', slug: 'guide/tutorial-services' },
+					{ label: '7. Look after your VMs', slug: 'guide/tutorial-look-after' },
+					{ label: '8. Images, registries and Docker', slug: 'guide/tutorial-images' },
+				] },
+				{ label: 'Guides', items: [
 					{ label: 'Jobs and VMs', slug: 'guide/vms' },
 					{ label: 'Working inside a VM', slug: 'guide/working-in-vms' },
 					{ label: 'Images and registries', slug: 'guide/images' },
-					{ label: 'Profiles: lean and full', slug: 'guide/profiles' },
-				] },
-				{ label: 'Agents', items: [
+					{ label: 'Shares, volumes and disks', slug: 'guide/storage' },
+					{ label: 'Networking', slug: 'guide/networking' },
+					{ label: 'Secrets', slug: 'guide/secrets' },
 					{ label: 'Keys on your Mac (the broker)', slug: 'guide/broker' },
 					{ label: 'VM templates for agents', slug: 'guide/templates' },
-				] },
-				{ label: 'Access and isolation', items: [
-					{ label: 'Networking', slug: 'guide/networking' },
-					{ label: 'Shares, volumes and disks', slug: 'guide/storage' },
-					{ label: 'Secrets', slug: 'guide/secrets' },
-				] },
-				{ label: 'Reference', items: [
-					{ label: 'Limits and behaviour', slug: 'guide/limits' },
-					{ label: 'Troubleshooting', slug: 'guide/troubleshooting' },
-					{ label: 'Koala on Linux', slug: 'guide/linux' },
-					{ label: 'Releases', link: 'https://github.com/kunalkushwaha/homebrew-koala/releases', attrs: { target: '_blank' } },
+					{ label: 'Profiles: lean and full', slug: 'guide/profiles' },
 				] },
 				{ label: 'Examples', items: [
 					{ label: 'Run the Hermes agent', slug: 'guide/example-hermes' },
 					{ label: 'Run OpenClaw', slug: 'guide/example-openclaw' },
 					{ label: 'An X agent', slug: 'guide/example-x-agent' },
+				] },
+				{ label: 'Reference', items: [
+					{ label: 'The broker policy file', slug: 'guide/policy-file' },
+					{ label: 'Troubleshooting', slug: 'guide/troubleshooting' },
+					{ label: 'Limits and behaviour', slug: 'guide/limits' },
+					{ label: 'Koala on Linux', slug: 'guide/linux' },
+					{ label: 'Releases', link: 'https://github.com/kunalkushwaha/homebrew-koala/releases', attrs: { target: '_blank' } },
 				] },
 			],
 		}),

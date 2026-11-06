@@ -2,6 +2,8 @@
 
 [User guide](README.md) > Networking
 
+**Learn by doing:** [Tutorial 6: Services and ports](tutorial-services.md).
+
 Each VM has its own network stack. Koala checks every connection the guest
 makes on the Mac side, so software in the VM cannot switch the rules off.
 
@@ -19,7 +21,13 @@ Without a `network` section, a VM:
 Internet means public addresses only. Addresses on your local networks and
 VPNs are treated as local, even if they look public, and stay blocked.
 
-To switch the internet off, set it in the spec file:
+To switch the internet off, add `--no-internet` when you create the VM:
+
+```sh
+koala create agent --image docker.io/library/alpine:3 --no-internet --wait
+```
+
+In a spec file, the same is:
 
 ```json
 "network": {"internet": false, "allow": [], "publish": []}
@@ -32,6 +40,12 @@ resolve the names of its granted host services.
 
 Grant one address and specific ports. For example, a service listening on
 your Mac at `127.0.0.1:8080`:
+
+```sh
+koala create agent --image docker.io/library/alpine:3 --no-internet --host-service 127.0.0.1:8080 --wait
+```
+
+In a spec file, the same is:
 
 ```json
 "network": {"internet": false, "allow": [
@@ -63,8 +77,6 @@ koala exec agent -- /bin/sh -c 'wget -qO- http://host-1.koala.internal:8080/'
   Prefer a single host (`/32`).
 - Loopback and other protected ranges cannot be granted.
 - LAN grants create no `host-N` name: use the address.
-
-LAN grants are covered by Koala's network tests, but not by a CLI journey.
 
 ## Publish a port
 

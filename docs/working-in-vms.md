@@ -2,6 +2,8 @@
 
 [User guide](README.md) > Working inside a VM
 
+**Learn by doing:** [Tutorial 7: Look after your VMs](tutorial-look-after.md).
+
 ## Run a command: `koala exec`
 
 ```sh
@@ -30,7 +32,11 @@ Output:
   stderr unchanged, byte for byte, binary included. You can pipe them.
 - With `-t`, the command's terminal output arrives on your terminal
   unchanged.
-- `koala`'s own messages (such as `execution ID`) go to stderr.
+- `koala`'s own messages go to stderr. In a terminal you see only the
+  command's output, plus one line when it fails (`koala: execution ID exited
+  (exit 3)`). When stderr isn't a terminal (in a script or a pipe), `koala`
+  also prints `execution ID` when the command starts and the outcome line
+  when it succeeds, so scripts can read the ID.
 - `--json` cannot be mixed with the command's output on stdout. Use it with
   `--result-file`, or use `koala execution inspect --json` afterwards.
 
@@ -62,7 +68,8 @@ Programs that need the terminal's name, such as `tmux` or `sudo` with
 
 ## Reattach: `koala attach`
 
-Every `exec` and every job has an execution ID. Reattach to it:
+Every `exec` and every job has an execution ID: `koala run --detach` prints
+it, and `koala execution inspect` and `--json` show it. Reattach to it:
 
 ```sh
 koala attach EXECUTION_ID               # output and the result; your stdin goes to it
@@ -188,7 +195,15 @@ koala events --vm dev --follow  # follow one VM's events
 ```
 
 Events record lifecycle changes, operations, executions and errors, one
-line each. `--json` prints one JSON object per event.
+line each: the time (on this computer's clock), the event, the first 8
+characters of the VM's ID, and what happened. `--json` prints one JSON object
+per event, with every ID and the event's sequence number.
+
+To see only what a VM was refused, count the kinds:
+
+```sh
+koala events --vm dev | grep -o 'denied=[^ ]*' | sort | uniq -c
+```
 
 Two kinds help answer "what could this VM reach, and what did it try":
 
@@ -207,7 +222,7 @@ Two kinds help answer "what could this VM reach, and what did it try":
   packets on its own, and Koala doesn't forward IPv6.
 
 ```text
-12 2026-10-27T10:40:02.118Z flow.denied vm=… run=… denied=tcp.22.prohibited-prefix count=7
+2026-10-27 19:40:02  flow.denied           vm 7403ead9  denied=tcp.22.prohibited-prefix count=7
 ```
 
 ### Events in the macOS log

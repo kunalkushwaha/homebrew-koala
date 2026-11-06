@@ -2,13 +2,16 @@
 
 [User guide](README.md) > Images and private registries
 
+**Learn by doing:** [Tutorial 8: Images, registries, and a full Linux with Docker](tutorial-images.md).
+
 ## Images
 
 Lean VMs and jobs run OCI images: the images you know from Docker and other
 container registries.
 
-- Only `linux/arm64` images work. A multi-platform image is resolved to its
-  `linux/arm64` variant; an image without one is refused before boot.
+- Only images for your computer's architecture work: `linux/arm64` on a Mac,
+  `linux/amd64` on Linux. A multi-platform image is resolved to that variant;
+  an image without one is refused before boot.
 - A short name such as `alpine:3` means Docker Hub
   (`docker.io/library/alpine:3`). For other registries, start the
   reference with the registry host: `ghcr.io/OWNER/IMAGE:TAG`.
@@ -24,8 +27,8 @@ container registries.
 - Koala does not build images (no Dockerfile builds). Build them elsewhere
   and push them to a registry.
 
-Koala's own tests pull from a local test registry. Public registries such
-as Docker Hub use the same code, but are not part of the tested journeys.
+Koala's tests pull from a local test registry, and the
+[tutorials](README.md#tutorials) pull from Docker Hub.
 
 ## Manage the image cache
 
@@ -77,6 +80,4 @@ koala registry logout LOGIN_ID
   stored login. See [secrets](secrets.md#the-macos-approval-prompt-after-an-upgrade);
   the same applies here.
 
-**Not covered yet:** `--registry-login` applies to `image pull` only. Using
-a privately pulled image in `koala create` or `koala run` is not part of the
-tested journeys.
+`--registry-login` applies to `koala image pull`.

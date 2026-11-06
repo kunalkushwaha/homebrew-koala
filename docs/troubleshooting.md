@@ -28,7 +28,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | Message | What to do |
 | --- | --- |
 | `manager unavailable: ...` | The manager is not running. Run `koala system start`. |
-| `koala: no .../Library/LaunchAgents/dev.koala.manager.plist`, or `install    unverified (no .../dev.koala.manager.plist)` in `system info` | Koala is not installed for this user. Run `koala system install` ([getting started](getting-started.md#installation)). |
+| `koala: no .../Library/LaunchAgents/dev.koala.manager.plist`, or `install    unverified (no .../dev.koala.manager.plist)` in `system info` | Koala is not installed for this user. Run `koala system install` ([install](getting-started.md#installation)). |
 | `INSTALL_VMS_RUNNING` | `system install` (upgrade) or `system uninstall` found running VMs. Stop them, or add `--stop-vms`. |
 | `INSTALL_START_FAILED ... is running again` | The new manager did not start, and the previous version was restored. The message quotes the end of `~/Library/Application Support/Koala/logs/manager.log`. |
 | `INSTALL_MANAGER_UNAVAILABLE` | The installed manager would not start, so running VMs could not be checked; nothing was changed. A common cause is data written by a newer Koala: install that version or a later one. |
@@ -75,7 +75,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | Code | Meaning and what to do |
 | --- | --- |
 | `IMAGE_INCOMPATIBLE` | The image does not fit the profile: OCI images need `lean`, catalog entries `full`. Or the catalog entry is unknown. |
-| `UNSUPPORTED_ARCHITECTURE` | The image has no `linux/arm64` variant. |
+| `UNSUPPORTED_ARCHITECTURE` | The image has no variant for your computer: `linux/arm64` on a Mac, `linux/amd64` on Linux. |
 | `IMAGE_PREPARATION_FAILED`, `REGISTRY_ERROR` | The image could not be fetched or prepared, or the registry answered with an error (for example a wrong password or a missing image). Check the reference, your network and your login. If `--wait` adds "the image helper failed", Koala's own helper stopped, not the image: run the command again. |
 | `IMAGE_PULL_INTERRUPTED`, `IMAGE_PRUNE_INTERRUPTED` | The Koala manager restarted while the pull or prune ran. Nothing half-made is kept. Run the command again; content already fetched is reused. |
 | `REGISTRY_AUTH_INVALID` | The registry's sign-in challenge could not be used. Check the registry address. |
@@ -123,7 +123,7 @@ usually after a manager restart. Stop and start it. See
 
 | Code | Meaning and what to do |
 | --- | --- |
-| `EXEC_START_FAILED` | The command could not be started in the VM, for example the program does not exist, or the image's user is unknown. This is not the program's exit code. `koala start --wait` prints the reason after the code, and `koala inspect VM --json` shows it as `lastFailure`. (Koala 0.1.0-preview.5 and earlier print only the code.) |
+| `EXEC_START_FAILED` | The command could not be started in the VM, for example the program does not exist, or the image's user is unknown. This is not the program's exit code. `koala start --wait` prints the reason after the code, and `koala inspect VM --json` shows it as `lastFailure`. |
 | `start_failed` right after a manager restart | The manager stopped after it accepted the command and before it sent it to the VM, so the command never ran. Run it again. The VM was not touched. |
 | `RETENTION_EXPIRED` | The output you asked for is no longer kept, or was never captured: a VM that fails within a second or two of starting can end before its serial console is read. Use `koala inspect VM --json` (`lastFailure`) for why it failed. |
 | `TRANSFER_EXISTS` | The `cp` destination already exists. Choose another name or add `--replace`. |

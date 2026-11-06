@@ -24,7 +24,6 @@ worker are as on a Mac. These differ:
 | --- | --- |
 | You log out | systemd stops the manager and **your VMs stop**, unless lingering is on. With `sudo loginctl enable-linger "$USER"`, they keep running. See [Koala on Linux](linux.md#logging-out). |
 | The computer restarts | VMs stop. |
-| The computer sleeps | Not tested on Linux yet, nor VPN or Wi-Fi changes with VMs running. |
 
 After logout or a restart, nothing is started again automatically. At your
 next login the manager records interrupted runs; persistent VMs keep their
@@ -61,19 +60,16 @@ cores, and VMs together can have more vCPUs than your Mac has cores.
   power loss, or the VM's process killed), the guest replays it the next
   time it mounts the disk, so the filesystem stays consistent. Writes the
   guest hadn't flushed yet can be lost. The journal takes 1/64 of the size,
-  at least 4 MiB and at most 128 MiB. Lean VMs' disks and volumes made by
-  0.1.0-preview.16 or earlier have no journal; recreate them to get one.
+  at least 4 MiB and at most 128 MiB.
 - When a lean VM's disk is full (or damaged), a command can finish without
   the VM being able to record how it ended. Koala then stops the VM: it
   ends `Failed`, and the command `failed` with reason `lost` (no exit code
-  is made up). In 0.1.0-preview.16 and earlier, such a command never
-  ended.
+  is made up).
 - To recover a lean VM whose disk is full, start it (it boots while full)
   and run a command that frees space, for example
   `koala exec VM -- rm /path/to/big-file`. That command completes normally.
   Any other command stops the VM again while the disk stays full. Watch a
-  VM's disk with `koala stats`. In 0.1.0-preview.16 and earlier, a VM whose
-  disk was full didn't start (`BOOT_FAILED`).
+  VM's disk with `koala stats`.
 - Before creating disks and starting VMs, the manager checks your Mac's free
   space and keeps a reserve (2 GiB or 2% of the volume, whichever is
   larger). When space runs short, new work is refused
@@ -88,19 +84,11 @@ processes as your computer measures them. On Linux it also shows the VM's
 own memory and CPU; on a Mac, Apple's Virtualization process holds them and
 they aren't shown yet. See [what a VM uses](vms.md#what-a-vm-uses-koala-stats).
 
-## Not available yet
+## Current limits
 
-Planned for v0.1 but not built yet:
-
-- **Reattaching running VMs across an upgrade:** an upgrade stops them
-  (`--stop-vms`).
-- **A daemon settings file** (`~/Library/Application Support/Koala/config.json`)
-  for log and disk budgets is documented but not read by the manager yet.
+- **An upgrade stops running VMs** (`koala system install --stop-vms`); they
+  aren't carried across it.
 - **Terminal names in full-profile shells:** `tty` prints `not a tty`.
-- **Release qualification:** pressure and endurance tests, performance targets
-  and the release review. The adversarial-guest
-  tests and the crash tests are done; see
-  [how Koala is tested](https://github.com/kunalkushwaha/homebrew-koala#how-koala-is-tested).
 
 Not part of v0.1:
 

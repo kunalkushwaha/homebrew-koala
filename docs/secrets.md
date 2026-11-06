@@ -2,8 +2,12 @@
 
 [User guide](README.md) > Secrets
 
+**Learn by doing:** [Tutorial 5: Secrets and keys](tutorial-secrets.md).
+
 A secret is a named value, such as an API token, that Koala keeps in your
-login keychain and gives only to the VMs you grant it to.
+login keychain (on Linux, in your login keyring or in Koala's encrypted
+files; see [Koala on Linux](linux.md#secrets)) and gives only to the VMs you
+grant it to.
 
 ## Store, inspect and remove a secret
 
@@ -68,6 +72,8 @@ VM entirely. With the [broker](broker.md), the key stays on your Mac: the VM
 gets a broker grant and `"secrets": []`, and the broker adds the key to the
 requests you allow.
 ## The login keychain
+
+This section is about the Mac. On Linux, see [Koala on Linux](linux.md#secrets).
 
 Secrets (service `dev.koala.guest-secret.v1`) and registry logins (service
 `dev.koala.registry.v1`) are stored as items in your login keychain. They are

@@ -2,6 +2,8 @@
 
 [User guide](README.md) > Shares, volumes and disks
 
+**Learn by doing:** [Tutorial 3: Give a VM your data, not your Mac](tutorial-data.md).
+
 A VM can store data in three places:
 
 | Where | What it is | Lifetime | Counted in `diskMiB` |

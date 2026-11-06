@@ -2,6 +2,8 @@
 
 [User guide](README.md) > VM templates for agents
 
+**Learn by doing:** [Tutorial 2: Run an AI agent safely](tutorial-agent.md).
+
 A **VM template** sets an agent up in one command. One template holds
 everything the agent needs:
 - its VM: the image, resources, command, network and published ports;
@@ -52,8 +54,8 @@ script does.
 The plan for the built-in `hermes` template looks like this:
 
 ```text
-Template hermes v1 (built in): The Hermes agent's gateway, with its model key on this computer, no internet
-Parameters: credential=hermes-openai image=docker.io/nousresearch/hermes-agent:latest model=gpt-4.1-mini origin=https://api.openai.com port=8642 tls-pin=
+Template hermes v1 (built in): The Hermes agent's gateway in its own VM; its model through the broker, no internet
+Parameters: credential=hermes-openai image=docker.io/nousresearch/hermes-agent:latest model=gpt-4.1-mini origin=https://api.openai.com port=8642
 It will make:
   VM hermes: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory, 6144 MiB disk
     publish tcp 127.0.0.1:8642 -> 8642 (loopback)
@@ -61,7 +63,7 @@ It will make:
     internet off
     broker openai -> policy hermes-openai
   credential hermes-openai: koala asks for the key
-  policy hermes-openai: openai v1, https://api.openai.com, models gpt-4.1-mini, key hermes-openai
+  policy hermes-openai: openai v2, https://api.openai.com, models gpt-4.1-mini, key hermes-openai
   volume hermes-data: 2048 MiB, new
   then waits, up to 300 s, until this succeeds in the VM: curl -fsS -m 2 -o /dev/null http://127.0.0.1:8642/health
   runs in the VM: hermes config set model.provider custom
@@ -83,6 +85,12 @@ koala create hermes --template hermes --set model=gpt-4.1
 
 # Another OpenAI-compatible provider
 koala create hermes --template hermes --set origin=https://api.mistral.ai --set model=mistral-small-latest
+
+# One whose API is under a longer path (OpenRouter's is at /api/v1)
+koala create hermes --template hermes --set origin=https://openrouter.ai/api --set model=openai/gpt-4.1-mini
+
+# A model server on this computer, such as Ollama: no key, none is asked for
+koala create hermes --template hermes --set origin=http://127.0.0.1:11434 --set model=gemma4:31b-cloud
 
 # A second Hermes, on another port
 koala create hermes-2 --template hermes --set port=8643

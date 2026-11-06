@@ -2,6 +2,8 @@
 
 [User guide](README.md) > Jobs and VMs
 
+**Learn by doing:** [Tutorial 1: Your first VM](tutorial-first-vm.md).
+
 ## Three modes
 
 Every VM has a *mode*, chosen when it is created:
@@ -135,7 +137,7 @@ The fields, briefly:
 
 | Field | Notes |
 | --- | --- |
-| `name`, `mode`, `image` | Required. `image.platform` is `linux/arm64`. |
+| `name`, `mode`, `image` | Required. `image.platform` is `linux/arm64` on a Mac, `linux/amd64` on Linux. |
 | `profile` | `lean` or `full`. |
 | `resources` | All three of `vcpus` (1–32), `memoryMiB` (128–131072), `diskMiB` (256–1048576), or omit it for the profile's defaults. |
 | `process` | `entrypoint`, `arguments`, `environment`, `workingDirectory`, `user`, `terminal`, `timeoutSeconds`. Omitted fields use the image's defaults. |

@@ -2,12 +2,14 @@
 
 [User guide](README.md) > Profiles
 
+**Learn by doing:** [Tutorial 8: Images, registries, and a full Linux with Docker](tutorial-images.md).
+
 Every VM has a profile, fixed when it is created.
 
 | | Lean | Full |
 | --- | --- | --- |
 | What boots | Koala's small init, then your image's command | systemd, with Koala's agent as a service |
-| Image source | Any `linux/arm64` OCI image | A Koala catalog entry |
+| Image source | Any OCI image for your computer's architecture | A Koala catalog entry |
 | `systemctl`, `journalctl` | Not available | Available |
 | Docker Engine | No | Yes (Docker and containerd) |
 | Default resources | 1 vCPU, 256 MiB RAM, 1 GiB disk | 2 vCPUs, 1024 MiB RAM, 8 GiB disk |
@@ -56,9 +58,8 @@ koala exec dev -- docker run -d --name ticker --network none local/tool:1 /bin/b
 
 What is tested:
 importing an image and running containers with `--network none`, in the
-foreground and detached. Pulling images from a registry inside the VM, and
-container networking, are not part of the tested journey yet.
-
+foreground and detached; and, in [Tutorial 8](tutorial-images.md), pulling
+`hello-world` from Docker Hub inside the VM and running it.
 Things to know:
 
 - Docker's data is stored on the VM's own disk and counts toward its
@@ -94,8 +95,6 @@ service VM. A job's disk is removed with the job.
   - numeric IDs (`1000`, `1000:1000`) work as before;
   - `root` works even in an image without `/etc/passwd`;
   - a user added inside a running VM (with `useradd`) is not seen.
-
-  Koala 0.1.0-preview.5 and earlier take numeric IDs only.
 - **`HOME`:** unless the image, the spec or the command sets it, `HOME` is the
   user's home directory from `/etc/passwd`: `/root` for root, `/` when there
   is none.
