@@ -1,9 +1,9 @@
 class Koala < Formula
   desc "Run AI agents and other Linux workloads in VMs on Apple silicon"
   homepage "https://kunalkushwaha.github.io/homebrew-koala/"
-  url "https://github.com/kunalkushwaha/homebrew-koala/releases/download/v0.1.0-rc.1/koala-0.1.0-rc.1-darwin-arm64.tar.gz"
-  version "0.1.0-rc.1"
-  sha256 "4b447458eca5c455cd80b1386b35a53f8cc00ac255a239e8f8b170664fcbf400"
+  url "https://github.com/kunalkushwaha/homebrew-koala/releases/download/v0.1.0-rc.2/koala-0.1.0-rc.2-darwin-arm64.tar.gz"
+  version "0.1.0-rc.2"
+  sha256 "1843d36c95652b23f707ad5ad4b8a8e7b5f59368554de5adc7e54162687ad006"
   license "Apache-2.0"
 
   depends_on arch: :arm64
@@ -28,6 +28,6 @@ class Koala < Formula
   end
 
   test do
-    assert_match "koala 0.1.0-rc.1", shell_output("#{bin}/koala --version")
+    assert_match "koala 0.1.0-rc.2", shell_output("#{bin}/koala --version")
   end
 end

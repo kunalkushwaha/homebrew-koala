@@ -28,8 +28,8 @@ VM. The same `koala` commands, VM specs and policies work on both hosts.
 
 *Watch the explainer: [Koala - run agents with confidence](https://youtu.be/1--kPBb8dOU) (YouTube).*
 
-> **Release candidate:** the latest release, `0.1.0-rc.1`, is the release
-> candidate for Koala 0.1.0. It is tested hard, on real VMs, on both platforms
+> **Release candidate:** the latest release, `0.1.0-rc.2`, is the second
+> release candidate for Koala 0.1.0. It is tested hard, on real VMs, on both platforms
 > ([how](#how-koala-is-tested)). Each release's notes say what changed.
 
 **Documentation:** <https://kunalkushwaha.github.io/homebrew-koala/>
