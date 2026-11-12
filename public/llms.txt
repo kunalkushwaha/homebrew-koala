@@ -1,0 +1,21 @@
+# Koala
+
+> Koala runs AI agents and other Linux workloads, each in its own lightweight VM, on a Mac (Apple silicon) or a Linux machine (KVM). A VM gets only the access the user grants: host folders, network reach, secrets, published ports. With the broker, an agent's API keys stay on the host and never enter its VM. The CLI is `koala`; `koala COMMAND --help` is authoritative.
+
+## For AI assistants
+
+- [The Koala skill](https://github.com/kunalkushwaha/homebrew-koala/blob/main/skills/koala/SKILL.md): when to use Koala, the mental model, the core commands and the rules to follow (keys through the broker, least access, show the plan, ask before widening access or deleting).
+- [Recipes](https://github.com/kunalkushwaha/homebrew-koala/blob/main/skills/koala/reference/recipes.md): an agent with its key on the host, a dev environment, a service, a template, refusals.
+- [Every command](https://github.com/kunalkushwaha/homebrew-koala/blob/main/skills/koala/reference/commands.md): generated from Koala's own --help.
+- [What Koala protects against, and what it doesn't](https://github.com/kunalkushwaha/homebrew-koala/blob/main/skills/koala/reference/safety.md)
+
+## User guide
+
+- [Overview](https://kunalkushwaha.github.io/homebrew-koala/guide/)
+- [Install, upgrade and remove](https://kunalkushwaha.github.io/homebrew-koala/guide/getting-started/)
+- [Run an AI agent safely](https://kunalkushwaha.github.io/homebrew-koala/guide/tutorial-agent/)
+- [Keys on your Mac (the broker)](https://kunalkushwaha.github.io/homebrew-koala/guide/broker/)
+- [Networking](https://kunalkushwaha.github.io/homebrew-koala/guide/networking/)
+- [VM templates for agents](https://kunalkushwaha.github.io/homebrew-koala/guide/templates/)
+- [Troubleshooting](https://kunalkushwaha.github.io/homebrew-koala/guide/troubleshooting/)
+- [How it works](https://kunalkushwaha.github.io/homebrew-koala/how-it-works/)

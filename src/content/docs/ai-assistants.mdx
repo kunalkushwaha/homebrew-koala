@@ -1,0 +1,76 @@
+---
+title: Use Koala with your AI assistant
+description: A skill that teaches Claude Code and other AI assistants to run your agents and code in Koala VMs, safely.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Your AI assistant can use Koala for you: run a script it doesn't trust in a
+throwaway VM, set up an agent whose API keys stay on your Mac, share only the
+folder a job needs, or find out why a request was refused. The **Koala
+skill** teaches it how, and what it must not do.
+
+The skill is a folder in this repository,
+[`skills/koala`](https://github.com/kunalkushwaha/homebrew-koala/tree/main/skills/koala),
+in the open Agent Skills format, a folder with a `SKILL.md` that assistants load
+when a task needs it:
+
+- **`SKILL.md`:** when to use Koala, how it fits together, the core
+  commands, and the rules the assistant follows.
+- **`reference/recipes.md`:** step-by-step recipes, such as an agent with its key
+  on your Mac, a dev environment, a service on a local port, or a template.
+- **`reference/commands.md`:** every command and option, generated from
+  Koala's own `--help`.
+- **`reference/safety.md`:** what Koala protects against, and what it
+  doesn't.
+
+## Install it for Claude Code
+
+If you installed Koala with Homebrew, the skill is already on your Mac, in
+the tap. Link it into Claude Code's skills folder:
+
+```sh
+mkdir -p ~/.claude/skills
+ln -s "$(brew --repository kunalkushwaha/koala)/skills/koala" ~/.claude/skills/koala
+```
+
+`brew update` keeps it current. The skill is updated on its own, not only
+with Koala releases. Then ask Claude Code things like:
+
+- "Run this script in a Koala VM, without network access."
+- "Set up the Hermes agent in Koala, with its OpenAI key kept on my Mac."
+- "Why did the broker refuse my agent's request?"
+
+On Linux, or without Homebrew:
+
+```sh
+git clone https://github.com/kunalkushwaha/homebrew-koala.git ~/.koala-skill
+mkdir -p ~/.claude/skills
+ln -s ~/.koala-skill/skills/koala ~/.claude/skills/koala
+```
+
+## Other assistants
+
+- **Assistants that read Agent Skills:** use the same `skills/koala`
+  folder.
+- **Assistants that read the web:** point them at
+  [`llms.txt`](../llms.txt). It links the skill and the user guide.
+
+## What the skill makes the assistant do
+
+<Aside type="tip" title="The rules it follows">
+- Keep API keys **out of the VM**, through the broker, never as an
+  environment variable or a file.
+- Read keys and tokens from a **prompt you type into**, never from the
+  command line.
+- Start agents with the **internet off** and only the grants they need.
+  Shares are read-only unless you ask for more.
+- **Show you the plan** `koala create` prints, and ask before widening
+  access or deleting anything.
+- When Koala refuses something, **find the exact grant** that's missing,
+  rather than opening everything up.
+</Aside>
+
+The commands the skill uses are the ones in this guide. When your Koala is
+newer than the skill, `koala COMMAND --help` wins, and the skill tells the
+assistant so.

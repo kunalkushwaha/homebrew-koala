@@ -46,6 +46,7 @@ export default defineConfig({
 					{ label: 'Overview', slug: 'guide' },
 					{ label: 'Install, upgrade and remove', slug: 'guide/getting-started' },
 					{ label: 'How it works', slug: 'how-it-works' },
+					{ label: 'Use with your AI assistant', slug: 'ai-assistants' },
 				] },
 				{ label: 'Tutorials', items: [
 					{ label: '1. Your first VM', slug: 'guide/tutorial-first-vm' },
