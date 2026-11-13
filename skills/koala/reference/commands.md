@@ -1,6 +1,6 @@
 # Koala commands
 
-Generated from `koala 0.1.0-rc.2 --help` by `scripts/skill-commands.py`; don't edit by hand.
+Generated from `koala 0.1.0-rc.3 --help` by `scripts/skill-commands.py`; don't edit by hand.
 When the installed Koala is newer, its own `koala COMMAND --help` wins.
 
 ## `koala`
@@ -39,6 +39,7 @@ Management commands:
   credential       Manage keys the broker uses on this Mac
   policy           Manage what VMs may ask the broker to do
   execution        Inspect or cancel commands
+  operation        Follow a change koala accepted
   system           Install and run Koala
   config           Check VM definition files
   runtime          Manage VM runtimes
@@ -109,6 +110,8 @@ Options:
       --value-stdin             With --template: read the one missing key from
                                 stdin
       --yes                     With --template: don't ask before creating
+      --internet                With --template: give the VM internet access,
+                                whatever the template says
       --image REF               An OCI image (lean profile)
       --catalog NAME            A Koala catalog entry (full profile)
       --profile P               The runtime profile: lean or full
@@ -129,11 +132,15 @@ Options:
       --user U                  Run the process as this guest user
       --workdir DIR             Start the process in this guest directory
       --entrypoint PATH         Replace the image's entrypoint
-      --no-internet             No internet access; grants still apply
+      --no-internet             No internet access; grants still apply. Also
+                                with --template.
       --broker GRANT=POLICY     Reach a broker policy at
                                 GRANT.broker.koala.internal. Repeatable.
       --host-service SPEC       Reach a service on your Mac:
                                 ADDR:PORT[,PORT][/udp]. Repeatable.
+      --domain NAME[:PORTS]     With --no-internet: reach this host (pypi.org,
+                                *.example.com) over TLS, port 443 unless given.
+                                Repeatable.
       --secret-env NAME=VAR     Give a secret as a variable. Repeatable.
       --secret-file NAME=/PATH
                                 Give a secret as a file. Repeatable.
@@ -145,9 +152,11 @@ Examples:
   koala create dev --image docker.io/library/alpine:3 --wait
   koala create dev --image docker.io/library/alpine:3 --volume data:/data --wait
   koala create bot --image alpine --no-internet --broker ai=openai-main
+  koala create dev --image alpine --no-internet --domain pypi.org
   koala create svc --image alpine --mode service --wait -- sleep 3600
   koala create -f web.json --wait
   koala create hermes --template hermes --set model=gpt-4.1-mini
+  koala create hermes --template hermes --internet
 ```
 
 ### `koala start`
@@ -1087,6 +1096,40 @@ Options:
 
 Examples:
   koala execution cancel EXECUTION_ID
+```
+
+### `koala operation`
+
+```text
+Usage:  koala operation COMMAND
+
+Follow a change koala accepted.
+
+Commands:
+  inspect    Show a change's status and result, or wait for it
+
+Run 'koala operation COMMAND --help' for more information on a command.
+```
+
+### `koala operation inspect`
+
+```text
+Usage:  koala operation inspect [--wait] OPERATION
+
+Show a change's status and result, or wait for it.
+
+Without --wait, a command that changes a VM (create, start, stop, rm, update)
+returns once koala accepts the change, and prints its operation ID. This shows
+whether it is still running, or how it ended and why.
+
+Options:
+      --wait         Return only when the change has finished
+      --timeout S    With --wait: give up after S seconds (default 600)
+      --json         Print JSON
+
+Examples:
+  koala operation inspect OPERATION_ID
+  koala operation inspect OPERATION_ID --wait
 ```
 
 ### `koala system`

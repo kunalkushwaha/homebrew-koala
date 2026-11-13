@@ -1,6 +1,6 @@
 # Koala recipes
 
-Each recipe is a complete task. The commands are for 0.1.0-rc.2; check
+Each recipe is a complete task. The commands are for 0.1.0-rc.3; check
 `koala COMMAND --help` on newer releases. Replace `IMAGE`, `VM` and the like
 with the user's values, and show the user the plan `koala create` prints
 before going on.
@@ -21,10 +21,34 @@ koala create scratch --image docker.io/library/python:3.12-slim --wait
 koala start scratch --wait
 koala cp script.py scratch:/tmp/script.py
 koala exec scratch -- python3 /tmp/script.py
+koala stop scratch --wait
 koala rm scratch --wait
 ```
 
-Add `--no-internet` when the script needs no network.
+Add `--no-internet` when the script needs no network. `koala rm` refuses a
+running VM: stop it first.
+
+## Let a VM reach only the hosts it needs
+
+With the internet off, `--domain` grants named hosts, over TLS (port 443
+unless given). Installing Python packages, for example, needs the index and
+the file host:
+
+```sh
+koala create pipbox --image docker.io/library/python:3.12-slim --no-internet --domain pypi.org --domain files.pythonhosted.org --wait
+koala start pipbox --wait
+koala exec pipbox -- pip install --no-cache-dir requests
+koala stop pipbox --wait
+koala rm pipbox --wait
+```
+
+- `koala create` prints the grants (`domain pypi.org:443/tcp`); show them to
+  the user.
+- Any other host fails, usually as a name that doesn't resolve.
+- `*.example.com` grants a domain's hosts. A public suffix (`*.co.uk`,
+  `com`) is refused: grant a host under it.
+- `--domain` needs `--no-internet`. With the internet on, every host is
+  reachable anyway.
 
 ## A development environment for a project
 
