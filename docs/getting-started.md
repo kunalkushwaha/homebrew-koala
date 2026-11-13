@@ -96,7 +96,7 @@ koala system info
 
 ```text
 koala
-  version    0.1.0-rc.1
+  version    0.1.0-rc.3
   install    verified, /path/to/koala-manager
   manager    running, build koala-manager
   events     kept 30 days

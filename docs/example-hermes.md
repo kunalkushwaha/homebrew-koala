@@ -38,6 +38,10 @@ the gateway is running, and it prints how to reach it.
 - With Ollama on this computer, `--set origin=http://127.0.0.1:11434` and
   your model's name. The policy then has no key, and none is asked for:
   a key is never sent over `http://`.
+- For web search, browsing or package installs, add `--internet`. The
+  model key still stays on your Mac, behind the broker, but anything else
+  in the VM (its sessions, memory and files) can then be sent anywhere.
+  See [Keys and what the agent can reach](#keys-and-what-the-agent-can-reach).
 - `koala template inspect hermes` lists the parameters and what the
   template makes.
 - The template's file is `examples/hermes/template.json` in Koala's
@@ -197,7 +201,9 @@ Hermes up inside it:
    ```
 
    In the editor, set `"internet"` to `true` and `"allow"` to `[]`, then
-   save and quit. `koala edit` applies the change.
+   save and quit. `koala edit` applies the change. (For a new VM that
+   keeps the broker grant, `koala create hermes --template hermes
+   --internet` gives it internet access instead.)
 2. Start it again:
 
    ```sh

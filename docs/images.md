@@ -41,6 +41,10 @@ koala image prune --wait                             # remove images no VM uses
 `image prune` never removes an image a VM still uses, and never touches
 volumes.
 
+`koala create` and `koala run` use an image that is already in the cache as
+it is, without asking the registry, as `docker run` does. To get a newer
+image for a tag such as `alpine:3`, pull it again with `koala image pull`.
+
 ## Private registries
 
 Log in once; the password goes to your login keychain, not to a file:
