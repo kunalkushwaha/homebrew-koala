@@ -1,4 +1,4 @@
-{"format": 1, "name": "slack", "version": 1,
+{"format": 2, "name": "slack", "version": 2,
  "description": "The Slack Web API, with a bot token",
  "groups": {
    "messages": [{"method": "POST", "path": "/api/chat.postMessage"},
@@ -21,9 +21,10 @@
                  {"method": "POST", "path": "/api/reactions.remove"}],
    "socket-mode": [{"method": "POST", "path": "/api/apps.connections.open"}]},
  "defaultGroups": ["messages", "read"],
- "policy": {"version": 1,
+ "policy": {"version": 2,
   "upstream": {"origin": "https://slack.com"},
-  "auth": {"scheme": "bearer"},
+  "keys": {"bot": "{credential}"},
+  "add": [{"header": "authorization", "value": "Bearer {key:bot}"}],
   "requestHeaders": ["content-type", "accept", "user-agent"],
   "responseHeaders": ["content-type", "retry-after"],
   "body": {"maxKiB": 256, "contentTypes": ["application/json", "application/x-www-form-urlencoded"]},

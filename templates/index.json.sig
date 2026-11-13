@@ -1,1 +1,1 @@
-{"algorithm":"ed25519","keyId":"koala-release-1","payloadSHA256":"2f8c4055930574fbd49779764b3e8b7590fd683d967d26e99a65d24827e4837b","schemaVersion":1,"signatureBase64":"KWQmVHyNJDAuwN9yYkFxXKiNOsvYFx/JnvCur/IbRkCDsjtv/0sA8bsBy0QAoufYYSyhNTJkMbMmGUUsyU2pCg=="}
+{"algorithm":"ed25519","keyId":"koala-release-1","payloadSHA256":"65a3a3f1eaff4e2b1971a7200c6d8c58c941a5229369cb6dd00290bf2b079039","schemaVersion":1,"signatureBase64":"56KrxOnCZ8M/j/FBXjB4f1IWy0myysVj98F5lrtJYS2B0pFg1/lBhnKWMdEzAmLiLoDdi8tPNG5d4jYnMZkHDg=="}

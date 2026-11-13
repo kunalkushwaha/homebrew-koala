@@ -1,4 +1,4 @@
-{"format": 1, "name": "discord", "version": 1,
+{"format": 2, "name": "discord", "version": 2,
  "description": "The Discord REST API, with a bot token (the Gateway is not brokered)",
  "groups": {
    "messages": [{"method": "GET", "path": "/api/v10/channels/{channel}/messages", "query": ["limit", "before", "after", "around"]},
@@ -9,9 +9,10 @@
    "identity": [{"method": "GET", "path": "/api/v10/users/@me"}],
    "channels": [{"method": "GET", "path": "/api/v10/channels/{channel}"}]},
  "defaultGroups": ["identity", "messages"],
- "policy": {"version": 1,
+ "policy": {"version": 2,
   "upstream": {"origin": "https://discord.com"},
-  "auth": {"scheme": "authorization", "type": "Bot"},
+  "keys": {"bot": "{credential}"},
+  "add": [{"header": "authorization", "value": "Bot {key:bot}"}],
   "requestHeaders": ["content-type", "accept", "user-agent", "x-audit-log-reason"],
   "responseHeaders": ["content-type", "retry-after", "x-ratelimit-limit", "x-ratelimit-remaining", "x-ratelimit-reset",
                       "x-ratelimit-reset-after", "x-ratelimit-bucket", "x-ratelimit-global", "x-ratelimit-scope"],

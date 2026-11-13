@@ -1,4 +1,4 @@
-{"format": 1, "name": "openai", "version": 1,
+{"format": 2, "name": "openai", "version": 2,
  "description": "OpenAI, and APIs with the same shape under /v1 (Together, DeepSeek, Mistral and others: set --origin)",
  "groups": {
    "chat": [{"method": "POST", "path": "/v1/chat/completions"}],
@@ -7,9 +7,10 @@
    "models": [{"method": "GET", "path": "/v1/models"}, {"method": "GET", "path": "/v1/models/{model}"}]},
  "defaultGroups": ["chat", "models"],
  "modelField": "model",
- "policy": {"version": 1,
+ "policy": {"version": 2,
   "upstream": {"origin": "https://api.openai.com"},
-  "auth": {"scheme": "bearer"},
+  "keys": {"api": "{credential}"},
+  "add": [{"header": "authorization", "value": "Bearer {key:api}"}],
   "requestHeaders": ["content-type", "accept", "user-agent", "x-stainless-arch", "x-stainless-lang",
                      "x-stainless-os", "x-stainless-package-version", "x-stainless-runtime",
                      "x-stainless-runtime-version", "x-stainless-retry-count"],
