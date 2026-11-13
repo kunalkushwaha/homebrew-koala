@@ -12,7 +12,7 @@ safely: the agent can't read the user's files, can't steal their API keys,
 and reaches only what it's allowed to.
 
 Check what is installed first: `koala --version`. **`koala COMMAND --help` is
-the authority** for options: this skill describes 0.1.0-rc.2, and newer
+the authority** for options: this skill describes 0.1.0-rc.3, and newer
 releases add options (see "Newer versions" below).
 
 ## The mental model
@@ -33,7 +33,8 @@ releases add options (see "Newer versions" below).
 
 | The VM gets | Granted by |
 |---|---|
-| The internet | On by default for `create`; `--no-internet` turns it off |
+| The internet | On by default for `create`; `--no-internet` turns it off. With `--template`, `--internet` or `--no-internet` overrides the template |
+| Named hosts only | `--no-internet --domain pypi.org` (repeatable; `*.example.com` for a domain's hosts): TLS on port 443 unless given, and nothing else. Public suffixes (`*.co.uk`) are refused |
 | A host folder | `--mount /host/dir:/guest/dir` (read-only; `:rw` for read-write) |
 | Persistent storage | `--volume NAME:/path` (survives the VM) |
 | A port on the host | `--publish 127.0.0.1:8080:80` (localhost unless an address says otherwise) |
@@ -51,7 +52,8 @@ releases add options (see "Newer versions" below).
    `koala secret set NAME` read it from a prompt (the user types it) or from
    stdin with `--value-stdin`.
 3. **Grant the least access.** Start agents with `--no-internet` plus the
-   broker grants they need. Mounts are read-only unless the user asks for
+   broker grants they need. If a workload needs a few hosts (a package
+   index, an API), grant those with `--domain` rather than the internet. Mounts are read-only unless the user asks for
    write access to that folder; never mount the home directory.
 4. **Show the plan, and ask before widening access:** turning the internet
    on, a read-write mount, a LAN-facing `--publish 0.0.0.0:...`, or a new
@@ -100,7 +102,8 @@ koala create hermes --template hermes
 ```
 
 **Look after VMs:** `koala list`, `koala inspect VM`, `koala logs VM`,
-`koala stats`, `koala events`, `koala cp FILE VM:/path`, `koala rm VM --wait`.
+`koala stats`, `koala events`, `koala cp FILE VM:/path`, `koala stop VM --wait`,
+then `koala rm VM --wait` (it refuses a running VM).
 
 More: [reference/recipes.md](reference/recipes.md) (step-by-step recipes),
 [reference/commands.md](reference/commands.md) (every command),
@@ -118,6 +121,9 @@ what it doesn't).
 - **A connection or request Koala refused:** `koala events --vm VM` lists
   what Koala did with the VM and what it refused. Grant the specific access
   that's missing; don't turn the internet on to "make it work".
+- **A change that was accepted but not waited for** (create, start, stop,
+  rm or update without `--wait` prints an operation ID): `koala operation
+  inspect ID --wait` shows how it ended and why.
 - **A VM that won't start:** `koala inspect VM` shows the failure and its
   reason; `koala console VM` shows the boot.
 - The user guide: https://kunalkushwaha.github.io/homebrew-koala/guide/
@@ -127,8 +133,6 @@ what it doesn't).
 
 Check `koala --version` and `--help` before using these:
 
-- **0.1.0-rc.3:** `koala create NAME --template T --internet` (or
-  `--no-internet`) overrides a template's internet setting.
-- **Domain grants (planned):** `--no-internet --domain pypi.org` lets a VM
-  reach only the named hosts, over TLS. Public suffixes such as `*.co.uk` are
-  refused.
+- **Releases after 0.1.0-rc.3** may add options and commands that this skill
+  doesn't describe yet. `koala --help` and `koala COMMAND --help` list them;
+  prefer them to guessing.
