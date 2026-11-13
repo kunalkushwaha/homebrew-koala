@@ -1,4 +1,4 @@
-{"format": 1, "name": "anthropic", "version": 1,
+{"format": 2, "name": "anthropic", "version": 2,
  "description": "The Anthropic Messages API",
  "groups": {
    "messages": [{"method": "POST", "path": "/v1/messages"}],
@@ -6,9 +6,10 @@
    "models": [{"method": "GET", "path": "/v1/models"}, {"method": "GET", "path": "/v1/models/{model}"}]},
  "defaultGroups": ["messages", "models"],
  "modelField": "model",
- "policy": {"version": 1,
+ "policy": {"version": 2,
   "upstream": {"origin": "https://api.anthropic.com"},
-  "auth": {"scheme": "header", "header": "x-api-key"},
+  "keys": {"api": "{credential}"},
+  "add": [{"header": "x-api-key", "value": "{key:api}"}],
   "requestHeaders": ["content-type", "accept", "anthropic-version", "anthropic-beta", "user-agent",
                      "x-stainless-arch", "x-stainless-lang", "x-stainless-os", "x-stainless-package-version",
                      "x-stainless-runtime", "x-stainless-runtime-version", "x-stainless-retry-count"],
