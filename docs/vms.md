@@ -80,6 +80,7 @@ koala start box --wait
 | `--no-internet` | No internet access. Grants and published ports still work. |
 | `--broker GRANT=POLICY` | Reach a [broker](broker.md) policy at `GRANT.broker.koala.internal`. Repeatable. |
 | `--host-service ADDR:PORT[,PORT...][/tcp\|/udp]` | Reach a service on your Mac ([networking](networking.md)). Repeatable. |
+| `--domain NAME[:PORT,...]` | With `--no-internet`: reach this host over TLS, port 443 unless given ([networking](networking.md#reach-a-few-hosts-and-nothing-else)). Repeatable. |
 | `--secret-env NAME=VARIABLE`, `--secret-file NAME=/guest/path` | Give a stored [secret](secrets.md) as a variable or a file. Repeatable. |
 
 Before submitting, `create` prints on stderr everything the VM will be

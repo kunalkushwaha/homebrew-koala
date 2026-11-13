@@ -78,6 +78,67 @@ koala exec agent -- /bin/sh -c 'wget -qO- http://host-1.koala.internal:8080/'
 - Loopback and other protected ranges cannot be granted.
 - LAN grants create no `host-N` name: use the address.
 
+## Reach a few hosts, and nothing else
+
+With the internet off, a **domain grant** lets a VM reach a host by name
+over **TLS** (HTTPS): a package index, a docs site, an API with no key.
+
+```sh
+koala create dev --image docker.io/library/alpine:3 --no-internet \
+  --domain pypi.org --domain '*.pythonhosted.org' --wait
+```
+
+In a VM definition:
+
+```json
+"network": {"internet": false, "publish": [], "allow": [
+  {"kind": "domain", "name": "pypi.org", "ports": [443]},
+  {"kind": "domain", "name": "*.pythonhosted.org", "ports": [443]}
+]}
+```
+
+- `--domain NAME[:PORT[,PORT...]]`: the port is 443 unless you give one.
+- **TLS only:** plain HTTP is refused, even to a granted host. Koala checks
+  the name a connection carries, and only TLS keeps every request on the
+  connection to that name.
+- `*.example.com` covers any subdomain (`a.example.com`, `a.b.example.com`),
+  but not `example.com` itself. Grant both if you need both.
+- **A public suffix is refused:** `*.co.uk`, `co.uk` or `*.github.io` would
+  grant every site under it, so `koala create` refuses it. So is a wildcard
+  with one under it: `*.amazonaws.com` covers `s3.amazonaws.com`, and so every
+  customer's bucket. Grant the host itself, such as `user.github.io` or
+  `bucket.s3.amazonaws.com`. Koala uses the
+  [public suffix list](https://publicsuffix.org/), both its sections.
+- A domain grant needs the internet off. With the internet on it would do
+  nothing, so Koala refuses it.
+- The plan and `koala inspect` show each one as `domain pypi.org:443/tcp`.
+
+**What Koala checks,** in the network helper on your Mac, for every
+connection:
+1. **DNS:** the VM can look up only granted names. An answer that points at
+   your LAN or your Mac is dropped.
+2. **The address:** the VM can connect only to an address a granted name
+   resolved to. A hard-coded IP address is refused.
+3. **The name in the connection:** the server name the client sends at
+   the start of TLS. It must be a granted name, and the one that resolved
+   to this address. So another site that shares an address with a granted
+   one (on a CDN, say) stays out.
+
+**What a domain grant doesn't do:**
+- **A granted service can still carry data out.** If you grant
+  `github.com`, an agent can push anything it reads to any repository.
+  Grant the hosts the agent needs, and no more.
+- **Encrypted Client Hello** hides the real server name, so the
+  connection is refused unless the provider's shared front-end name is
+  granted. Most command-line tools don't use it.
+- **HTTP/3 (QUIC)** is UDP and isn't granted. Clients fall back to HTTPS
+  over TCP.
+- **A name hidden inside TLS** (domain fronting) can't be seen. Most CDNs
+  refuse it themselves.
+- **Lookups are kept for 10 minutes:** a program that looks a name up
+  once, then connects to it much later, is refused. Looking it up again
+  works.
+
 ## Publish a port
 
 Publishing lets programs on your Mac reach a port in the VM.

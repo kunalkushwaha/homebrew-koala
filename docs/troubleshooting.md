@@ -76,7 +76,7 @@ failed OPERATION_ID RESOURCE_ADMISSION_FAILED
 | --- | --- |
 | `IMAGE_INCOMPATIBLE` | The image does not fit the profile: OCI images need `lean`, catalog entries `full`. Or the catalog entry is unknown. |
 | `UNSUPPORTED_ARCHITECTURE` | The image has no variant for your computer: `linux/arm64` on a Mac, `linux/amd64` on Linux. |
-| `IMAGE_PREPARATION_FAILED`, `REGISTRY_ERROR` | The image could not be fetched or prepared, or the registry answered with an error (for example a wrong password or a missing image). Check the reference, your network and your login. If `--wait` adds "the image helper failed", Koala's own helper stopped, not the image: run the command again. |
+| `IMAGE_PREPARATION_FAILED`, `REGISTRY_ERROR` | The image could not be fetched or prepared, or the registry answered with an error (for example a wrong password, a missing image or too many requests). Check the reference, your network and your login. For a job or VM, the manager's log (`~/Library/Application Support/Koala/logs/manager.log` on a Mac) says why. If `--wait` adds "the image helper failed", Koala's own helper stopped, not the image: run the command again. |
 | `IMAGE_PULL_INTERRUPTED`, `IMAGE_PRUNE_INTERRUPTED` | The Koala manager restarted while the pull or prune ran. Nothing half-made is kept. Run the command again; content already fetched is reused. |
 | `REGISTRY_AUTH_INVALID` | The registry's sign-in challenge could not be used. Check the registry address. |
 | `NOT_FOUND` on `image pull --registry-login` | The login ID no longer exists (for example after `registry logout`). |
@@ -140,3 +140,8 @@ in `TerminationUnknown`, or a command that ended `lost` mean something went
 wrong inside Koala or the VM. Check `koala console VM` and `koala events
 --vm VM`. Koala keeps the VM's resources reserved until it is sure the VM
 has stopped, so a `TerminationUnknown` VM may take a while to settle.
+
+`GUEST_UNAVAILABLE` with "The VM's run journal can't be read" means Koala can
+no longer record what runs in that VM. Retrying doesn't help: stop and start
+the VM (`koala stop VM`, then `koala start VM`). Commands that were running
+end `lost`.

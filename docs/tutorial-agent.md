@@ -67,16 +67,16 @@ Parameters (set with --set NAME=VALUE):
   tls-pin     Trust only this certificate of the provider's (its SHA-256) (default: none)
 
 koala create hermes --template hermes makes:
-  VM hermes: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory, 6144
-    MiB disk
+  VM hermes: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory,
+    6144 MiB disk
     publish tcp 127.0.0.1:8642 -> 8642 (loopback)
     volume hermes-data -> /opt/data (rw)
     internet off
     broker openai -> policy hermes-openai
   policy hermes-openai: openai v2, https://api.openai.com, models gpt-4.1-mini, key hermes-openai
   volume hermes-data: 2048 MiB
-  then waits, up to 300 s, until this succeeds in the VM: curl -fsS -m 2 -o /dev/null
-    http://127.0.0.1:8642/health
+  then waits, up to 300 s, until this succeeds in the VM:
+    curl -fsS -m 2 -o /dev/null http://127.0.0.1:8642/health
   runs in the VM: hermes config set model.provider custom
   runs in the VM: hermes config set model.base_url http://openai.broker.koala.internal/v1
   runs in the VM: hermes config set model.default gpt-4.1-mini
@@ -124,16 +124,16 @@ Template hermes v1 (built in): The Hermes agent's gateway in its own VM; its mod
 Parameters: image=docker.io/nousresearch/hermes-agent:latest model=gemma4:12b
   origin=http://127.0.0.1:11434 port=8642
 It will make:
-  VM agent: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory, 6144
-    MiB disk
+  VM agent: docker.io/nousresearch/hermes-agent:latest, lean service, 2 CPUs, 2048 MiB memory,
+    6144 MiB disk
     publish tcp 127.0.0.1:8642 -> 8642 (loopback)
     volume agent-data -> /opt/data (rw)
     internet off
     broker openai -> policy agent-openai
   policy agent-openai: openai v2, http://127.0.0.1:11434, models gemma4:12b, no key
   volume agent-data: 2048 MiB, new
-  then waits, up to 300 s, until this succeeds in the VM: curl -fsS -m 2 -o /dev/null
-    http://127.0.0.1:8642/health
+  then waits, up to 300 s, until this succeeds in the VM:
+    curl -fsS -m 2 -o /dev/null http://127.0.0.1:8642/health
   runs in the VM: hermes config set model.provider custom
   runs in the VM: hermes config set model.base_url http://openai.broker.koala.internal/v1
   runs in the VM: hermes config set model.default gemma4:12b

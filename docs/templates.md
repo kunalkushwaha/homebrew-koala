@@ -103,6 +103,10 @@ koala create hermes-2 --template hermes --set port=8643
   credential=openai`.
 - **`--cpus`, `--memory` and `--disk`** change the VM's resources, as with
   `koala create`.
+- **`--internet` and `--no-internet`** turn the VM's internet access on or
+  off, whatever the template says. The plan shows the change:
+  `internet on (--internet; the template has it off)`. Broker grants,
+  ports and volumes stay as the template has them.
 - **To change anything else,** [copy the template](#your-own-templates), or
   change the VM afterwards with `koala edit`.
 
