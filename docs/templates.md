@@ -238,8 +238,10 @@ serial 7, signed by koala-release-1
 - **What you already made doesn't change.** A policy made from an older
   template is updated with `koala policy upgrade`, which shows the change
   first ([Day to day](broker.md#day-to-day)).
-- **The templates are kept in `~/Library/Application Support/Koala/templates`**,
-  and checked again each time koala uses them. If they were changed, koala
+- **The templates are kept in `~/Library/Application Support/Koala/templates`**
+  on a Mac, and in `~/.local/share/koala/templates` on Linux
+  (`$XDG_DATA_HOME/koala/templates` if you set it). They are checked again
+  each time koala uses them. If they were changed, koala
   says so, ignores them and uses its built-ins. `koala template update`
   downloads them again.
 - **`--source URL`** reads another copy of Koala's Homebrew tap:
@@ -248,6 +250,9 @@ serial 7, signed by koala-release-1
   - a folder, as `file:///path/to/homebrew-koala/`.
 
   The signature is still required, so a copy can't change what you get.
+- **On Linux, rc.4 can only read a folder:** `koala template update` over
+  `https://` isn't supported on Linux yet. Clone the tap and use
+  `--source file:///path/to/homebrew-koala/`.
 - **It needs a released koala** (Homebrew or a release archive), which
   carries the release key. A koala built from source has none, and refuses.
 
