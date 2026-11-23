@@ -1,6 +1,6 @@
 # Koala commands
 
-Generated from `koala 0.1.0-rc.3 --help` by `scripts/skill-commands.py`; don't edit by hand.
+Generated from `koala 0.1.0-rc.4 --help` by `scripts/skill-commands.py`; don't edit by hand.
 When the installed Koala is newer, its own `koala COMMAND --help` wins.
 
 ## `koala`

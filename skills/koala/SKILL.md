@@ -12,7 +12,7 @@ safely: the agent can't read the user's files, can't steal their API keys,
 and reaches only what it's allowed to.
 
 Check what is installed first: `koala --version`. **`koala COMMAND --help` is
-the authority** for options: this skill describes 0.1.0-rc.3, and newer
+the authority** for options: this skill describes 0.1.0-rc.4, and newer
 releases add options (see "Newer versions" below).
 
 ## The mental model
@@ -133,6 +133,6 @@ what it doesn't).
 
 Check `koala --version` and `--help` before using these:
 
-- **Releases after 0.1.0-rc.3** may add options and commands that this skill
+- **Releases after 0.1.0-rc.4** may add options and commands that this skill
   doesn't describe yet. `koala --help` and `koala COMMAND --help` list them;
   prefer them to guessing.
