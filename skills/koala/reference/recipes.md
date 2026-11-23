@@ -1,6 +1,6 @@
 # Koala recipes
 
-Each recipe is a complete task. The commands are for 0.1.0-rc.3; check
+Each recipe is a complete task. The commands are for 0.1.0-rc.4; check
 `koala COMMAND --help` on newer releases. Replace `IMAGE`, `VM` and the like
 with the user's values, and show the user the plan `koala create` prints
 before going on.
@@ -101,7 +101,9 @@ koala create hermes --template hermes
 `koala create --template` shows everything it will make (the VM, broker
 policies, volumes, setup) and asks before changing anything; it asks for any
 missing key. `--set NAME=VALUE` sets a template parameter, `--yes` skips the
-question in scripts. `koala template update` downloads newer templates.
+question in scripts. `koala template update` downloads newer templates. On
+Linux it can't download over https yet: clone this tap and run
+`koala template update --source file:///path/to/homebrew-koala/`.
 
 ## A service on a local port
 
